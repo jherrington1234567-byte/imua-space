@@ -1,14 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
-import site from '../data/site.json';
 
 const vols = [
-  { n: 'Prologue', name: 'ORIGIN', sub: "I Don't Love You Right Now", color: 'var(--vol-origin)' },
-  { n: 'Volume I', name: 'IMUA', sub: 'Dispatches from the Path Forward', color: 'var(--vol-imua)' },
-  { n: 'Volume II', name: 'OHANA', sub: 'On Who You Build With', color: 'var(--vol-ohana)' },
-  { n: 'Volume III', name: 'PONO', sub: 'On Doing Right', color: 'var(--vol-pono)' },
-  { n: 'Volume IV', name: 'ALOHA', sub: 'Presence as a Practice', color: 'var(--vol-aloha)' },
-  { n: 'Volume V', name: 'MAHALO', sub: 'Gratitude as Discipline', color: 'var(--vol-mahalo)' },
+  { n: 'Prologue', name: 'ORIGIN', sub: "I Don't Love You Right Now", color: 'var(--vol-origin)', route: '/origin/' },
+  { n: 'Volume I', name: 'IMUA', sub: 'Dispatches from the Path Forward', color: 'var(--vol-imua)', route: '/imua/' },
+  { n: 'Volume II', name: 'OHANA', sub: 'On Who You Build With', color: 'var(--vol-ohana)', route: '/ohana/' },
+  { n: 'Volume III', name: 'PONO', sub: 'On Doing Right', color: 'var(--vol-pono)', route: '/pono/' },
+  { n: 'Volume IV', name: 'ALOHA', sub: 'Presence as a Practice', color: 'var(--vol-aloha)', route: '/aloha/' },
+  { n: 'Volume V', name: 'MAHALO', sub: 'Gratitude as Discipline', color: 'var(--vol-mahalo)', route: '/mahalo/' },
 ];
 
 const featured = (await getCollection('essays', ({ data }) => data.featured && !data.draft))
@@ -22,7 +21,7 @@ const featured = (await getCollection('essays', ({ data }) => data.featured && !
 
     <div class="vols">
       {vols.map((v) => (
-        <a class="vol" style={`border-top-color:${v.color}`} href={site.bookUrl}>
+        <a class="vol" style={`border-top-color:${v.color}`} href={v.route}>
           <div class="n">{v.n}</div>
           <div><h3>{v.name}</h3><div class="s">{v.sub}</div></div>
         </a>

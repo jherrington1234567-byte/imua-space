@@ -3,15 +3,15 @@
   "domain": "imua.space",
   "tagline": "IMUA — move forward.",
   "substackUrl": "https://imuaspace.substack.com",
-  "bookUrl": "/writing",
+  "bookUrl": "/imua/",
   "ppvaDemoUrl": "https://ppva-demo.netlify.app",
 
   "nav": [
     { "label": "Work", "href": "#work" },
-    { "label": "MDRT", "href": "#gallery" },
     { "label": "Writing", "href": "#writing" },
     { "label": "About", "href": "#about" },
     { "label": "Photography", "href": "#photography" },
+    { "label": "MDRT", "href": "#gallery" },
     { "label": "Connect", "href": "#connect" }
   ],
 

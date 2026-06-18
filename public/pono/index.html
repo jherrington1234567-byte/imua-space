@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0c1210" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>PONO — Joshua Herrington</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <meta name="description" content="PONO: On Doing Right. The third volume of The Values Project by Joshua Herrington." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #ede4d8;
+      --bg:         #0c1210;
+      --teal:       #6ba89a;
+      --teal-lt:    #8ec4b6;
+      --gold:       #c4a16e;
+      --gold-lt:    #d4b98a;
+      --teal-faint: rgba(107,168,154,0.10);
+      --rule:       rgba(107,168,154,0.18);
+      --muted:      rgba(237,228,216,0.55);
+      --spine:      #080e0c;
+      --spine-mid:  #121e1a;
+      --sidebar-w:  250px;
+      --transition: 0.32s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--spine);
+      color: var(--ink);
+      font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #app { display: flex; min-height: 100vh; position: relative; }
+
+    #overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55); z-index: 40; opacity: 0;
+      transition: opacity var(--transition);
+    }
+    #overlay.visible { display: block; opacity: 1; }
+
+    #sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--spine);
+      border-right: 1px solid rgba(107,168,154,0.15);
+      height: 100vh; position: sticky; top: 0;
+      overflow-y: auto; overflow-x: hidden; scrollbar-width: none;
+      display: flex; flex-direction: column;
+      padding: 44px 0 40px;
+      transition: transform var(--transition), width var(--transition);
+      z-index: 50;
+    }
+    #sidebar::-webkit-scrollbar { display: none; }
+    #sidebar.collapsed { width: 0; padding: 0; border-right-color: transparent; }
+    #sidebar.collapsed * { opacity: 0; pointer-events: none; }
+
+    @media (max-width: 768px) {
+      #sidebar {
+        position: fixed; top: 0; left: 0;
+        bottom: 0; height: auto;
+        width: min(var(--sidebar-w), 82vw);
+        transform: translateX(-105%);
+        padding-top: 72px;
+        box-shadow: 4px 0 32px rgba(0,0,0,0.4);
+        z-index: 50;
+      }
+      #sidebar.open { transform: translateX(0); }
+      #sidebar.collapsed { width: min(var(--sidebar-w), 82vw); padding-top: 72px; }
+      #sidebar.collapsed * { opacity: 1; pointer-events: auto; }
+    }
+
+    .sidebar-brand { padding: 0 26px 32px; border-bottom: 1px solid rgba(107,168,154,0.2); margin-bottom: 20px; }
+    .sidebar-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px; font-weight: 300; letter-spacing: 0.18em;
+      color: var(--teal-lt); text-transform: uppercase; line-height: 1; margin-bottom: 6px;
+    }
+    .sidebar-author { font-size: 11px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+
+    .nav-section-label { font-size: 9.5px; letter-spacing: 0.22em; color: rgba(107,168,154,0.4); text-transform: uppercase; padding: 18px 26px 6px; }
+
+    .nav-item {
+      display: block; padding: 10px 26px;
+      font-size: 13.5px; letter-spacing: 0.03em; color: rgba(237,228,216,0.45);
+      cursor: pointer; border-left: 2px solid transparent;
+      transition: color 0.2s, background 0.2s, border-color 0.2s;
+      line-height: 1.45; user-select: none;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .nav-item:hover { color: var(--teal-lt); background: var(--teal-faint); }
+    .nav-item.active { color: var(--teal-lt); border-left-color: var(--teal); background: rgba(107,168,154,0.08); }
+
+    .nav-item.nav-link-ext {
+      margin-top: 4px;
+      font-size: 12px;
+      color: rgba(107,168,154,0.5);
+      letter-spacing: 0.08em;
+    }
+    .nav-item.nav-link-ext:hover { color: var(--teal-lt); }
+
+    #toggle-btn {
+      position: fixed; top: 16px; left: 16px; z-index: 60;
+      width: 40px; height: 40px;
+      background: var(--spine-mid);
+      border: 1px solid rgba(107,168,154,0.3);
+      border-radius: 6px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 5px; padding: 10px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    #toggle-btn:hover { background: #1a2e28; border-color: var(--teal); }
+    #toggle-btn.hidden { display: none; }
+
+    .toggle-bar {
+      width: 18px; height: 1.5px; background: var(--teal-lt); border-radius: 1px;
+      transition: transform var(--transition), opacity var(--transition);
+      transform-origin: center;
+    }
+    #toggle-btn.open .bar1 { transform: translateY(6.5px) rotate(45deg); }
+    #toggle-btn.open .bar2 { opacity: 0; transform: scaleX(0); }
+    #toggle-btn.open .bar3 { transform: translateY(-6.5px) rotate(-45deg); }
+
+    @media (min-width: 769px) {
+      #toggle-btn { left: calc(var(--sidebar-w) + 16px); transition: left var(--transition), background 0.2s; }
+      body.sidebar-collapsed #toggle-btn { left: 16px; }
+    }
+
+    #main {
+      flex: 1; background: var(--bg);
+      min-height: 100vh; overflow-y: auto; overflow-x: hidden;
+      padding-bottom: calc(80px + env(safe-area-inset-bottom));
+    }
+
+    /* ── Cover ── */
+    .pono-cover {
+      min-height: 100vh; background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 60px 40px;
+      position: relative; overflow: hidden; cursor: pointer;
+    }
+    .pono-cover::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 30% 40%, rgba(107,168,154,0.10) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 60% at 70% 60%, rgba(196,161,110,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .pono-cover .cover-series {
+      font-size: 11px; letter-spacing: 0.38em; text-transform: uppercase;
+      color: rgba(107,168,154,0.4); margin-bottom: 40px;
+    }
+    .pono-cover .cover-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(56px, 12vw, 110px); font-weight: 300;
+      letter-spacing: 0.12em; color: var(--ink); line-height: 1; margin-bottom: 24px;
+    }
+    .pono-cover .cover-subtitle {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(16px, 2.4vw, 22px); font-style: italic; font-weight: 300;
+      color: rgba(237,228,216,0.55); letter-spacing: 0.04em;
+      max-width: 480px; margin: 0 auto 16px; line-height: 1.6;
+    }
+    .pono-cover .cover-author {
+      font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: rgba(107,168,154,0.5); margin-bottom: 56px;
+    }
+    .pono-cover .cover-rule {
+      width: 180px; height: 1px;
+      background: linear-gradient(to right, transparent, var(--teal), transparent);
+      margin: 0 auto 56px;
+    }
+    .pono-cover .cover-cta {
+      font-family: 'EB Garamond', Georgia, serif;
+      display: inline-block; padding: 14px 36px;
+      border: 1px solid rgba(107,168,154,0.3);
+      font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--teal-lt); cursor: pointer;
+      transition: all 0.25s; background: transparent;
+    }
+    .pono-cover .cover-cta:hover {
+      border-color: var(--teal);
+      background: rgba(107,168,154,0.07);
+    }
+
+    /* ── Page ── */
+    .page { max-width: 720px; margin: 0 auto; padding: 72px 48px 100px; animation: pageIn 0.4s ease both; }
+    @keyframes pageIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+    @media (max-width: 768px) { .page { padding: 64px 24px 80px; } }
+    @media (max-width: 480px) { .page { padding: 56px 18px 72px; } }
+
+    /* ── Part header ── */
+    .part-header { text-align: center; padding: 64px 0 52px; border-bottom: 1px solid var(--rule); margin-bottom: 72px; }
+    .part-number-label { font-size: 11px; letter-spacing: 0.38em; color: var(--teal); text-transform: uppercase; margin-bottom: 20px; }
+    .part-main-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(36px, 6vw, 54px); font-weight: 300;
+      color: var(--ink); line-height: 1.1; margin-bottom: 16px;
+    }
+    .part-main-subtitle { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(16px, 2.2vw, 19px); font-style: italic; color: var(--muted); font-weight: 300; }
+
+    .front-header {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(28px, 5vw, 40px); font-weight: 300;
+      color: var(--ink); padding-bottom: 28px; margin-bottom: 48px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* ── Essay ── */
+    .essay { margin-bottom: 72px; }
+    .anchor-label { font-size: 10px; letter-spacing: 0.24em; color: var(--teal); text-transform: uppercase; margin-bottom: 12px; }
+    .essay-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(26px, 4vw, 34px); font-weight: 400;
+      color: var(--ink); line-height: 1.2; margin-bottom: 38px;
+    }
+    .essay p {
+      font-size: clamp(18px, 2.2vw, 20px); line-height: 1.88;
+      color: rgba(237,228,216,0.88); margin-bottom: 1.5em;
+      text-align: justify; hyphens: auto; -webkit-hyphens: auto;
+    }
+    .essay p:first-of-type::first-letter {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 72px; font-weight: 300; float: left;
+      line-height: 0.74; padding-right: 11px; padding-top: 8px; color: var(--teal);
+    }
+
+    /* ── Entry ── */
+    .entry { margin-bottom: 72px; }
+    .entry-meta { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; }
+    .entry-date { font-size: 11.5px; letter-spacing: 0.18em; color: var(--teal); text-transform: uppercase; white-space: nowrap; }
+    .entry-rule { flex: 1; height: 1px; background: var(--rule); }
+    .entry-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(20px, 3vw, 25px); font-weight: 500;
+      font-style: italic; color: var(--ink); margin-bottom: 24px; line-height: 1.3;
+    }
+    .entry p { font-size: clamp(17px, 2vw, 19.5px); line-height: 1.9; color: rgba(237,228,216,0.88); margin-bottom: 1.3em; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+
+    /* ── Divider ── */
+    .section-divider { display: flex; align-items: center; gap: 16px; margin: 60px 0; }
+    .section-divider::before, .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+    .divider-ornament { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 18px; color: var(--teal); opacity: 0.5; }
+
+    /* ── Page nav ── */
+    .page-nav { display: flex; justify-content: space-between; align-items: center; padding-top: 44px; border-top: 1px solid var(--rule); margin-top: 64px; }
+    .nav-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 13.5px; letter-spacing: 0.12em; color: var(--muted);
+      text-transform: uppercase; padding: 8px 0; transition: color 0.2s;
+    }
+    .nav-btn:hover { color: var(--teal-lt); }
+    .nav-btn:disabled { opacity: 0.2; cursor: default; pointer-events: none; }
+    .nav-indicator { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 14.5px; color: var(--teal); opacity: 0.5; font-style: italic; }
+
+    .hidden { display: none !important; }
+
+    /* ── Audio Player ── */
+    #player-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: var(--spine);
+      border-top: 1px solid rgba(107,168,154,0.2);
+      padding: 10px 20px calc(10px + env(safe-area-inset-bottom));
+      display: flex; flex-direction: column; gap: 7px;
+    }
+    .player-row { display: flex; align-items: center; gap: 14px; }
+    #play-btn {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: var(--teal); border: none; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.15s;
+    }
+    #play-btn:hover { background: var(--teal-lt); transform: scale(1.06); }
+    #play-btn svg { width: 13px; height: 13px; fill: #fff; pointer-events: none; }
+    .player-meta { flex: 1; min-width: 0; }
+    .player-title {
+      font-family: 'EB Garamond', serif; font-size: 13px;
+      letter-spacing: 0.06em; color: var(--teal-lt);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .player-time { font-size: 11px; letter-spacing: 0.07em; color: rgba(107,168,154,0.55); margin-top: 1px; }
+    #speed-btn {
+      background: none; border: 1px solid rgba(107,168,154,0.3); border-radius: 4px;
+      padding: 3px 8px; font-family: 'EB Garamond', serif;
+      font-size: 12px; color: rgba(107,168,154,0.6); cursor: pointer;
+      transition: color 0.2s, border-color 0.2s; flex-shrink: 0;
+    }
+    #speed-btn:hover { color: var(--teal-lt); border-color: var(--teal); }
+    .player-scrub {
+      position: relative; height: 3px; background: rgba(107,168,154,0.18);
+      border-radius: 2px; cursor: pointer;
+    }
+    #scrub-fill {
+      height: 100%; width: 0%; background: linear-gradient(to right, var(--teal), var(--gold));
+      border-radius: 2px; pointer-events: none;
+      transition: width 0.2s linear;
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <nav id="sidebar" aria-label="Book navigation">
+    <div class="sidebar-brand">
+      <div class="sidebar-title">PONO</div>
+      <div class="sidebar-author">Joshua Herrington</div>
+    </div>
+    <div id="nav-links"></div>
+  </nav>
+
+  <div id="overlay" onclick="closeSidebar()"></div>
+
+  <button id="toggle-btn" class="hidden" onclick="toggleSidebar()" aria-label="Toggle navigation">
+    <div class="toggle-bar bar1"></div>
+    <div class="toggle-bar bar2"></div>
+    <div class="toggle-bar bar3"></div>
+  </button>
+
+  <main id="main"></main>
+</div>
+
+<audio id="audio" preload="metadata"></audio>
+
+<div id="player-bar">
+  <div class="player-scrub" id="scrub">
+    <div id="scrub-fill"></div>
+  </div>
+  <div class="player-row">
+    <button id="play-btn" aria-label="Play / Pause">
+      <svg id="icon-play"  viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+      <svg id="icon-pause" viewBox="0 0 24 24" style="display:none"><rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/></svg>
+    </button>
+    <div class="player-meta">
+      <div class="player-title" id="player-title">PONO — On Doing Right</div>
+      <div class="player-time" id="player-time">0:00 / 0:00</div>
+    </div>
+    <button id="speed-btn">1&times;</button>
+  </div>
+</div>
+
+<script src="pono-book-data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const allIds = ['cover', ...PONO_BOOK.sections.map(s => s.id)];
+  let current = 'cover';
+  let sidebarOpen = false;
+  const isMobile = () => window.innerWidth <= 768;
+
+  const $main     = document.getElementById('main');
+  const $sidebar  = document.getElementById('sidebar');
+  const $navLinks = document.getElementById('nav-links');
+  const $toggle   = document.getElementById('toggle-btn');
+  const $overlay  = document.getElementById('overlay');
+
+  function buildNav() {
+    $navLinks.innerHTML = '';
+    const lbl = document.createElement('div');
+    lbl.className = 'nav-section-label';
+    lbl.textContent = 'Contents';
+    $navLinks.appendChild(lbl);
+    const addItem = (id, label) => {
+      const el = document.createElement('div');
+      el.className = 'nav-item' + (id === current ? ' active' : '');
+      el.textContent = label;
+      el.onclick = () => { navigate(id); if (isMobile()) closeSidebar(); };
+      $navLinks.appendChild(el);
+    };
+    PONO_BOOK.sections.forEach(s => addItem(s.id, s.label));
+
+    // Series navigation
+    const seriesLbl = document.createElement('div');
+    seriesLbl.className = 'nav-section-label';
+    seriesLbl.style.marginTop = '16px';
+    seriesLbl.textContent = 'The Values Project';
+    $navLinks.appendChild(seriesLbl);
+
+    const addLink = (href, label) => {
+      const el = document.createElement('div');
+      el.className = 'nav-item nav-link-ext';
+      el.textContent = label;
+      el.onclick = () => { window.location.href = href; };
+      $navLinks.appendChild(el);
+    };
+    addLink('/', 'Series Home');
+    addLink('/ohana/', '\u2190 Previous: OHANA');
+    addLink('/aloha/', 'Next: ALOHA \u2192');
+
+    const spacer = document.createElement('div');
+    spacer.style.height = '120px';
+    spacer.style.flexShrink = '0';
+    $navLinks.appendChild(spacer);
+  }
+
+  function navigate(id) {
+    current = id;
+    $main.scrollTop = 0;
+    render();
+    $main.scrollTop = 0;
+    window.scrollTo(0, 0);
+    buildNav();
+  }
+
+  function render() {
+    const idx = allIds.indexOf(current);
+    $main.innerHTML = '';
+    if (current === 'cover') { $toggle.classList.add('hidden'); renderCover(); return; }
+    $toggle.classList.remove('hidden');
+    const section = PONO_BOOK.sections.find(s => s.id === current);
+    if (section) renderSection(section, idx);
+  }
+
+  function renderCover() {
+    const div = document.createElement('div');
+    div.className = 'pono-cover';
+    div.innerHTML = `
+      <div class="cover-series">${PONO_BOOK.seriesLabel}</div>
+      <h1 class="cover-title">${PONO_BOOK.title}</h1>
+      <p class="cover-subtitle">${PONO_BOOK.subtitle}</p>
+      <p class="cover-author">${PONO_BOOK.author}</p>
+      <div class="cover-rule"></div>
+      <div class="cover-cta">Begin Reading</div>`;
+    const firstSection = allIds[1];
+    div.querySelector('.cover-cta').onclick = (e) => { e.stopPropagation(); navigate(firstSection); };
+    div.onclick = () => navigate(firstSection);
+    $main.appendChild(div);
+  }
+
+  function renderSection(section, idx) {
+    const page = document.createElement('div');
+    page.className = 'page';
+
+    if (section.type === 'front') {
+      page.innerHTML += `<h1 class="front-header">${section.label}</h1>`;
+    }
+
+    section.blocks.forEach(block => {
+      if (block.type === 'divider') {
+        page.innerHTML += `<div class="section-divider"><span class="divider-ornament">\u2726</span></div>`;
+        return;
+      }
+      if (block.type === 'essay') {
+        const anchor = block.isAnchor ? `<div class="anchor-label">\u2014 Anchor Essay \u2014</div>` : '';
+        const titleHtml = block.title ? `<h2 class="essay-title">${block.title}</h2>` : '';
+        const paras = block.body.map(p => `<p>${p}</p>`).join('');
+        page.innerHTML += `<div class="essay">${anchor}${titleHtml}${paras}</div>`;
+        return;
+      }
+      if (block.type === 'entry') {
+        const paras = block.body.map(p => `<p>${p}</p>`).join('');
+        page.innerHTML += `<div class="entry"><div class="entry-meta"><span class="entry-date">${block.date}</span><div class="entry-rule"></div></div><h3 class="entry-title">${block.title}</h3>${paras}</div>`;
+        return;
+      }
+    });
+
+    // Navigation
+    const prevId = allIds[idx - 1];
+    const nextId = allIds[idx + 1];
+    const navDiv = document.createElement('div');
+    navDiv.className = 'page-nav';
+
+    let prevBtn, nextBtn;
+    if (!prevId) {
+      prevBtn = `<button class="nav-btn" disabled>&larr; Previous</button>`;
+    } else if (prevId === 'cover') {
+      prevBtn = `<button class="nav-btn" data-nav="cover">&larr; Cover</button>`;
+    } else {
+      prevBtn = `<button class="nav-btn" data-nav="${prevId}">&larr; Previous</button>`;
+    }
+    if (!nextId) {
+      nextBtn = `<button class="nav-btn" data-nav="__aloha__">Continue to ALOHA &rarr;</button>`;
+    } else {
+      nextBtn = `<button class="nav-btn" data-nav="${nextId}">Next &rarr;</button>`;
+    }
+    navDiv.innerHTML = `${prevBtn}<span class="nav-indicator">${idx} of ${allIds.length - 1}</span>${nextBtn}`;
+    navDiv.querySelectorAll('[data-nav]').forEach(btn => {
+      const t = btn.dataset.nav;
+      if (t === '__aloha__') { btn.onclick = () => { window.location.href = '/aloha/'; }; }
+      else if (t) { btn.onclick = () => navigate(t); }
+    });
+    page.appendChild(navDiv);
+    $main.appendChild(page);
+  }
+
+  // ── Audio Engine ───────────────────────────────────────────
+  const $audio     = document.getElementById('audio');
+  const $playBtn   = document.getElementById('play-btn');
+  const $iconPlay  = document.getElementById('icon-play');
+  const $iconPause = document.getElementById('icon-pause');
+  const $speedBtn  = document.getElementById('speed-btn');
+  const $title     = document.getElementById('player-title');
+  const $time      = document.getElementById('player-time');
+  const $fill      = document.getElementById('scrub-fill');
+  const $scrub     = document.getElementById('scrub');
+
+  const SPEEDS = [1, 1.25, 1.5, 1.75, 2];
+  let speedIdx = 0;
+
+  function fmt(s) {
+    if (!isFinite(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    return `${m}:${String(Math.floor(s % 60)).padStart(2,'0')}`;
+  }
+
+  // Audio will load when pono_audio.mp3 is provided
+  if (PONO_BOOK.audio && PONO_BOOK.audio['pono-full']) {
+    $audio.src = PONO_BOOK.audio['pono-full'];
+  }
+
+  $playBtn.addEventListener('click', () => $audio.paused ? $audio.play() : $audio.pause());
+  $audio.addEventListener('play',  () => { $iconPlay.style.display = 'none'; $iconPause.style.display = ''; });
+  $audio.addEventListener('pause', () => { $iconPlay.style.display = ''; $iconPause.style.display = 'none'; });
+  $audio.addEventListener('timeupdate', () => {
+    const t = $audio.currentTime, d = $audio.duration;
+    $fill.style.width = d ? `${(t/d)*100}%` : '0%';
+    $time.textContent = `${fmt(t)} / ${fmt(d)}`;
+  });
+
+  $scrub.addEventListener('click', e => {
+    if (!$audio.duration) return;
+    const r = $scrub.getBoundingClientRect();
+    $audio.currentTime = ((e.clientX - r.left) / r.width) * $audio.duration;
+  });
+
+  $speedBtn.addEventListener('click', () => {
+    speedIdx = (speedIdx + 1) % SPEEDS.length;
+    $audio.playbackRate = SPEEDS[speedIdx];
+    $speedBtn.textContent = SPEEDS[speedIdx] === 1 ? '1\u00d7' : `${SPEEDS[speedIdx]}\u00d7`;
+  });
+
+  document.getElementById('main').style.paddingBottom = '80px';
+
+  window.toggleSidebar = function () {
+    if (isMobile()) {
+      sidebarOpen = !sidebarOpen;
+      $sidebar.classList.toggle('open', sidebarOpen);
+      $toggle.classList.toggle('open', sidebarOpen);
+      $overlay.classList.toggle('visible', sidebarOpen);
+    } else {
+      const collapsed = $sidebar.classList.toggle('collapsed');
+      $toggle.classList.toggle('open', !collapsed);
+      document.body.classList.toggle('sidebar-collapsed', collapsed);
+    }
+  };
+
+  window.closeSidebar = function () {
+    sidebarOpen = false;
+    $sidebar.classList.remove('open');
+    $toggle.classList.remove('open');
+    $overlay.classList.remove('visible');
+  };
+
+  document.addEventListener('keydown', e => {
+    const idx = allIds.indexOf(current);
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { if (idx < allIds.length - 1) navigate(allIds[idx + 1]); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { if (idx > 0) navigate(allIds[idx - 1]); }
+    else if (e.key === 'Escape') closeSidebar();
+  });
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) < 60) return;
+    if (dx > 0 && !sidebarOpen) { window.toggleSidebar(); return; }
+    if (dx < 0 && sidebarOpen) { closeSidebar(); return; }
+    const idx = allIds.indexOf(current);
+    if (dx < -60 && !sidebarOpen && idx < allIds.length - 1) navigate(allIds[idx + 1]);
+    if (dx > 60 && !sidebarOpen && idx > 0) navigate(allIds[idx - 1]);
+  }, { passive: true });
+
+  buildNav();
+  render();
+})();
+</script>
+</body>
+</html>

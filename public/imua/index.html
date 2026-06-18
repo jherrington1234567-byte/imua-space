@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#2c1f0e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>IMUA — Joshua Herrington</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <meta name="description" content="Dispatches from the Path Forward. A philosophical journal on discipline, leadership, and the work of becoming." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1a1410;
+      --paper:      #f7f3ec;
+      --paper-warm: #efe8d8;
+      --gold:       #9a7b4f;
+      --gold-lt:    #c4a16e;
+      --gold-faint: rgba(154,123,79,0.12);
+      --rule:       #cbbfa6;
+      --muted:      #7a6a58;
+      --spine:      #2c1f0e;
+      --spine-mid:  #3d2c18;
+      --sidebar-w:  250px;
+      --transition: 0.32s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--spine);
+      color: var(--ink);
+      font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #app { display: flex; min-height: 100vh; position: relative; }
+
+    #overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55); z-index: 40; opacity: 0;
+      transition: opacity var(--transition);
+    }
+    #overlay.visible { display: block; opacity: 1; }
+
+    #sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--spine);
+      border-right: 1px solid rgba(154,123,79,0.18);
+      height: 100vh; position: sticky; top: 0;
+      overflow-y: auto; overflow-x: hidden; scrollbar-width: none;
+      display: flex; flex-direction: column;
+      padding: 44px 0 40px;
+      transition: transform var(--transition), width var(--transition);
+      z-index: 50;
+    }
+    #sidebar::-webkit-scrollbar { display: none; }
+    #sidebar.collapsed { width: 0; padding: 0; border-right-color: transparent; }
+    #sidebar.collapsed * { opacity: 0; pointer-events: none; }
+
+    @media (max-width: 768px) {
+      #sidebar {
+        position: fixed; top: 0; left: 0;
+        bottom: 0; height: auto;
+        width: min(var(--sidebar-w), 82vw);
+        transform: translateX(-105%);
+        padding-top: 72px;
+        box-shadow: 4px 0 32px rgba(0,0,0,0.4);
+        z-index: 50;
+      }
+      #sidebar.open { transform: translateX(0); }
+      #sidebar.collapsed { width: min(var(--sidebar-w), 82vw); padding-top: 72px; }
+      #sidebar.collapsed * { opacity: 1; pointer-events: auto; }
+    }
+
+    .sidebar-brand { padding: 0 26px 32px; border-bottom: 1px solid rgba(154,123,79,0.2); margin-bottom: 20px; }
+    .sidebar-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px; font-weight: 300; letter-spacing: 0.18em;
+      color: var(--gold-lt); text-transform: uppercase; line-height: 1; margin-bottom: 6px;
+    }
+    .sidebar-author { font-size: 11px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+
+    .nav-section-label { font-size: 9.5px; letter-spacing: 0.22em; color: rgba(154,123,79,0.45); text-transform: uppercase; padding: 18px 26px 6px; }
+
+    .nav-item {
+      display: block; padding: 10px 26px;
+      font-size: 13.5px; letter-spacing: 0.03em; color: #7a6a58;
+      cursor: pointer; border-left: 2px solid transparent;
+      transition: color 0.2s, background 0.2s, border-color 0.2s;
+      line-height: 1.45; user-select: none;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .nav-item:hover { color: var(--gold-lt); background: var(--gold-faint); }
+    .nav-item.active { color: var(--gold-lt); border-left-color: var(--gold); background: rgba(154,123,79,0.1); }
+
+    .nav-item.nav-link-ext {
+      margin-top: 4px;
+      font-size: 12px;
+      color: rgba(154,123,79,0.5);
+      letter-spacing: 0.08em;
+    }
+    .nav-item.nav-link-ext:hover { color: var(--gold-lt); }
+
+    #toggle-btn {
+      position: fixed; top: 16px; left: 16px; z-index: 60;
+      width: 40px; height: 40px;
+      background: var(--spine-mid);
+      border: 1px solid rgba(154,123,79,0.3);
+      border-radius: 6px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 5px; padding: 10px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    #toggle-btn:hover { background: #4a3520; border-color: var(--gold); }
+    #toggle-btn.hidden { display: none; }
+
+    .toggle-bar {
+      width: 18px; height: 1.5px; background: var(--gold-lt); border-radius: 1px;
+      transition: transform var(--transition), opacity var(--transition);
+      transform-origin: center;
+    }
+    #toggle-btn.open .bar1 { transform: translateY(6.5px) rotate(45deg); }
+    #toggle-btn.open .bar2 { opacity: 0; transform: scaleX(0); }
+    #toggle-btn.open .bar3 { transform: translateY(-6.5px) rotate(-45deg); }
+
+    @media (min-width: 769px) {
+      #toggle-btn { left: calc(var(--sidebar-w) + 16px); transition: left var(--transition), background 0.2s; }
+      body.sidebar-collapsed #toggle-btn { left: 16px; }
+    }
+
+    #main {
+      flex: 1; background: var(--paper);
+      min-height: 100vh; overflow-y: auto; overflow-x: hidden;
+      padding-bottom: calc(80px + env(safe-area-inset-bottom));
+    }
+
+    /* ── Cover ── */
+    #cover {
+      min-height: 100vh; background: var(--spine);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 60px 40px;
+      position: relative; overflow: hidden; cursor: pointer;
+    }
+    #cover::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 38%, rgba(154,123,79,0.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cover-border { position: absolute; inset: 22px; border: 1px solid rgba(154,123,79,0.28); pointer-events: none; }
+    .cover-border::before { content: ''; position: absolute; inset: 7px; border: 1px solid rgba(154,123,79,0.1); }
+    .cover-eyebrow { font-size: 11px; letter-spacing: 0.3em; color: rgba(196,161,110,0.45); text-transform: uppercase; margin-bottom: 36px; }
+    .cover-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(80px, 18vw, 140px); font-weight: 300;
+      letter-spacing: 0.3em; color: var(--gold-lt); line-height: 1; text-transform: uppercase;
+    }
+    .cover-subtitle {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(13px, 2.5vw, 16px); font-weight: 300;
+      letter-spacing: 0.32em; color: rgba(196,161,110,0.5);
+      text-transform: uppercase; margin-top: 18px; margin-bottom: 52px;
+    }
+    .cover-rule { width: 160px; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 0 auto 32px; }
+    .cover-author {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(14px, 2.5vw, 18px); font-weight: 400;
+      letter-spacing: 0.22em; color: rgba(196,161,110,0.6); text-transform: uppercase;
+    }
+    .cover-cta {
+      position: absolute; bottom: 50px;
+      font-size: 11px; letter-spacing: 0.22em;
+      color: rgba(154,123,79,0.45); text-transform: uppercase;
+      animation: breathe 2.8s ease-in-out infinite;
+    }
+    @keyframes breathe { 0%,100%{opacity:0.3} 50%{opacity:0.85} }
+
+    /* ── Page ── */
+    .page { max-width: 720px; margin: 0 auto; padding: 72px 48px 100px; animation: pageIn 0.4s ease both; }
+    @keyframes pageIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+    @media (max-width: 768px) { .page { padding: 64px 24px 80px; } }
+    @media (max-width: 480px) { .page { padding: 56px 18px 72px; } }
+    @supports (padding-top: env(safe-area-inset-top)) {
+      .page { padding-left: max(48px, env(safe-area-inset-left)); padding-right: max(48px, env(safe-area-inset-right)); }
+      @media (max-width: 768px) { .page { padding-left: max(24px, env(safe-area-inset-left)); padding-right: max(24px, env(safe-area-inset-right)); } }
+    }
+
+    /* ── Epigraph ── */
+    .epigraph-wrap { display: flex; align-items: center; justify-content: center; min-height: 70vh; padding: 80px 48px; }
+    .epigraph { max-width: 480px; text-align: center; }
+    .epigraph blockquote {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(19px, 2.8vw, 23px); font-style: italic; font-weight: 300;
+      color: var(--ink); line-height: 1.72; margin-bottom: 28px;
+    }
+    .epigraph cite { font-size: 12px; letter-spacing: 0.18em; color: var(--gold); text-transform: uppercase; font-style: normal; }
+
+    /* ── Part header ── */
+    .part-header { text-align: center; padding: 64px 0 52px; border-bottom: 1px solid var(--rule); margin-bottom: 72px; }
+    .part-number-label { font-size: 11px; letter-spacing: 0.38em; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; }
+    .part-main-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(36px, 6vw, 54px); font-weight: 300;
+      color: var(--ink); line-height: 1.1; margin-bottom: 16px;
+    }
+    .part-main-subtitle { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(16px, 2.2vw, 19px); font-style: italic; color: var(--muted); font-weight: 300; }
+
+    .front-header {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(28px, 5vw, 40px); font-weight: 300;
+      color: var(--ink); padding-bottom: 28px; margin-bottom: 48px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* ── Essay ── */
+    .essay { margin-bottom: 72px; }
+    .anchor-label { font-size: 10px; letter-spacing: 0.24em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
+    .essay-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(26px, 4vw, 34px); font-weight: 400;
+      color: var(--ink); line-height: 1.2; margin-bottom: 38px;
+    }
+    .essay p { font-size: clamp(18px, 2.2vw, 20px); line-height: 1.88; color: #1c140e; margin-bottom: 1.5em; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+    .essay p:first-of-type::first-letter {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 72px; font-weight: 300; float: left;
+      line-height: 0.74; padding-right: 11px; padding-top: 8px; color: var(--gold);
+    }
+
+    /* ── Entry ── */
+    .entry { margin-bottom: 72px; }
+    .entry-meta { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; }
+    .entry-date { font-size: 11.5px; letter-spacing: 0.18em; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
+    .entry-rule { flex: 1; height: 1px; background: var(--rule); }
+    .entry-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(20px, 3vw, 25px); font-weight: 500;
+      font-style: italic; color: var(--ink); margin-bottom: 24px; line-height: 1.3;
+    }
+    .entry p { font-size: clamp(17px, 2vw, 19.5px); line-height: 1.9; color: #1c140e; margin-bottom: 1.3em; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+
+    /* ── Field Manual ── */
+    .fm-divider { display: flex; align-items: center; gap: 20px; margin: 64px 0 52px; }
+    .fm-divider::before, .fm-divider::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+    .fm-divider-label { font-size: 10px; letter-spacing: 0.28em; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
+    .fm-entry { margin-bottom: 48px; }
+    .fm-header { display: flex; align-items: baseline; gap: 18px; margin-bottom: 16px; }
+    .fm-number { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 13px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
+    .fm-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(18px, 2.8vw, 22px); font-weight: 500; color: var(--ink); line-height: 1.3; }
+    .fm-entry p { font-size: clamp(17px, 2vw, 19px); line-height: 1.88; color: #1c140e; margin-bottom: 1.2em; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+
+    /* ── Divider ── */
+    .section-divider { display: flex; align-items: center; gap: 16px; margin: 60px 0; }
+    .section-divider::before, .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+    .divider-ornament { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 18px; color: var(--gold); opacity: 0.5; }
+
+    /* ── Page nav ── */
+    .page-nav { display: flex; justify-content: space-between; align-items: center; padding-top: 44px; border-top: 1px solid var(--rule); margin-top: 64px; }
+    .nav-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 13.5px; letter-spacing: 0.12em; color: var(--muted);
+      text-transform: uppercase; padding: 8px 0; transition: color 0.2s;
+    }
+    .nav-btn:hover { color: var(--gold); }
+    .nav-btn:disabled { opacity: 0.2; cursor: default; pointer-events: none; }
+    .nav-indicator { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 14.5px; color: var(--gold); opacity: 0.5; font-style: italic; }
+
+    .hidden { display: none !important; }
+
+    /* ── Reflection form ── */
+    .reflect-form { max-width: 560px; }
+    .reflect-form label { display: block; font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.04em; }
+    .reflect-form textarea, .reflect-form input[type="text"], .reflect-form input[type="email"] {
+      width: 100%; padding: 14px 16px; margin-bottom: 22px;
+      font-family: 'EB Garamond', Georgia, serif; font-size: 17px; line-height: 1.6;
+      color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px;
+      outline: none; transition: border-color 0.2s;
+    }
+    .reflect-form textarea:focus, .reflect-form input:focus { border-color: var(--gold); }
+    .reflect-form textarea { min-height: 200px; resize: vertical; }
+    .reflect-form .optional-tag { font-size: 13px; color: var(--rule); font-style: italic; margin-left: 6px; }
+    .reflect-submit {
+      display: inline-block; padding: 14px 40px;
+      font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: #fff;
+      background: var(--gold); border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s;
+    }
+    .reflect-submit:hover { background: var(--gold-lt); }
+    .reflect-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .reflect-success { padding: 24px; background: var(--gold-faint); border-radius: 8px; font-family: 'EB Garamond', serif; font-size: 18px; line-height: 1.7; color: var(--gold); text-align: center; }
+
+    /* Install page */
+    .install-steps { list-style: none; padding: 0; counter-reset: step; }
+    .install-steps li {
+      counter-increment: step; position: relative; padding: 20px 20px 20px 56px; margin-bottom: 16px;
+      background: var(--gold-faint); border-radius: 8px; font-size: 17px; line-height: 1.6; color: var(--ink);
+    }
+    .install-steps li::before {
+      content: counter(step); position: absolute; left: 18px; top: 20px;
+      width: 28px; height: 28px; background: var(--gold); color: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; font-family: system-ui, sans-serif;
+    }
+    .install-platform { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); margin: 32px 0 12px; font-weight: 500; }
+    .install-platform:first-of-type { margin-top: 0; }
+    .install-icon-inline { display: inline-block; width: 18px; height: 18px; vertical-align: middle; margin: 0 2px; }
+
+    /* ── Audio Player ── */
+    #player-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: var(--spine);
+      border-top: 1px solid rgba(154,123,79,0.3);
+      padding: 10px 20px calc(10px + env(safe-area-inset-bottom));
+      display: flex; flex-direction: column; gap: 7px;
+    }
+    .player-row { display: flex; align-items: center; gap: 14px; }
+    #play-btn {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: var(--gold); border: none; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.15s;
+    }
+    #play-btn:hover { background: var(--gold-lt); transform: scale(1.06); }
+    #play-btn svg { width: 13px; height: 13px; fill: #fff; pointer-events: none; }
+    .player-meta { flex: 1; min-width: 0; }
+    .player-title {
+      font-family: 'EB Garamond', serif; font-size: 13px;
+      letter-spacing: 0.06em; color: var(--gold-lt);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .player-time { font-size: 11px; letter-spacing: 0.07em; color: rgba(154,123,79,0.55); margin-top: 1px; }
+    #speed-btn {
+      background: none; border: 1px solid rgba(154,123,79,0.3); border-radius: 4px;
+      padding: 3px 8px; font-family: 'EB Garamond', serif;
+      font-size: 12px; color: rgba(154,123,79,0.6); cursor: pointer;
+      transition: color 0.2s, border-color 0.2s; flex-shrink: 0;
+    }
+    #speed-btn:hover { color: var(--gold-lt); border-color: var(--gold); }
+    .player-scrub {
+      position: relative; height: 3px; background: rgba(154,123,79,0.18);
+      border-radius: 2px; cursor: pointer;
+    }
+    #scrub-fill {
+      height: 100%; width: 0%; background: var(--gold);
+      border-radius: 2px; pointer-events: none;
+      transition: width 0.2s linear;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hidden form for Netlify bot detection at deploy time -->
+<form name="reflections" netlify hidden>
+  <textarea name="reflection"></textarea>
+  <input name="name" />
+  <input name="contact" />
+</form>
+
+<div id="app">
+  <nav id="sidebar" aria-label="Book navigation">
+    <div class="sidebar-brand">
+      <div class="sidebar-title">IMUA</div>
+      <div class="sidebar-author">Joshua Herrington</div>
+    </div>
+    <div id="nav-links"></div>
+  </nav>
+
+  <div id="overlay" onclick="closeSidebar()"></div>
+
+  <button id="toggle-btn" class="hidden" onclick="toggleSidebar()" aria-label="Toggle navigation">
+    <div class="toggle-bar bar1"></div>
+    <div class="toggle-bar bar2"></div>
+    <div class="toggle-bar bar3"></div>
+  </button>
+
+  <main id="main"></main>
+</div>
+
+<audio id="audio" preload="metadata"></audio>
+
+<div id="player-bar">
+  <div class="player-scrub" id="scrub">
+    <div id="scrub-fill"></div>
+  </div>
+  <div class="player-row">
+    <button id="play-btn" aria-label="Play / Pause">
+      <svg id="icon-play"  viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+      <svg id="icon-pause" viewBox="0 0 24 24" style="display:none"><rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/></svg>
+    </button>
+    <div class="player-meta">
+      <div class="player-title" id="player-title">IMUA — Dispatches from the Path Forward</div>
+      <div class="player-time" id="player-time">0:00 / 0:00</div>
+    </div>
+    <button id="speed-btn">1&times;</button>
+  </div>
+</div>
+
+<script src="book-data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const allIds = ['cover', 'epigraph', ...BOOK.sections.map(s => s.id), 'listen', 'reflect', 'install'];
+  let current = 'cover';
+  let sidebarOpen = false;
+  const isMobile = () => window.innerWidth <= 768;
+
+  const $main     = document.getElementById('main');
+  const $sidebar  = document.getElementById('sidebar');
+  const $navLinks = document.getElementById('nav-links');
+  const $toggle   = document.getElementById('toggle-btn');
+  const $overlay  = document.getElementById('overlay');
+
+  function buildNav() {
+    $navLinks.innerHTML = '';
+    const lbl = document.createElement('div');
+    lbl.className = 'nav-section-label';
+    lbl.textContent = 'Contents';
+    $navLinks.appendChild(lbl);
+    const addItem = (id, label) => {
+      const el = document.createElement('div');
+      el.className = 'nav-item' + (id === current ? ' active' : '');
+      el.textContent = label;
+      el.onclick = () => { navigate(id); if (isMobile()) closeSidebar(); };
+      $navLinks.appendChild(el);
+    };
+    addItem('epigraph', 'Epigraph');
+    BOOK.sections.forEach(s => addItem(s.id, s.label));
+
+    // Audiobook & extras
+    const lbl2 = document.createElement('div');
+    lbl2.className = 'nav-section-label';
+    lbl2.style.marginTop = '16px';
+    lbl2.textContent = 'Audiobook';
+    $navLinks.appendChild(lbl2);
+    addItem('listen', '\u25b6  Listen');
+    addItem('reflect', '\u270d  Write a Reflection');
+    addItem('install', '\ud83d\udcf2  Add to Home Screen');
+
+    // Series navigation
+    const seriesLbl = document.createElement('div');
+    seriesLbl.className = 'nav-section-label';
+    seriesLbl.style.marginTop = '16px';
+    seriesLbl.textContent = 'The Values Project';
+    $navLinks.appendChild(seriesLbl);
+
+    const addLink = (href, label) => {
+      const el = document.createElement('div');
+      el.className = 'nav-item nav-link-ext';
+      el.textContent = label;
+      el.onclick = () => { window.location.href = href; };
+      $navLinks.appendChild(el);
+    };
+    addLink('/', 'Series Home');
+    addLink('/origin/', '\u2190 Previous: ORIGIN');
+    addLink('/ohana/', 'Next: OHANA \u2192');
+
+    const spacer = document.createElement('div');
+    spacer.style.height = '120px';
+    spacer.style.flexShrink = '0';
+    $navLinks.appendChild(spacer);
+  }
+
+  function navigate(id) {
+    current = id;
+    $main.scrollTop = 0;
+    render();
+    $main.scrollTop = 0;
+    window.scrollTo(0, 0);
+    buildNav();
+    loadTrack(id);
+  }
+
+  function render() {
+    const idx = allIds.indexOf(current);
+    $main.innerHTML = '';
+    if (current === 'cover') { $toggle.classList.add('hidden'); renderCover(); return; }
+    $toggle.classList.remove('hidden');
+    if (current === 'epigraph') { renderEpigraph(idx); return; }
+    if (current === 'listen')   { renderListen(idx);   return; }
+    if (current === 'reflect')  { renderReflect(idx);  return; }
+    if (current === 'install')  { renderInstall(idx);  return; }
+    const section = BOOK.sections.find(s => s.id === current);
+    if (section) renderSection(section, idx);
+  }
+
+  function renderCover() {
+    const div = document.createElement('div');
+    div.id = 'cover';
+    div.innerHTML = `
+      <div class="cover-border"></div>
+      <div class="cover-eyebrow">The Values Project &middot; Value I</div>
+      <div class="cover-title">IMUA</div>
+      <div class="cover-subtitle">${BOOK.subtitle}</div>
+      <div class="cover-rule"></div>
+      <div class="cover-author">${BOOK.author}</div>
+      <div class="cover-cta">Open Book &darr;</div>`;
+    div.onclick = () => navigate('epigraph');
+    $main.appendChild(div);
+  }
+
+  function renderListen(idx) {
+    const page = document.createElement('div');
+    page.className = 'page';
+    page.innerHTML = `
+      <h1 class="front-header">Listen</h1>
+      <p style="font-family:'EB Garamond',serif;font-size:19px;color:var(--muted);line-height:1.8;margin-bottom:32px;">
+        The full audiobook is playing in the bar below. Use the controls to play, pause, scrub, and adjust speed.
+      </p>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;">
+        IMUA &mdash; Dispatches from the Path Forward
+      </p>`;
+    $main.appendChild(page);
+    appendPageNav(idx);
+  }
+
+  function renderReflect(idx) {
+    const page = document.createElement('div');
+    page.className = 'page';
+    page.innerHTML = `
+      <h1 class="front-header">Write Your Reflection</h1>
+      <p style="font-family:'EB Garamond',serif;font-size:18px;color:var(--muted);margin-bottom:36px;line-height:1.7;">
+        Something in these pages may have stirred a thought, a memory, or a resolve. This is your space to capture it.
+      </p>
+      <form name="reflections" method="POST" netlify class="reflect-form" id="reflect-form">
+        <input type="hidden" name="form-name" value="reflections" />
+        <label for="reflection">Your Reflection</label>
+        <textarea id="reflection" name="reflection" placeholder="What stayed with you?" required></textarea>
+        <label for="reflect-name">Name <span class="optional-tag">optional</span></label>
+        <input type="text" id="reflect-name" name="name" placeholder="Your name" />
+        <label for="reflect-contact">Contact <span class="optional-tag">optional</span></label>
+        <input type="text" id="reflect-contact" name="contact" placeholder="Email or phone \u2014 if you'd like a response" />
+        <button type="submit" class="reflect-submit">Submit Reflection</button>
+      </form>
+      <div id="reflect-success" class="reflect-success" style="display:none;">
+        Thank you for sharing. Your reflection has been received.
+      </div>`;
+    $main.appendChild(page);
+    appendPageNav(idx);
+
+    document.getElementById('reflect-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const btn = form.querySelector('.reflect-submit');
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      const data = new FormData(form);
+      const body = Array.from(data.entries()).map(function(pair) {
+        return encodeURIComponent(pair[0]) + '=' + encodeURIComponent(pair[1]);
+      }).join('&');
+      fetch(location.pathname, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body
+      }).then(function(res) {
+        if (res.ok || res.redirected) {
+          form.style.display = 'none';
+          document.getElementById('reflect-success').style.display = 'block';
+        } else {
+          btn.disabled = false; btn.textContent = 'Submit Reflection';
+          alert('Something went wrong. Please try again.');
+        }
+      }).catch(function() {
+        btn.disabled = false; btn.textContent = 'Submit Reflection';
+        alert('Network error. Please check your connection and try again.');
+      });
+    });
+  }
+
+  function renderInstall(idx) {
+    const page = document.createElement('div');
+    page.className = 'page';
+    const shareIcon = '<svg class="install-icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>';
+    const menuIcon = '<svg class="install-icon-inline" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>';
+    page.innerHTML = `
+      <h1 class="front-header">Add to Home Screen</h1>
+      <p style="font-family:'EB Garamond',serif;font-size:18px;color:var(--muted);margin-bottom:36px;line-height:1.7;">
+        Read IMUA like an app \u2014 no download required. Add it to your home screen for instant, full-screen access anytime.
+      </p>
+      <div class="install-platform">iPhone / iPad (Safari)</div>
+      <ol class="install-steps">
+        <li>Tap the <strong>Share</strong> button ${shareIcon} at the bottom of Safari.</li>
+        <li>Scroll down and tap <strong>"Add to Home Screen."</strong></li>
+        <li>Tap <strong>"Add"</strong> in the top-right corner.</li>
+      </ol>
+      <div class="install-platform">Android (Chrome)</div>
+      <ol class="install-steps">
+        <li>Tap the <strong>three-dot menu</strong> ${menuIcon} in the top-right corner.</li>
+        <li>Tap <strong>"Add to Home screen"</strong> or <strong>"Install app."</strong></li>
+        <li>Tap <strong>"Add"</strong> to confirm.</li>
+      </ol>
+      <p style="font-family:'EB Garamond',serif;font-size:16px;color:var(--muted);margin-top:36px;line-height:1.7;font-style:italic;">
+        Once added, IMUA will open in full screen with its own icon \u2014 just like a native app.
+      </p>`;
+    $main.appendChild(page);
+    appendPageNav(idx);
+  }
+
+  // ── Audio Engine ───────────────────────────────────────────
+  const $audio     = document.getElementById('audio');
+  const $playBtn   = document.getElementById('play-btn');
+  const $iconPlay  = document.getElementById('icon-play');
+  const $iconPause = document.getElementById('icon-pause');
+  const $speedBtn  = document.getElementById('speed-btn');
+  const $title     = document.getElementById('player-title');
+  const $time      = document.getElementById('player-time');
+  const $fill      = document.getElementById('scrub-fill');
+  const $scrub     = document.getElementById('scrub');
+
+  const SPEEDS = [1, 1.25, 1.5, 1.75, 2];
+  let speedIdx = 0;
+
+  function fmt(s) {
+    if (!isFinite(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    return `${m}:${String(Math.floor(s % 60)).padStart(2,'0')}`;
+  }
+
+  // Single continuous audio file for IMUA
+  const AUDIO_SRC = '/audio/ElevenLabs_Book.mp3';
+  function loadTrack(id, forcePlay) {
+    if ($audio.getAttribute('data-track') === AUDIO_SRC) return;
+    const shouldPlay = forcePlay !== undefined ? forcePlay : !$audio.paused;
+    $audio.setAttribute('data-track', AUDIO_SRC);
+    $audio.src = AUDIO_SRC;
+    $audio.load();
+    $title.textContent = 'IMUA \u2014 Dispatches from the Path Forward';
+    if (shouldPlay) $audio.play().catch(() => {});
+  }
+
+  $playBtn.addEventListener('click', () => $audio.paused ? $audio.play() : $audio.pause());
+  $audio.addEventListener('play',  () => { $iconPlay.style.display = 'none'; $iconPause.style.display = ''; });
+  $audio.addEventListener('pause', () => { $iconPlay.style.display = ''; $iconPause.style.display = 'none'; });
+  $audio.addEventListener('timeupdate', () => {
+    const t = $audio.currentTime, d = $audio.duration;
+    $fill.style.width = d ? `${(t/d)*100}%` : '0%';
+    $time.textContent = `${fmt(t)} / ${fmt(d)}`;
+  });
+  // Single continuous file — no track auto-advance needed
+
+  $scrub.addEventListener('click', e => {
+    if (!$audio.duration) return;
+    const r = $scrub.getBoundingClientRect();
+    $audio.currentTime = ((e.clientX - r.left) / r.width) * $audio.duration;
+  });
+
+  $speedBtn.addEventListener('click', () => {
+    speedIdx = (speedIdx + 1) % SPEEDS.length;
+    $audio.playbackRate = SPEEDS[speedIdx];
+    $speedBtn.textContent = SPEEDS[speedIdx] === 1 ? '1\u00d7' : `${SPEEDS[speedIdx]}\u00d7`;
+  });
+
+  document.getElementById('main').style.paddingBottom = '80px';
+
+  function renderEpigraph(idx) {
+    const wrap = document.createElement('div');
+    wrap.className = 'epigraph-wrap';
+    wrap.innerHTML = `<div class="epigraph"><blockquote>"${BOOK.epigraph.text}"</blockquote><cite>\u2014 ${BOOK.epigraph.attribution}</cite></div>`;
+    $main.appendChild(wrap);
+    appendPageNav(idx);
+  }
+
+  function renderSection(section, idx) {
+    const page = document.createElement('div');
+    page.className = 'page';
+
+    if (section.type === 'part') {
+      page.innerHTML += `<div class="part-header"><div class="part-number-label">Part ${section.partNumber}</div><h1 class="part-main-title">${section.partTitle}</h1><div class="part-main-subtitle">${section.partSubtitle}</div></div>`;
+    } else if (section.type === 'front') {
+      page.innerHTML += `<h1 class="front-header">${section.label}</h1>`;
+    }
+
+    section.blocks.forEach(block => {
+      if (block.type === 'divider') {
+        page.innerHTML += `<div class="section-divider"><span class="divider-ornament">\u2726</span></div>`;
+        return;
+      }
+      if (block.type === 'essay') {
+        const anchor = block.isAnchor ? `<div class="anchor-label">\u2014 Anchor Essay \u2014</div>` : '';
+        const paras = block.body.map(p => `<p>${p}</p>`).join('');
+        const titleHtml = block.title ? `<h2 class="essay-title">${block.title}</h2>` : '';
+        page.innerHTML += `<div class="essay">${anchor}${titleHtml}${paras}</div>`;
+        return;
+      }
+      if (block.type === 'entry') {
+        const paras = block.body.map(p => `<p>${p}</p>`).join('');
+        page.innerHTML += `<div class="entry"><div class="entry-meta"><span class="entry-date">${block.date}</span><div class="entry-rule"></div></div><h3 class="entry-title">${block.title}</h3>${paras}</div>`;
+        return;
+      }
+      if (block.type === 'fieldmanual') {
+        let html = `<div class="fm-divider"><span class="fm-divider-label">Field Manual</span></div>`;
+        block.rules.forEach(rule => {
+          const paras = rule.body.map(p => `<p>${p}</p>`).join('');
+          html += `<div class="fm-entry"><div class="fm-header"><div class="fm-number">${rule.number}</div><div class="fm-title">${rule.title}</div></div>${paras}</div>`;
+        });
+        page.innerHTML += html;
+      }
+    });
+
+    // Navigation with cross-volume links
+    const prevId = allIds[idx - 1];
+    const nextId = allIds[idx + 1];
+    const navDiv = document.createElement('div');
+    navDiv.className = 'page-nav';
+
+    let prevBtn, nextBtn;
+    if (!prevId) {
+      prevBtn = `<button class="nav-btn" disabled>&larr; Previous</button>`;
+    } else {
+      prevBtn = `<button class="nav-btn" data-nav="${prevId}">&larr; Previous</button>`;
+    }
+    if (!nextId) {
+      nextBtn = `<button class="nav-btn" data-nav="__ohana__">Continue to OHANA &rarr;</button>`;
+    } else {
+      nextBtn = `<button class="nav-btn" data-nav="${nextId}">Next &rarr;</button>`;
+    }
+    navDiv.innerHTML = `${prevBtn}<span class="nav-indicator">${idx} of ${allIds.length - 1}</span>${nextBtn}`;
+    navDiv.querySelectorAll('[data-nav]').forEach(btn => {
+      const t = btn.dataset.nav;
+      if (t === '__ohana__') {
+        btn.onclick = () => { window.location.href = '/ohana/'; };
+      } else if (t) {
+        btn.onclick = () => navigate(t);
+      }
+    });
+    page.appendChild(navDiv);
+    $main.appendChild(page);
+  }
+
+  function appendPageNav(idx) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'max-width:720px;margin:0 auto;padding:0 48px 80px;';
+    const prevId = allIds[idx - 1];
+    const nextId = allIds[idx + 1];
+    let prevBtn, nextBtn;
+    if (!prevId) {
+      prevBtn = `<button class="nav-btn" disabled>&larr; Previous</button>`;
+    } else {
+      prevBtn = `<button class="nav-btn" data-nav="${prevId}">&larr; Previous</button>`;
+    }
+    if (!nextId) {
+      nextBtn = `<button class="nav-btn" data-nav="__ohana__">Continue to OHANA &rarr;</button>`;
+    } else {
+      nextBtn = `<button class="nav-btn" data-nav="${nextId}">Next &rarr;</button>`;
+    }
+    wrap.innerHTML = `<div class="page-nav">${prevBtn}<span class="nav-indicator">${idx} of ${allIds.length - 1}</span>${nextBtn}</div>`;
+    wrap.querySelectorAll('[data-nav]').forEach(btn => {
+      const t = btn.dataset.nav;
+      if (t === '__ohana__') {
+        btn.onclick = () => { window.location.href = '/ohana/'; };
+      } else if (t) {
+        btn.onclick = () => navigate(t);
+      }
+    });
+    $main.appendChild(wrap);
+  }
+
+  window.toggleSidebar = function () {
+    if (isMobile()) {
+      sidebarOpen = !sidebarOpen;
+      $sidebar.classList.toggle('open', sidebarOpen);
+      $toggle.classList.toggle('open', sidebarOpen);
+      $overlay.classList.toggle('visible', sidebarOpen);
+    } else {
+      const collapsed = $sidebar.classList.toggle('collapsed');
+      $toggle.classList.toggle('open', !collapsed);
+      document.body.classList.toggle('sidebar-collapsed', collapsed);
+    }
+  };
+
+  window.closeSidebar = function () {
+    sidebarOpen = false;
+    $sidebar.classList.remove('open');
+    $toggle.classList.remove('open');
+    $overlay.classList.remove('visible');
+  };
+
+  document.addEventListener('keydown', e => {
+    const idx = allIds.indexOf(current);
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { if (idx < allIds.length - 1) navigate(allIds[idx + 1]); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { if (idx > 0) navigate(allIds[idx - 1]); }
+    else if (e.key === 'Escape') closeSidebar();
+  });
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) < 60) return;
+    if (dx > 0 && !sidebarOpen) { window.toggleSidebar(); return; }
+    if (dx < 0 && sidebarOpen) { closeSidebar(); return; }
+    const idx = allIds.indexOf(current);
+    if (dx < -60 && !sidebarOpen && idx < allIds.length - 1) navigate(allIds[idx + 1]);
+    if (dx > 60 && !sidebarOpen && idx > 0) navigate(allIds[idx - 1]);
+  }, { passive: true });
+
+  buildNav();
+  render();
+  // Preload the single continuous audio file
+  loadTrack('init', false);
+})();
+</script>
+</body>
+</html>
