@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clear the Deck 2025 — a Joshua Herrington build</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+    .playfair { font-family: 'Playfair Display', Georgia, serif; }
+    .cormorant { font-family: 'Cormorant Garamond', Georgia, serif; }
+    
+    /* Mobile responsive adjustments */
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem !important; }
+      h2 { font-size: 1.75rem !important; }
+      h3 { font-size: 1.25rem !important; }
+      p { font-size: 1rem !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const ClearTheDeck2025 = () => {
+      const [currentSection, setCurrentSection] = useState(0);
+      const [activePhase, setActivePhase] = useState(null);
+      const [animateIn, setAnimateIn] = useState(false);
+      const [selectedValue, setSelectedValue] = useState(null);
+
+      const changeSection = (newSection) => {
+        setCurrentSection(newSection);
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      };
+
+      useEffect(() => {
+        setTimeout(() => setAnimateIn(true), 100);
+      }, []);
+
+      const coreValues = [
+        {
+          hawaiian: "Mahalo",
+          meaning: "Gratitude",
+          icon: "🙏",
+          description: "Deep gratitude for every opportunity that crosses our path. Each task represents a client who trusted us.",
+          application: "Approach every task as a gift. Each policy, each client, each carrier interaction is an opportunity to serve."
+        },
+        {
+          hawaiian: "Aloha",
+          meaning: "Love & Respect",
+          icon: "🌺",
+          description: "How we interact with others—with love, care, and respect. Listen, share openly, willingly, and with hope.",
+          application: "Communicate with carriers and team members with care. Every email, every call reflects who we are."
+        },
+        {
+          hawaiian: "Ohana",
+          meaning: "Family",
+          icon: "👨‍👩‍👧‍👦",
+          description: "Welcome everyone as family. With Ohana comes kindness, forthrightness, and accountability.",
+          application: "Support your teammates. Review with care. Escalate with clarity. We rise together."
+        },
+        {
+          hawaiian: "Pono",
+          meaning: "Righteousness",
+          icon: "⚖️",
+          description: "Do the right thing for the right reasons. Live with good intentions.",
+          application: "Follow the process. Document correctly. File properly. Speed is good; correctness is mandatory."
+        },
+        {
+          hawaiian: "Imua",
+          meaning: "Move Forward",
+          icon: "🚀",
+          description: "Always moving forward with purpose and strength. Keep learning and growing.",
+          application: "Clear the deck. Build SOPs. Leave things better than you found them. No complacency."
+        }
+      ];
+
+      const workflowPhases = [
+        {
+          name: "Intake / Triage",
+          color: "#FF6B6B",
+          icon: "📥",
+          description: "New tasks land here. Immediately confirm receipt.",
+          actions: [
+            "Confirm receipt to Japan Team",
+            "Set D365 Confirmed box = Yes",
+            "Assign yourself",
+            "Status Notes = Confirmed Receipt"
+          ],
+          value: "Mahalo"
+        },
+        {
+          name: "Ready to Start",
+          color: "#4ECDC4",
+          icon: "✅",
+          description: "Task is prepped with all links and SOPs.",
+          actions: [
+            "D365 link present",
+            "Client folder link present",
+            "SOP attached or mini-SOP subtask created",
+            "Carrier contact method confirmed"
+          ],
+          value: "Pono"
+        },
+        {
+          name: "In Progress",
+          color: "#45B7D1",
+          icon: "⚡",
+          description: "Active work happening. Momentum is key.",
+          actions: [
+            "Set D365 status = In Progress",
+            "Log updates (newest at top)",
+            "Include folder link above notes",
+            "Execute with precision"
+          ],
+          value: "Imua"
+        },
+        {
+          name: "Waiting on Carrier",
+          color: "#96CEB4",
+          icon: "⏳",
+          description: "Ball is in carrier's court. Follow up relentlessly.",
+          actions: [
+            "Follow up every 3 business days",
+            "Record date/time of contact",
+            "Log who you spoke with + reference #",
+            "Escalate if >10 business days"
+          ],
+          value: "Aloha"
+        },
+        {
+          name: "Waiting on Japan Team",
+          color: "#FFEAA7",
+          icon: "🗾",
+          description: "Need info or signatures from our internal partners.",
+          actions: [
+            "Document exactly what is missing",
+            "Note who you asked + when",
+            "Set next follow-up date",
+            "Follow up every 3 business days"
+          ],
+          value: "Ohana"
+        },
+        {
+          name: "Awaiting Review",
+          color: "#DDA0DD",
+          icon: "🔍",
+          description: "Work complete. Ready for QC.",
+          actions: [
+            "Set D365 status = Awaiting Review",
+            "Folder link pasted above notes",
+            "Documents named correctly",
+            "Reviewer assigned"
+          ],
+          value: "Pono"
+        },
+        {
+          name: "Complete",
+          color: "#98D8C8",
+          icon: "🏆",
+          description: "Fully finished, filed, and communicated.",
+          actions: [
+            "Carrier confirmation saved",
+            "D365 notes finalized",
+            "Task marked Complete",
+            "Celebrate the win"
+          ],
+          value: "Mahalo"
+        }
+      ];
+
+      const sections = ["mantra", "mission", "values", "workflow", "rules", "asana", "rally"];
+
+      const gradientText = {
+        background: "linear-gradient(135deg, #f5af19 0%, #f12711 100%)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        backgroundClip: "text"
+      };
+
+      const renderMantra = () => (
+        <div style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "1.5rem",
+          background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)"
+        }}>
+          <div style={{
+            maxWidth: "900px",
+            width: "100%",
+            transition: "all 1s ease",
+            opacity: animateIn ? 1 : 0,
+            transform: animateIn ? "translateY(0)" : "translateY(40px)"
+          }}>
+            <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+              <h1 className="playfair" style={{
+                fontSize: "clamp(2rem, 8vw, 3.5rem)",
+                fontWeight: "bold",
+                marginBottom: "1rem",
+                ...gradientText
+              }}>
+                The Idea Lab
+              </h1>
+              <p className="cormorant" style={{ fontSize: "clamp(1.125rem, 4vw, 1.5rem)", color: "rgba(251, 191, 36, 0.8)", fontStyle: "italic" }}>
+                Grounding Mantra
+              </p>
+            </div>
+            
+            <div className="cormorant" style={{ fontSize: "clamp(1rem, 3vw, 1.25rem)", lineHeight: "1.8", color: "#e5e7eb" }}>
+              <p style={{ fontSize: "clamp(1.125rem, 3.5vw, 1.5rem)", color: "rgba(254, 243, 199, 1)", marginBottom: "1.5rem" }}>
+                The Idea Lab isn't mine to control. It isn't a department. It's not a desk. It's not a title. 
+                <span style={{ color: "#fbbf24", fontWeight: "600" }}> It's a living thing.</span>
+              </p>
+              
+              <p style={{ color: "#9ca3af", marginBottom: "1.5rem" }}>
+                It existed before me. And it will exist after me.
+              </p>
+              
+              <p style={{ color: "rgba(254, 243, 199, 0.9)", marginBottom: "1.5rem" }}>
+                You don't control an idea. You <span style={{ color: "white", fontWeight: "600" }}>listen</span> to it. 
+                You <span style={{ color: "white", fontWeight: "600" }}>protect</span> it. 
+                You <span style={{ color: "white", fontWeight: "600" }}>test</span> it. 
+                You <span style={{ color: "white", fontWeight: "600" }}>shape</span> it—never to sell, but to <span style={{ color: "#fbbf24", fontWeight: "600" }}>serve</span>.
+              </p>
+
+              <div style={{ padding: "1.5rem 0", borderTop: "1px solid rgba(245, 158, 11, 0.3)", borderBottom: "1px solid rgba(245, 158, 11, 0.3)", margin: "2rem 0" }}>
+                <p style={{ fontSize: "clamp(1.125rem, 3.5vw, 1.5rem)", textAlign: "center", color: "rgba(254, 243, 199, 1)" }}>
+                  We don't deal in products. We don't push solutions.
+                </p>
+                <p className="playfair" style={{ fontSize: "clamp(1.25rem, 4vw, 1.75rem)", textAlign: "center", fontWeight: "bold", marginTop: "1rem", ...gradientText }}>
+                  We fabricate intellectual property—the last great American export.
+                </p>
+              </div>
+
+              <p style={{ color: "#d1d5db", marginBottom: "1.5rem" }}>
+                We don't chase volume. We deliver structure. We don't react. <span style={{ color: "#fbbf24", fontWeight: "600" }}>We create.</span>
+              </p>
+
+              <p style={{ color: "#9ca3af", fontStyle: "italic", marginBottom: "1.5rem" }}>
+                This role is a privilege. And with it comes responsibility.
+              </p>
+
+              <p style={{ color: "rgba(254, 243, 199, 1)", marginBottom: "1.5rem" }}>
+                To honor the <span style={{ fontWeight: "600" }}>dignity of the client</span>. 
+                To steward ideas with <span style={{ fontWeight: "600" }}>clarity and discipline</span>. 
+                To serve as a <span style={{ fontWeight: "600" }}>craftsman</span>, not a closer.
+              </p>
+
+              <div style={{ textAlign: "center", paddingTop: "2rem" }}>
+                <p style={{ fontSize: "clamp(1.125rem, 3.5vw, 1.5rem)", color: "#d1d5db" }}>
+                  The Idea Lab exists to give voice to what others haven't yet said,
+                </p>
+                <p style={{ fontSize: "clamp(1.125rem, 3.5vw, 1.5rem)", color: "rgba(254, 243, 199, 1)" }}>
+                  and form to what others haven't yet built.
+                </p>
+                <p className="playfair" style={{ fontSize: "clamp(1.25rem, 4vw, 1.75rem)", fontWeight: "bold", marginTop: "1.5rem", color: "#fbbf24" }}>
+                  That's the glory. That's the honor. That's the work.
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
+              <button
+                onClick={() => changeSection(1)}
+                style={{
+                  padding: "1rem 2rem",
+                  borderRadius: "9999px",
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "transform 0.3s",
+                  background: "linear-gradient(135deg, #f5af19 0%, #f12711 100%)",
+                  color: "#1a1a2e"
+                }}
+                onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
+                onMouseOut={(e) => e.target.style.transform = "scale(1)"}
+              >
+                Enter Clear the Deck 2025 →
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+
+      const renderMission = () => (
+        <div style={{
+          minHeight: "100vh",
+          padding: "1.5rem",
+          background: "linear-gradient(180deg, #0f3460 0%, #1a1a2e 100%)"
+        }}>
+          <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+            <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
+              <div style={{
+                display: "inline-block",
+                padding: "0.5rem 1.5rem",
+                borderRadius: "9999px",
+                backgroundColor: "rgba(245, 158, 11, 0.2)",
+                color: "#fbbf24",
+                fontSize: "0.875rem",
+                fontWeight: "600",
+                marginBottom: "1rem"
+              }}>
+                THE MISSION
+              </div>
+              <h2 className="playfair" style={{ fontSize: "clamp(1.75rem, 6vw, 3rem)", fontWeight: "bold", color: "white", marginBottom: "1rem" }}>
+                Clear the Deck 2025
+              </h2>
+              <p className="cormorant" style={{ fontSize: "clamp(1.125rem, 4vw, 1.5rem)", color: "rgba(254, 243, 199, 0.8)" }}>
+                A High-Speed Cleanup Sprint
+              </p>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem", marginBottom: "2rem" }}>
+              <div style={{
+                backgroundColor: "rgba(255, 255, 255, 0.05)",
+                backdropFilter: "blur(10px)",
+                borderRadius: "1rem",
+                padding: "1.5rem",
+                border: "1px solid rgba(245, 158, 11, 0.2)"
+              }}>
+                <div style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>🎯</div>
+                <h3 style={{ fontSize: "clamp(1.125rem, 3vw, 1.5rem)", fontWeight: "bold", color: "#fbbf24", marginBottom: "0.75rem" }}>The Objective</h3>
+                <p style={{ color: "#d1d5db", fontSize: "1rem", lineHeight: "1.6" }}>
+                  Clear every outstanding service task. Leave no client waiting. 
+                  Transform our backlog into a system that serves.
+                </p>
+              </div>
+              
+              <div style={{
+                backgroundColor: "rgba(255, 255, 255, 0.05)",
+                backdropFilter: "blur(10px)",
+                borderRadius: "1rem",
+                padding: "1.5rem",
+                border: "1px solid rgba(245, 158, 11, 0.2)"
+              }}>
+                <div style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>⚡</div>
+                <h3 style={{ fontSize: "clamp(1.125rem, 3vw, 1.5rem)", fontWeight: "bold", color: "#fbbf24", marginBottom: "0.75rem" }}>The Mantra</h3>
+                <p style={{ color: "white", fontSize: "clamp(1.125rem, 3vw, 1.5rem)", fontWeight: "bold", marginBottom: "0.5rem" }}>
+                  "Speed is good; correctness is mandatory."
+                </p>
+                <p style={{ color: "#9ca3af" }}>
+                  Move fast. But never sacrifice accuracy for velocity.
+                </p>
+              </div>
+            </div>
+
+            <div style={{
+              background: "linear-gradient(to right, rgba(245, 158, 11, 0.1), rgba(249, 115, 22, 0.1))",
+              borderRadius: "1rem",
+              padding: "1.5rem",
+              border: "1px solid rgba(245, 158, 11, 0.3)",
+              marginBottom: "2rem"
+            }}>
+              <h3 style={{ fontSize: "clamp(1.125rem, 3vw, 1.5rem)", fontWeight: "bold", color: "#fbbf24", marginBottom: "1.25rem", textAlign: "center" }}>
+                What We're Fighting For
+              </h3>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: "1rem", textAlign: "center" }}>
+                <div>
+                  <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🏠</div>
+                  <p style={{ color: "white", fontWeight: "600", fontSize: "0.9rem" }}>Client Trust</p>
+                  <p style={{ color: "#9ca3af", fontSize: "0.75rem" }}>Every task represents a promise</p>
+                </div>
+                <div>
+                  <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🌏</div>
+                  <p style={{ color: "white", fontWeight: "600", fontSize: "0.9rem" }}>Global Partnership</p>
+                  <p style={{ color: "#9ca3af", fontSize: "0.75rem" }}>We are Japan Team's partner</p>
+                </div>
+                <div>
+                  <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>📊</div>
+                  <p style={{ color: "white", fontWeight: "600", fontSize: "0.9rem" }}>Operational Excellence</p>
+                  <p style={{ color: "#9ca3af", fontSize: "0.75rem" }}>Systems that scale</p>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1rem" }}>
+              <button
+                onClick={() => changeSection(0)}
+                style={{
+                  padding: "0.75rem 1.5rem",
+                  borderRadius: "9999px",
+                  color: "#9ca3af",
+                  border: "1px solid #4b5563",
+                  background: "transparent",
+                  cursor: "pointer",
+                  transition: "border-color 0.3s"
+                }}
+              >
+                ← Mantra
+              </button>
+              <button
+                onClick={() => changeSection(2)}
+                style={{
+                  padding: "1rem 2rem",
+                  borderRadius: "9999px",
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "transform 0.3s",
+                  background: "linear-gradient(135deg, #f5af19 0%, #f12711 100%)",
+                  color: "#1a1a2e"
+                }}
+                onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
+                onMouseOut={(e) => e.target.style.transform = "scale(1)"}
+              >
+                Our Values →
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+
+      const renderValues = () => (
+        <div style={{
+          minHeight: "100vh",
+          padding: "1.5rem",
+          background: "linear-gradient(180deg, #1a1a2e 0%, #16213e 100%)"
+        }}>
+          <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+            <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+              <div style={{
+                display: "inline-block",
+                padding: "0.5rem 1.5rem",
+                borderRadius: "9999px",
+                backgroundColor: "rgba(20, 184, 166, 0.2)",
+                color: "#2dd4bf",
+                fontSize: "0.875rem",
+                fontWeight: "600",
+                marginBottom: "1rem"
+              }}>
+                OUR FOUNDATION
+              </div>
+              <h2 className="playfair" style={{ fontSize: "clamp(1.75rem, 6vw, 3rem)", fontWeight: "bold", color: "white", marginBottom: "1rem" }}>
+                Five Hawaiian Words
+              </h2>
+              <p style={{ fontSize: "clamp(1rem, 3vw, 1.25rem)", color: "#9ca3af" }}>
+                That inform who we are and how we work
+              </p>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "0.75rem", marginBottom: "1.5rem" }}>
+              {coreValues.map((value, index) => (
+                <button
+                  key={value.hawaiian}
+                  onClick={() => setSelectedValue(selectedValue === index ? null : index)}
+                  style={{
+                    padding: "1rem",
+                    borderRadius: "1rem",
+                    border: selectedValue === index ? "1px solid #2dd4bf" : "1px solid rgba(255, 255, 255, 0.1)",
+                    background: selectedValue === index 
+                      ? "linear-gradient(to bottom, rgba(20, 184, 166, 0.3), rgba(16, 185, 129, 0.2))" 
+                      : "rgba(255, 255, 255, 0.05)",
+                    cursor: "pointer",
+                    transition: "all 0.3s",
+                    transform: selectedValue === index ? "scale(1.02)" : "scale(1)"
+                  }}
+                >
+                  <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>{value.icon}</div>
+                  <h3 className="playfair" style={{ fontSize: "clamp(1rem, 3vw, 1.5rem)", fontWeight: "bold", color: "#2dd4bf", marginBottom: "0.25rem" }}>
+                    {value.hawaiian}
+                  </h3>
+                  <p style={{ color: "#9ca3af", fontSize: "0.75rem" }}>{value.meaning}</p>
+                </button>
+              ))}
+            </div>
+
+            {selectedValue !== null && (
+              <div style={{
+                background: "linear-gradient(to right, rgba(20, 184, 166, 0.1), rgba(16, 185, 129, 0.1))",
+                borderRadius: "1rem",
+                padding: "1.5rem",
+                border: "1px solid rgba(20, 184, 166, 0.3)",
+                marginBottom: "1.5rem",
+                transition: "all 0.5s"
+              }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem", textAlign: "center" }}>
+                  <div style={{ fontSize: "3rem" }}>{coreValues[selectedValue].icon}</div>
+                  <div>
+                    <h3 className="playfair" style={{ fontSize: "clamp(1.5rem, 4vw, 2rem)", fontWeight: "bold", color: "#2dd4bf", marginBottom: "0.5rem" }}>
+                      {coreValues[selectedValue].hawaiian}
+                    </h3>
+                    <p style={{ fontSize: "clamp(1rem, 3vw, 1.25rem)", color: "white", marginBottom: "1rem" }}>{coreValues[selectedValue].description}</p>
+                    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.3)", borderRadius: "0.75rem", padding: "1rem", textAlign: "left" }}>
+                      <p style={{ fontSize: "0.875rem", color: "#5eead4", fontWeight: "600", marginBottom: "0.5rem" }}>IN THIS PROJECT:</p>
+                      <p style={{ color: "#d1d5db" }}>{coreValues[selectedValue].application}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {selectedValue === null && (
+              <div style={{ textAlign: "center", padding: "1.5rem", color: "#6b7280" }}>
+                <p>Tap a value above to see how it applies to Clear the Deck 2025</p>
+              </div>
+            )}
+
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1rem", marginTop: "1.5rem" }}>
+              <button
+                onClick={() => changeSection(1)}
+                style={{
+                  padding: "0.75rem 1.5rem",
+                  borderRadius: "9999px",
+                  color: "#9ca3af",
+                  border: "1px solid #4b5563",
+                  background: "transparent",
+                  cursor: "pointer"
+                }}
+              >
+                ← Mission
+              </button>
+              <button
+                onClick={() => changeSection(3)}
+                style={{
+                  padding: "1rem 2rem",
+                  borderRadius: "9999px",
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "transform 0.3s",
+                  background: "linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%)",
+                  color: "#1a1a2e"
+                }}
+                onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
+                onMouseOut={(e) => e.target.style.transform = "scale(1)"}
+              >
+                The Workflow →
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+
+      const renderWorkflow = () => (
+        <div style={{
+          minHeight: "100vh",
+          padding: "1.5rem",
+          background: "linear-gradient(180deg, #16213e 0%, #1a1a2e 100%)"
+        }}>
+          <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+            <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+              <div style={{
+                display: "inline-block",
+                padding: "0.5rem 1.5rem",
+                borderRadius: "9999px",
+                backgroundColor: "rgba(59, 130, 246, 0.2)",
+                color: "#60a5fa",
+                fontSize: "0.875rem",
+                fontWeight: "600",
+                marginBottom: "1rem"
+              }}>
+                THE SYSTEM
+              </div>
+              <h2 className="playfair" style={{ fontSize: "clamp(1.75rem, 6vw, 3rem)", fontWeight: "bold", color: "white", marginBottom: "1rem" }}>
+                The Workflow
+              </h2>
+              <p style={{ fontSize: "clamp(1rem, 3vw, 1.25rem)", color: "#9ca3af" }}>
+                Every task flows through these phases. Tap to explore.
+              </p>
+            </div>
+
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "0.5rem", marginBottom: "1.5rem" }}>
+              {workflowPhases.map((phase, index) => (
+                <button
+                  key={phase.name}
+                  onClick={() => setActivePhase(activePhase === index ? null : index)}
+                  style={{
+                    padding: "0.5rem 0.75rem",
+                    borderRadius: "0.75rem",
+                    border: activePhase === index ? `1px solid ${phase.color}` : "1px solid rgba(255, 255, 255, 0.1)",
+                    backgroundColor: activePhase === index ? `${phase.color}30` : "rgba(255, 255, 255, 0.05)",
+                    cursor: "pointer",
+                    transition: "all 0.3s",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    transform: activePhase === index ? "scale(1.02)" : "scale(1)"
+                  }}
+                >
+                  <span style={{ fontSize: "1rem" }}>{phase.icon}</span>
+                  <span style={{ fontWeight: "600", color: activePhase === index ? "white" : "#d1d5db", fontSize: "0.8rem" }}>
+                    {phase.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {activePhase !== null && (
+              <div 
+                style={{
+                  borderRadius: "1rem",
+                  padding: "1.5rem",
+                  border: `1px solid ${workflowPhases[activePhase].color}50`,
+                  backgroundColor: `${workflowPhases[activePhase].color}15`,
+                  marginBottom: "1.5rem",
+                  transition: "all 0.5s"
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
+                  <div style={{
+                    width: "60px",
+                    height: "60px",
+                    borderRadius: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "2rem",
+                    backgroundColor: `${workflowPhases[activePhase].color}30`
+                  }}>
+                    {workflowPhases[activePhase].icon}
+                  </div>
+                  <div style={{ textAlign: "center", width: "100%" }}>
+                    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "0.75rem", marginBottom: "0.5rem" }}>
+                      <h3 style={{ fontSize: "clamp(1.25rem, 4vw, 2rem)", fontWeight: "bold", color: "white" }}>
+                        {workflowPhases[activePhase].name}
+                      </h3>
+                      <span style={{
+                        padding: "0.25rem 0.75rem",
+                        borderRadius: "9999px",
+                        fontSize: "0.75rem",
+                        fontWeight: "600",
+                        backgroundColor: `${workflowPhases[activePhase].color}30`,
+                        color: workflowPhases[activePhase].color
+                      }}>
+                        {workflowPhases[activePhase].value}
+                      </span>
+                    </div>
+                    <p style={{ fontSize: "1rem", color: "#d1d5db", marginBottom: "1rem" }}>
+                      {workflowPhases[activePhase].description}
+                    </p>
+                    
+                    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.3)", borderRadius: "0.75rem", padding: "1rem", textAlign: "left" }}>
+                      <p style={{ fontSize: "0.875rem", fontWeight: "600", marginBottom: "0.75rem", color: workflowPhases[activePhase].color }}>
+                        REQUIRED ACTIONS:
+                      </p>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0.5rem" }}>
+                        {workflowPhases[activePhase].actions.map((action, i) => (
+                          <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                            <div style={{
+                              width: "20px",
+                              height: "20px",
+                              minWidth: "20px",
+                              borderRadius: "50%",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontSize: "0.75rem",
+                              fontWeight: "bold",
+                              backgroundColor: workflowPhases[activePhase].color,
+                              color: "#1a1a2e"
+                            }}>
+                              {i + 1}
+                            </div>
+                            <span style={{ color: "#e5e7eb", fontSize: "0.9rem" }}>{action}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activePhase === null && (
+              <div style={{
+                backgroundColor: "rgba(255, 255, 255, 0.05)",
+                borderRadius: "1rem",
+                padding: "1.5rem",
+                textAlign: "center",
+                marginBottom: "1.5rem"
+              }}>
+                <div style={{ fontSize: "3rem", marginBottom: "0.75rem" }}>👆</div>
+                <p style={{ color: "#9ca3af", fontSize: "1rem" }}>Select a phase above to see its requirements</p>
+              </div>
+            )}
+
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1rem" }}>
+              <button
+                onClick={() => changeSection(2)}
+                style={{
+                  padding: "0.75rem 1.5rem",
+                  borderRadius: "9999px",
+                  color: "#9ca3af",
+                  border: "1px solid #4b5563",
+                  background: "transparent",
+                  cursor: "pointer"
+                }}
+              >
+                ← Values
+              </button>
+              <button
+                onClick={() => changeSection(4)}
+                style={{
+                  padding: "1rem 2rem",
+                  borderRadius: "9999px",
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "transform 0.3s",
+                  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                  color: "white"
+                }}
+                onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
+                onMouseOut={(e) => e.target.style.transform = "scale(1)"}
+              >
+                The Rules →
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+
+      const renderRules = () => (
+        <div style={{
+          minHeight: "100vh",
+          padding: "1.5rem",
+          background: "linear-gradient(180deg, #1a1a2e 0%, #2d1b4e 100%)"
+        }}>
+          <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+            <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+              <div style={{
+                display: "inline-block",
+                padding: "0.5rem 1.5rem",
+                borderRadius: "9999px",
+                backgroundColor: "rgba(168, 85, 247, 0.2)",
+                color: "#c084fc",
+                fontSize: "0.875rem",
+                fontWeight: "600",
+                marginBottom: "1rem"
+              }}>
+                NON-NEGOTIABLES
+              </div>
+              <h2 className="playfair" style={{ fontSize: "clamp(1.75rem, 6vw, 3rem)", fontWeight: "bold", color: "white", marginBottom: "1rem" }}>
+                The Rules of Engagement
+              </h2>
+              <p style={{ fontSize: "clamp(1rem, 3vw, 1.25rem)", color: "#9ca3af" }}>
+                These aren't guidelines. They're the law.
+              </p>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <div style={{
+                background: "linear-gradient(to right, rgba(239, 68, 68, 0.1), rgba(249, 115, 22, 0.1))",
+                borderRadius: "1rem",
+                padding: "1.25rem",
+                border: "1px solid rgba(239, 68, 68, 0.3)"
+              }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
+                  <div style={{ fontSize: "1.5rem" }}>🔄</div>
+                  <div>
+                    <h3 style={{ fontSize: "1.125rem", fontWeight: "bold", color: "#f87171", marginBottom: "0.5rem" }}>The 3-Day Follow-Up Rule</h3>
+                    <p style={{ color: "#d1d5db", marginBottom: "0.75rem", fontSize: "0.9rem" }}>
+                      Follow up every 3 business days. No exceptions. No "I thought they'd call back."
+                    </p>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                      <span style={{ padding: "0.25rem 0.5rem", backgroundColor: "rgba(239, 68, 68, 0.2)", color: "#fca5a5", borderRadius: "9999px", fontSize: "0.75rem" }}>Japan Team tasks</span>
+                      <span style={{ padding: "0.25rem 0.5rem", backgroundColor: "rgba(239, 68, 68, 0.2)", color: "#fca5a5", borderRadius: "9999px", fontSize: "0.75rem" }}>Carrier responses</span>
+                      <span style={{ padding: "0.25rem 0.5rem", backgroundColor: "rgba(239, 68, 68, 0.2)", color: "#fca5a5", borderRadius: "9999px", fontSize: "0.75rem" }}>Client signatures</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{
+                background: "linear-gradient(to right, rgba(234, 179, 8, 0.1), rgba(245, 158, 11, 0.1))",
+                borderRadius: "1rem",
+                padding: "1.25rem",
+                border: "1px solid rgba(234, 179, 8, 0.3)"
+              }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
+                  <div style={{ fontSize: "1.5rem" }}>⚠️</div>
+                  <div>
+                    <h3 style={{ fontSize: "1.125rem", fontWeight: "bold", color: "#facc15", marginBottom: "0.5rem" }}>The 10-Day Escalation Rule</h3>
+                    <p style={{ color: "#d1d5db", fontSize: "0.9rem" }}>
+                      If no update from carrier within 10 business days: <span style={{ color: "#facc15", fontWeight: "bold" }}>ESCALATE TO LEADERSHIP.</span>
+                    </p>
+                    <p style={{ color: "#6b7280", marginTop: "0.5rem", fontSize: "0.8rem" }}>
+                      Don't wait. Don't hope. Escalate.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{
+                background: "linear-gradient(to right, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1))",
+                borderRadius: "1rem",
+                padding: "1.25rem",
+                border: "1px solid rgba(59, 130, 246, 0.3)"
+              }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
+                  <div style={{ fontSize: "1.5rem" }}>📁</div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: "1.125rem", fontWeight: "bold", color: "#60a5fa", marginBottom: "0.5rem" }}>The Filing Standard</h3>
+                    <p style={{ color: "#d1d5db", marginBottom: "0.75rem", fontSize: "0.9rem" }}>
+                      Every document. Named correctly. Filed correctly. No shortcuts.
+                    </p>
+                    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.3)", borderRadius: "0.5rem", padding: "0.75rem", fontFamily: "monospace", fontSize: "0.75rem", color: "#d1d5db", overflowX: "auto" }}>
+                      <p>yyyy.mm.dd Last, First Carrier Policy# Document</p>
+                      <p style={{ color: "#6b7280" }}>or</p>
+                      <p>Last, First (Document) (Carrier) (Policy#) (Date yyyy.mm.dd)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{
+                background: "linear-gradient(to right, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1))",
+                borderRadius: "1rem",
+                padding: "1.25rem",
+                border: "1px solid rgba(34, 197, 94, 0.3)"
+              }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
+                  <div style={{ fontSize: "1.5rem" }}>📝</div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: "1.125rem", fontWeight: "bold", color: "#4ade80", marginBottom: "0.5rem" }}>The Notes Format</h3>
+                    <p style={{ color: "#d1d5db", marginBottom: "0.75rem", fontSize: "0.9rem" }}>
+                      Newest at top. Always. Folder link ABOVE the notes.
+                    </p>
+                    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.3)", borderRadius: "0.5rem", padding: "0.75rem", fontFamily: "monospace", fontSize: "0.75rem", color: "#d1d5db" }}>
+                      <p style={{ color: "#4ade80" }}>FOLDER LINK: [paste folder link]</p>
+                      <p>MM/DD/YYYY: INITIALS: update</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{
+                background: "linear-gradient(to right, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1))",
+                borderRadius: "1rem",
+                padding: "1.25rem",
+                border: "1px solid rgba(168, 85, 247, 0.3)"
+              }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
+                  <div style={{ fontSize: "1.5rem" }}>🛠️</div>
+                  <div>
+                    <h3 style={{ fontSize: "1.125rem", fontWeight: "bold", color: "#c084fc", marginBottom: "0.5rem" }}>The No-SOP Rule</h3>
+                    <p style={{ color: "#d1d5db", fontSize: "0.9rem" }}>
+                      If no SOP exists: <span style={{ color: "#c084fc", fontWeight: "bold" }}>CREATE ONE.</span> Call the carrier, confirm requirements + ETA, save it, link it.
+                    </p>
+                    <p style={{ color: "#6b7280", marginTop: "0.5rem", fontSize: "0.8rem" }}>
+                      Build the road for those who come after you. That's Imua.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1rem", marginTop: "2rem" }}>
+              <button
+                onClick={() => changeSection(3)}
+                style={{
+                  padding: "0.75rem 1.5rem",
+                  borderRadius: "9999px",
+                  color: "#9ca3af",
+                  border: "1px solid #4b5563",
+                  background: "transparent",
+                  cursor: "pointer"
+                }}
+              >
+                ← Workflow
+              </button>
+              <button
+                onClick={() => changeSection(5)}
+                style={{
+                  padding: "1rem 2rem",
+                  borderRadius: "9999px",
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "transform 0.3s",
+                  background: "linear-gradient(135deg, #f5af19 0%, #f12711 100%)",
+                  color: "#1a1a2e"
+                }}
+                onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
+                onMouseOut={(e) => e.target.style.transform = "scale(1)"}
+              >
+                The Board →
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+
+      const renderAsana = () => (
+        <div style={{
+          minHeight: "100vh",
+          padding: "1.5rem",
+          background: "linear-gradient(180deg, #1a1a2e 0%, #0d1b2a 100%)"
+        }}>
+          <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+            <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+              <div style={{
+                display: "inline-block",
+                padding: "0.5rem 1.5rem",
+                borderRadius: "9999px",
+                backgroundColor: "rgba(251, 146, 60, 0.2)",
+                color: "#fb923c",
+                fontSize: "0.875rem",
+                fontWeight: "600",
+                marginBottom: "1rem"
+              }}>
+                YOUR COMMAND CENTER
+              </div>
+              <h2 className="playfair" style={{ fontSize: "clamp(1.75rem, 6vw, 3rem)", fontWeight: "bold", color: "white", marginBottom: "1rem" }}>
+                How This Asana Board Works
+              </h2>
+              <p style={{ fontSize: "clamp(1rem, 3vw, 1.25rem)", color: "#9ca3af", maxWidth: "700px", margin: "0 auto" }}>
+                This Asana project is the <span style={{ color: "#fb923c", fontWeight: "600" }}>single source of truth</span> for all work related to Clear the Deck 2025.
+              </p>
+            </div>
+
+            <div style={{
+              background: "linear-gradient(to right, rgba(251, 146, 60, 0.1), rgba(234, 88, 12, 0.1))",
+              borderRadius: "1rem",
+              padding: "1.25rem",
+              border: "1px solid rgba(251, 146, 60, 0.3)",
+              marginBottom: "1.5rem",
+              textAlign: "center"
+            }}>
+              <p style={{ color: "#fcd34d", fontSize: "1rem", fontWeight: "600" }}>
+                If it's being worked, waited on, reviewed, or escalated — it lives here.
+              </p>
+              <p style={{ color: "#d1d5db", marginTop: "0.5rem", fontSize: "0.9rem" }}>
+                You do not need prior Asana experience to succeed. You only need to <span style={{ color: "white", fontWeight: "600" }}>follow the flow</span>.
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "2rem" }}>
+              <h3 style={{ fontSize: "clamp(1.125rem, 3vw, 1.5rem)", fontWeight: "bold", color: "#fb923c", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span>📊</span> How to Read the Board
+              </h3>
+              <p style={{ color: "#d1d5db", marginBottom: "0.75rem", fontSize: "0.9rem" }}>
+                Each column represents a stage of work. Tasks move <span style={{ color: "white", fontWeight: "600" }}>left to right</span> as they progress.
+              </p>
+              <p style={{ color: "#9ca3af", marginBottom: "1rem", fontStyle: "italic", fontSize: "0.85rem" }}>
+                You are not expected to invent your own workflow — the system is already built for you.
+              </p>
+              
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", justifyContent: "center" }}>
+                {[
+                  { num: "1", name: "Intake", color: "#FF6B6B" },
+                  { num: "2", name: "Confirmed", color: "#FFA07A" },
+                  { num: "3", name: "Ready", color: "#4ECDC4" },
+                  { num: "4", name: "In Progress", color: "#45B7D1" },
+                  { num: "5", name: "Carrier", color: "#96CEB4" },
+                  { num: "6", name: "JT/Client", color: "#FFEAA7" },
+                  { num: "7", name: "Review", color: "#DDA0DD" },
+                  { num: "8", name: "Complete", color: "#98D8C8" },
+                  { num: "9", name: "Escalations", color: "#FF6B6B" }
+                ].map((stage, i) => (
+                  <div key={i} style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.3rem",
+                    padding: "0.35rem 0.5rem",
+                    borderRadius: "0.4rem",
+                    backgroundColor: `${stage.color}20`,
+                    border: `1px solid ${stage.color}40`
+                  }}>
+                    <span style={{
+                      width: "16px",
+                      height: "16px",
+                      borderRadius: "50%",
+                      backgroundColor: stage.color,
+                      color: "#1a1a2e",
+                      fontSize: "0.65rem",
+                      fontWeight: "bold",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}>{stage.num}</span>
+                    <span style={{ color: "#e5e7eb", fontSize: "0.7rem" }}>{stage.name}</span>
+                  </div>
+                ))}
+              </div>
+              
+              <div style={{
+                marginTop: "1rem",
+                padding: "0.75rem",
+                backgroundColor: "rgba(239, 68, 68, 0.1)",
+                borderRadius: "0.5rem",
+                border: "1px solid rgba(239, 68, 68, 0.3)",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem"
+              }}>
+                <span style={{ fontSize: "1.25rem" }}>👉</span>
+                <p style={{ color: "#fca5a5", fontWeight: "600", fontSize: "0.85rem" }}>
+                  You should only move tasks <span style={{ color: "white" }}>forward</span> — never backward — unless instructed.
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1rem", marginBottom: "1.5rem" }}>
+              <div style={{
+                backgroundColor: "rgba(255, 255, 255, 0.05)",
+                borderRadius: "1rem",
+                padding: "1.5rem",
+                border: "1px solid rgba(255, 255, 255, 0.1)"
+              }}>
+                <h4 style={{ fontSize: "1.125rem", fontWeight: "bold", color: "#60a5fa", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <span>📋</span> When You Are Assigned a Task
+                </h4>
+                <ul style={{ color: "#d1d5db", listStyle: "none", padding: 0, margin: 0 }}>
+                  {[
+                    "Read the task description fully",
+                    "Review the links (D365, folder, SOPs)",
+                    "Check the comments for instructions",
+                    "Follow the required actions for your column"
+                  ].map((item, i) => (
+                    <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                      <span style={{ color: "#60a5fa" }}>•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div style={{
+                backgroundColor: "rgba(255, 255, 255, 0.05)",
+                borderRadius: "1rem",
+                padding: "1.5rem",
+                border: "1px solid rgba(255, 255, 255, 0.1)"
+              }}>
+                <h4 style={{ fontSize: "1.125rem", fontWeight: "bold", color: "#4ade80", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <span>⚡</span> While Working
+                </h4>
+                <ul style={{ color: "#d1d5db", listStyle: "none", padding: 0, margin: 0 }}>
+                  {[
+                    "Keep the task in the correct column",
+                    "Log meaningful updates in comments",
+                    "Follow the notes format (newest on top)",
+                    "Do not work \"off the board\""
+                  ].map((item, i) => (
+                    <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                      <span style={{ color: "#4ade80" }}>•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div style={{
+                backgroundColor: "rgba(255, 255, 255, 0.05)",
+                borderRadius: "1rem",
+                padding: "1.5rem",
+                border: "1px solid rgba(255, 255, 255, 0.1)"
+              }}>
+                <h4 style={{ fontSize: "1.125rem", fontWeight: "bold", color: "#fbbf24", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <span>⏳</span> When You Are Waiting
+                </h4>
+                <ul style={{ color: "#d1d5db", listStyle: "none", padding: 0, margin: 0 }}>
+                  {[
+                    "Move to the appropriate Waiting column",
+                    "Follow the follow-up cadence",
+                    "Do not let tasks sit silently",
+                    "Document who/what you're waiting on"
+                  ].map((item, i) => (
+                    <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                      <span style={{ color: "#fbbf24" }}>•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div style={{
+                backgroundColor: "rgba(255, 255, 255, 0.05)",
+                borderRadius: "1rem",
+                padding: "1.5rem",
+                border: "1px solid rgba(255, 255, 255, 0.1)"
+              }}>
+                <h4 style={{ fontSize: "1.125rem", fontWeight: "bold", color: "#c084fc", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <span>✅</span> When Your Work Is Done
+                </h4>
+                <ul style={{ color: "#d1d5db", listStyle: "none", padding: 0, margin: 0 }}>
+                  {[
+                    "Ensure documents are named/filed correctly",
+                    "Update D365 status appropriately",
+                    "Move to Awaiting Review",
+                    "Do not mark Complete until review finished"
+                  ].map((item, i) => (
+                    <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                      <span style={{ color: "#c084fc" }}>•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div style={{
+              background: "linear-gradient(to right, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1))",
+              borderRadius: "1rem",
+              padding: "1.25rem",
+              border: "1px solid rgba(239, 68, 68, 0.3)",
+              marginBottom: "1.5rem"
+            }}>
+              <h4 style={{ fontSize: "1rem", fontWeight: "bold", color: "#f87171", marginBottom: "0.75rem" }}>
+                🚫 What This Board Is NOT
+              </h4>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: "0.75rem" }}>
+                <div style={{ textAlign: "center" }}>
+                  <p style={{ color: "#fca5a5", fontWeight: "600", fontSize: "0.85rem" }}>Not a personal to-do list</p>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <p style={{ color: "#fca5a5", fontWeight: "600", fontSize: "0.85rem" }}>Not a place to park work</p>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <p style={{ color: "#fca5a5", fontWeight: "600", fontSize: "0.85rem" }}>Not optional</p>
+                </div>
+              </div>
+              <p style={{ color: "#d1d5db", textAlign: "center", marginTop: "0.75rem", fontStyle: "italic", fontSize: "0.85rem" }}>
+                If work is happening but the task is not moving or being updated, <span style={{ color: "#f87171", fontWeight: "600" }}>the system breaks</span>.
+              </p>
+            </div>
+
+            <div style={{
+              background: "linear-gradient(to right, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1))",
+              borderRadius: "1rem",
+              padding: "1.25rem",
+              border: "1px solid rgba(34, 197, 94, 0.3)",
+              marginBottom: "1.5rem",
+              textAlign: "center"
+            }}>
+              <h4 style={{ fontSize: "1rem", fontWeight: "bold", color: "#4ade80", marginBottom: "0.5rem" }}>
+                🤔 If You Are Ever Unsure
+              </h4>
+              <p style={{ color: "#d1d5db", fontSize: "1rem" }}>
+                <span style={{ color: "white", fontWeight: "600" }}>Pause. Ask. Comment on the task. Escalate if needed.</span>
+              </p>
+              <p style={{ color: "#9ca3af", marginTop: "0.5rem", fontSize: "0.85rem" }}>
+                Do not guess. Do not work outside the process.
+              </p>
+              <p style={{ color: "#4ade80", fontWeight: "600", marginTop: "0.5rem", fontSize: "0.9rem" }}>
+                Correct work matters more than fast work.
+              </p>
+            </div>
+
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1rem" }}>
+              <button
+                onClick={() => changeSection(4)}
+                style={{
+                  padding: "0.75rem 1.5rem",
+                  borderRadius: "9999px",
+                  color: "#9ca3af",
+                  border: "1px solid #4b5563",
+                  background: "transparent",
+                  cursor: "pointer"
+                }}
+              >
+                ← The Rules
+              </button>
+              <button
+                onClick={() => changeSection(6)}
+                style={{
+                  padding: "1rem 2rem",
+                  borderRadius: "9999px",
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "transform 0.3s",
+                  background: "linear-gradient(135deg, #f5af19 0%, #f12711 100%)",
+                  color: "#1a1a2e"
+                }}
+                onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
+                onMouseOut={(e) => e.target.style.transform = "scale(1)"}
+              >
+                Let's Go! →
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+
+      const renderRally = () => (
+        <div style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "1.5rem",
+          background: "linear-gradient(135deg, #1a1a2e 0%, #0f3460 50%, #16213e 100%)"
+        }}>
+          <div style={{ maxWidth: "900px", width: "100%", margin: "0 auto", textAlign: "center" }}>
+            <div style={{ marginBottom: "2rem" }}>
+              <div style={{ fontSize: "clamp(4rem, 15vw, 6rem)", marginBottom: "1rem" }}>🌺</div>
+              <h2 className="playfair" style={{ fontSize: "clamp(1.75rem, 6vw, 3rem)", fontWeight: "bold", color: "white", marginBottom: "1rem" }}>
+                This Is Our Moment
+              </h2>
+            </div>
+
+            <div className="cormorant" style={{ fontSize: "clamp(1rem, 3vw, 1.25rem)", color: "#e5e7eb", marginBottom: "2rem" }}>
+              <p style={{ fontSize: "clamp(1.125rem, 3.5vw, 1.5rem)", color: "rgba(254, 243, 199, 1)", marginBottom: "1.5rem" }}>
+                Every task in this project represents a <span style={{ color: "white", fontWeight: "bold" }}>real person</span> who trusted us with their financial future.
+              </p>
+              
+              <p style={{ marginBottom: "1.5rem", lineHeight: "1.8" }}>
+                Every W-8BEN is someone's retirement income.<br/>
+                Every address change is someone's new chapter.<br/>
+                Every surrender request is someone's next opportunity.
+              </p>
+
+              <p style={{ color: "rgba(254, 243, 199, 1)", marginBottom: "1.5rem" }}>
+                We are not processing paperwork. We are <span style={{ color: "#fbbf24", fontWeight: "bold" }}>serving families around the world</span>.
+              </p>
+
+              <div style={{ padding: "1.5rem 0", borderTop: "1px solid rgba(245, 158, 11, 0.3)", borderBottom: "1px solid rgba(245, 158, 11, 0.3)", margin: "1.5rem 0" }}>
+                <p className="playfair" style={{ fontSize: "clamp(1.25rem, 4vw, 2rem)", fontWeight: "bold", color: "white" }}>
+                  Speed is good. Correctness is mandatory.
+                </p>
+                <p style={{ fontSize: "clamp(1rem, 3vw, 1.25rem)", color: "#9ca3af", marginTop: "0.75rem" }}>
+                  But above all: <span style={{ color: "#fbbf24" }}>Ohana</span>. We do this together.
+                </p>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0.5rem", padding: "1.5rem 0" }}>
+                {coreValues.map((value) => (
+                  <div key={value.hawaiian} style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: "clamp(1.5rem, 5vw, 2rem)", marginBottom: "0.25rem" }}>{value.icon}</div>
+                    <p style={{ color: "#2dd4bf", fontWeight: "bold", fontSize: "clamp(0.7rem, 2.5vw, 1rem)" }}>{value.hawaiian}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{
+              background: "linear-gradient(to right, rgba(245, 158, 11, 0.2), rgba(249, 115, 22, 0.2))",
+              borderRadius: "1rem",
+              padding: "1.5rem",
+              border: "1px solid rgba(245, 158, 11, 0.3)",
+              marginBottom: "2rem"
+            }}>
+              <p className="playfair" style={{ fontSize: "clamp(1rem, 3vw, 1.5rem)", color: "white", fontWeight: "bold", marginBottom: "0.75rem" }}>
+                "The Idea Lab exists to give voice to what others haven't yet said, and form to what others haven't yet built."
+              </p>
+              <p style={{ color: "#fbbf24", fontSize: "clamp(1rem, 3vw, 1.25rem)" }}>
+                That's the glory. That's the honor. That's the work.
+              </p>
+            </div>
+
+            <div style={{
+              background: "linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(234, 88, 12, 0.2))",
+              borderRadius: "1rem",
+              padding: "1.5rem",
+              border: "2px solid rgba(251, 146, 60, 0.5)",
+              textAlign: "center",
+              marginBottom: "2rem"
+            }}>
+              <h3 className="playfair" style={{ fontSize: "clamp(1.25rem, 4vw, 1.75rem)", fontWeight: "bold", color: "white", marginBottom: "0.75rem" }}>
+                🚀 Start Here
+              </h3>
+              <p style={{ color: "#fcd34d", fontSize: "clamp(0.9rem, 2.5vw, 1.125rem)", marginBottom: "1.25rem" }}>
+                All work for Clear the Deck 2025 happens in this project.
+              </p>
+              <a
+                href="#demo"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-block",
+                  padding: "1rem 2rem",
+                  borderRadius: "9999px",
+                  fontSize: "clamp(1rem, 3vw, 1.25rem)",
+                  fontWeight: "700",
+                  textDecoration: "none",
+                  background: "linear-gradient(135deg, #f5af19 0%, #f12711 100%)",
+                  color: "#1a1a2e",
+                  transition: "transform 0.3s, box-shadow 0.3s",
+                  boxShadow: "0 4px 20px rgba(245, 158, 11, 0.4)"
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.transform = "scale(1.05)";
+                  e.target.style.boxShadow = "0 6px 30px rgba(245, 158, 11, 0.6)";
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.transform = "scale(1)";
+                  e.target.style.boxShadow = "0 4px 20px rgba(245, 158, 11, 0.4)";
+                }}
+              >
+                👉 Access the Asana Board
+              </a>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.25rem" }}>
+              <p className="playfair" style={{
+                fontSize: "clamp(1.5rem, 5vw, 2rem)",
+                fontWeight: "bold",
+                ...gradientText
+              }}>
+                IMUA. Let's clear this deck.
+              </p>
+              
+              <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1rem" }}>
+                <button
+                  onClick={() => changeSection(5)}
+                  style={{
+                    padding: "0.75rem 1.5rem",
+                    borderRadius: "9999px",
+                    color: "#9ca3af",
+                    border: "1px solid #4b5563",
+                    background: "transparent",
+                    cursor: "pointer"
+                  }}
+                >
+                  ← The Board
+                </button>
+                <button
+                  onClick={() => changeSection(0)}
+                  style={{
+                    padding: "1rem 2rem",
+                    borderRadius: "9999px",
+                    fontSize: "1.125rem",
+                    fontWeight: "600",
+                    border: "none",
+                    cursor: "pointer",
+                    transition: "transform 0.3s",
+                    background: "linear-gradient(135deg, #f5af19 0%, #f12711 100%)",
+                    color: "#1a1a2e"
+                  }}
+                  onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
+                  onMouseOut={(e) => e.target.style.transform = "scale(1)"}
+                >
+                  🔄 Start Over
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      const renderNav = () => (
+        <div style={{
+          position: "fixed",
+          top: "1rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 50,
+          display: "flex",
+          gap: "0.5rem",
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
+          backdropFilter: "blur(10px)",
+          borderRadius: "9999px",
+          padding: "0.5rem"
+        }}>
+          {sections.map((section, index) => (
+            <button
+              key={section}
+              onClick={() => changeSection(index)}
+              style={{
+                width: currentSection === index ? "2rem" : "0.75rem",
+                height: "0.75rem",
+                borderRadius: "9999px",
+                border: "none",
+                cursor: "pointer",
+                transition: "all 0.3s",
+                backgroundColor: currentSection === index ? "#fbbf24" : "rgba(255, 255, 255, 0.3)"
+              }}
+            />
+          ))}
+        </div>
+      );
+
+      return (
+        <div style={{ minHeight: "100vh" }}>
+          {currentSection > 0 && renderNav()}
+          
+          {currentSection === 0 && renderMantra()}
+          {currentSection === 1 && renderMission()}
+          {currentSection === 2 && renderValues()}
+          {currentSection === 3 && renderWorkflow()}
+          {currentSection === 4 && renderRules()}
+          {currentSection === 5 && renderAsana()}
+          {currentSection === 6 && renderRally()}
+        </div>
+      );
+    };
+
+    ReactDOM.render(<ClearTheDeck2025 />, document.getElementById('root'));
+  </script>
+</body>
+</html>
