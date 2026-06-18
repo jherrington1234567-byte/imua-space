@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0b08" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>The Values Project — Joshua Herrington</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <meta name="description" content="The Values Project. A multi-volume series on discipline, family, and the work of becoming. By Joshua Herrington." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0b08;
+      --gold: #9a7b4f;
+      --gold-lt: #c4a16e;
+      --muted: #7a6a58;
+      --text: #ede4d8;
+      --text-dim: rgba(237,228,216,0.5);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    .landing {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 32px;
+      position: relative;
+    }
+
+    .landing::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 30%, rgba(154,123,79,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .landing-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .landing-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      color: var(--gold-lt);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .landing-author {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(14px, 2vw, 17px);
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 64px;
+    }
+
+    .landing-rule {
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 0 auto 64px;
+    }
+
+    .volumes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 28px;
+      max-width: 960px;
+      width: 100%;
+      margin-bottom: 80px;
+    }
+
+    .volume-card {
+      width: 260px;
+      padding: 36px 28px 32px;
+      border: 1px solid rgba(154,123,79,0.2);
+      border-radius: 4px;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.3s, background 0.3s, transform 0.2s;
+      position: relative;
+      cursor: pointer;
+      display: block;
+    }
+    .volume-card:hover {
+      border-color: var(--gold);
+      background: rgba(154,123,79,0.06);
+      transform: translateY(-2px);
+    }
+    .volume-card.coming-soon {
+      opacity: 0.35;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .volume-tag {
+      font-size: 9.5px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .volume-tag.prologue { color: #d4a054; }
+    .volume-tag.value-i { color: var(--gold-lt); }
+    .volume-tag.value-ii { color: #9b7fc2; }
+    .volume-tag.value-iii { color: #6ba89a; }
+    .volume-tag.value-iv { color: #c4843a; }
+    .volume-tag.value-v { color: #b07070; }
+
+    .volume-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 32px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .volume-subtitle {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .volume-coming {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(154,123,79,0.4);
+      margin-top: 16px;
+    }
+
+    .landing-footer {
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      color: rgba(154,123,79,0.3);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 600px) {
+      .volumes { flex-direction: column; align-items: center; }
+      .volume-card { width: 100%; max-width: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="landing">
+    <div class="landing-eyebrow">A Multi-Volume Series</div>
+    <h1 class="landing-title">The Values Project</h1>
+    <div class="landing-author">Joshua Herrington</div>
+    <div class="landing-rule"></div>
+
+    <div class="volumes">
+      <a class="volume-card" href="/origin/">
+        <div class="volume-tag prologue">Prologue</div>
+        <div class="volume-title">ORIGIN</div>
+        <div class="volume-subtitle">I Don't Love You Right Now</div>
+      </a>
+
+      <a class="volume-card" href="/imua/">
+        <div class="volume-tag value-i">Value I &middot; IMUA</div>
+        <div class="volume-title">IMUA</div>
+        <div class="volume-subtitle">Dispatches from the Path Forward</div>
+      </a>
+
+      <a class="volume-card" href="/ohana/">
+        <div class="volume-tag value-ii">Value II &middot; Ohana</div>
+        <div class="volume-title">OHANA</div>
+        <div class="volume-subtitle">On Who You Build With</div>
+      </a>
+
+      <a class="volume-card" href="/pono/">
+        <div class="volume-tag value-iii">Value III &middot; Pono</div>
+        <div class="volume-title">PONO</div>
+        <div class="volume-subtitle">On Doing Right</div>
+      </a>
+
+      <a class="volume-card" href="/aloha/">
+        <div class="volume-tag value-iv">Value IV &middot; Aloha</div>
+        <div class="volume-title">ALOHA</div>
+        <div class="volume-subtitle">On How You Love</div>
+      </a>
+
+      <a class="volume-card" href="/mahalo/">
+        <div class="volume-tag value-v">Value V &middot; Mahalo</div>
+        <div class="volume-title">MAHALO</div>
+        <div class="volume-subtitle">On What You Carry Forward</div>
+      </a>
+    </div>
+
+    <div class="landing-footer">imua.space</div>
+  </div>
+</body>
+</html>
