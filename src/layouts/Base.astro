@@ -1,0 +1,95 @@
+---
+import '../styles/tokens.css';
+import site from '../data/site.json';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Joshua Herrington — IMUA',
+  description = 'Court of the Table advisor, compulsive builder, and writer. Moving people, money, and systems forward — documenting the proof as I go.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/brand/jh-favicon.svg" />
+
+    <!-- Open Graph / share -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://imua.space/" />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <nav>
+      <div class="wrap">
+        <a class="brand" href="#top" aria-label="Joshua Herrington — home">
+          <!-- JH "hive + forward" mark -->
+          <svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M20 4 L32.1 11 L32.1 25 L20 32 L7.9 25 L7.9 11 Z" fill="none" stroke="#f5efe3" stroke-width="2" />
+            <text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#f5efe3">JH</text>
+            <line x1="32.1" y1="18" x2="38" y2="18" stroke="#c0632c" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+          <span>{site.name}</span>
+        </a>
+        <div class="navlinks">
+          {site.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+        </div>
+      </div>
+    </nav>
+
+    <slot />
+
+    <footer>
+      <div class="wrap">
+        <div class="values">
+          {site.values.map((v, i) => (
+            <>{i > 0 && ' · '}<span>{v}</span></>
+          ))}
+        </div>
+        <small>© 2026 {site.name} · {site.domain} · {site.tagline}</small>
+      </div>
+    </footer>
+
+    <style>
+      /* spine: nav + footer brown (reserved colour) */
+      nav {
+        position: sticky; top: 0; z-index: 20;
+        background: var(--brown); border-bottom: 1px solid #4a3a22;
+      }
+      nav .wrap {
+        display: flex; align-items: center; justify-content: space-between; height: 62px;
+      }
+      .brand {
+        display: flex; align-items: center; gap: 10px;
+        font-family: var(--serif); font-size: 18px; color: var(--cream);
+        text-decoration: none;
+      }
+      .navlinks { display: flex; gap: 22px; font-size: 14px; color: #cfc2ad; }
+      .navlinks a { text-decoration: none; }
+      .navlinks a:hover { color: #fff; }
+
+      footer {
+        background: var(--brown); color: #cdbfa9; padding: 40px 0; text-align: center;
+      }
+      .values {
+        font-family: var(--serif); font-size: 18px; color: var(--cream); letter-spacing: 1px;
+      }
+      .values span { color: var(--ember); }
+      footer small { display: block; margin-top: 12px; font-size: 12px; }
+
+      @media (max-width: 640px) {
+        .navlinks { display: none; }
+      }
+    </style>
+  </body>
+</html>

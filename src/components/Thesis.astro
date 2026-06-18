@@ -1,0 +1,36 @@
+---
+const triad = [
+  { cls: 't1', title: 'Operator', text: 'Protection-first: guarantees and risk-based planning for the American middle class and mass affluent — plus the cross-border lives whose wealth is U.S.-taxed. Court of the Table production.' },
+  { cls: 't2', title: 'Builder', text: 'A hard drive full of working tools, dashboards, and shipped sites — most built with AI, all built to solve a real problem.' },
+  { cls: 't3', title: 'Writer', text: 'A six-volume values series and an ongoing field journal. I document the becoming as it happens.' },
+];
+---
+<section class="thesis">
+  <div class="wrap">
+    <span class="kicker">The throughline</span>
+    <h2>Plenty of advisors reach elite production. A few build software. Almost none also write the book. I do all three — and the work is the throughline.</h2>
+    <div class="triad">
+      {triad.map((c) => (
+        <div class={`c ${c.cls}`}>
+          <h3>{c.title}</h3>
+          <p>{c.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .thesis { background: var(--cream); }
+  .thesis .kicker { color: var(--pink-s); }
+  .thesis h2 { font-size: 29px; max-width: 820px; margin-top: 12px; }
+  .triad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 32px; }
+  .triad .c { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+  .triad .c h3 { font-size: 18px; margin-bottom: 6px; }
+  .triad .c p { font-size: 14px; color: var(--muted); }
+  .triad .c.t1 { border-top: 4px solid var(--pink-s); }
+  .triad .c.t2 { border-top: 4px solid var(--blue-s); }
+  .triad .c.t3 { border-top: 4px solid var(--pink-s); }
+
+  @media (max-width: 820px) { .triad { grid-template-columns: 1fr; } }
+</style>

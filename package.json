@@ -1,0 +1,21 @@
+{
+  "name": "imua-space",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "description": "imua.space — the personal-brand site for Joshua Herrington",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "images": "node scripts/convert-images.mjs"
+  },
+  "dependencies": {
+    "astro": "^4.16.18"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}

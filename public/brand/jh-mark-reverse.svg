@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="JH monogram — hive and forward, reverse">
+  <path d="M100 32 L155.4 64 L155.4 128 L100 160 L44.6 128 L44.6 64 Z" fill="none" stroke="#f5efe3" stroke-width="3" stroke-linejoin="round"/>
+  <text x="100" y="114" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="54" font-weight="600" fill="#f5efe3" letter-spacing="-2">JH</text>
+  <line x1="155.4" y1="96" x2="182" y2="96" stroke="#c0632c" stroke-width="5" stroke-linecap="round"/>
+  <path d="M177 90 L188 96 L177 102" fill="none" stroke="#c0632c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

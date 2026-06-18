@@ -1,0 +1,20 @@
+---
+import site from '../data/site.json';
+const m = site.mission;
+---
+<section class="missionband">
+  <div class="wrap">
+    <span class="kicker">{m.kicker}</span>
+    <h2>{m.heading}</h2>
+    <p class="body">{m.body1}</p>
+    <p class="muted">{m.body2}</p>
+  </div>
+</section>
+
+<style>
+  .missionband { background: var(--pink-50); }
+  .missionband .kicker { color: var(--pink-s); }
+  .missionband h2 { margin-top: 12px; font-size: 36px; }
+  .missionband .body { margin-top: 16px; max-width: 690px; font-size: 17px; color: var(--ink); }
+  .missionband .muted { margin-top: 14px; max-width: 690px; color: var(--muted); }
+</style>

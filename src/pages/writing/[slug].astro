@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const essays = await getCollection('essays', ({ data }) => !data.draft);
+  return essays.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const d = entry.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<Base title={`${entry.data.title} — News from the Desk`} description={entry.data.dek}>
+  <article class="essay">
+    <div class="wrap">
+      <a class="back" href="/#writing">← News from the Desk</a>
+      <span class="kicker">{entry.data.value ?? 'imua'}</span>
+      <h1>{entry.data.title}</h1>
+      {entry.data.dek && <p class="dek">{entry.data.dek}</p>}
+      <time>{d}</time>
+      <div class="body"><Content /></div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .essay { background: var(--cream); padding: 56px 0 80px; }
+  .essay .wrap { max-width: 720px; }
+  .back { font-size: 13px; color: var(--muted); text-decoration: none; }
+  .essay .kicker { display: block; margin-top: 28px; color: var(--ember); text-transform: uppercase; }
+  .essay h1 { font-size: 38px; margin-top: 10px; }
+  .essay .dek { font-family: var(--serif); font-size: 20px; color: var(--muted); margin-top: 14px; }
+  .essay time { display: block; font-size: 13px; color: var(--muted); margin-top: 16px; }
+  .essay .body { margin-top: 30px; font-size: 17px; line-height: 1.75; }
+  .essay .body :global(p) { margin-top: 18px; }
+</style>

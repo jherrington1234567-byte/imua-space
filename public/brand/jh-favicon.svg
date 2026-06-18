@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="JH favicon">
+  <path d="M32 8 L51 19 L51 41 L32 52 L13 41 L13 19 Z" fill="#2c1f0e" stroke="none"/>
+  <text x="32" y="39" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-weight="600" fill="#f5efe3" letter-spacing="-1">JH</text>
+  <circle cx="32" cy="8" r="3" fill="#c0632c"/>
+</svg>

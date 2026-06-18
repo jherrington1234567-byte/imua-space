@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+
+const cards = (await getCollection('buildlab', ({ data }) => data.featured))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+<section class="work" id="work">
+  <div class="wrap">
+    <span class="kicker">The build lab</span>
+    <h2>Things I've made</h2>
+    <p class="lead">Working tools, not screenshots of ideas. Everything shown runs on demo data only — the method and the build, never client or company data.</p>
+    <div class="grid3">
+      {cards.map(({ data }) => {
+        const Tag = data.href ? 'a' : 'div';
+        return (
+          <Tag class={`card k-${data.accent}`} href={data.href} {...(data.href ? { rel: 'noopener' } : {})}>
+            <span class="tag">{data.tag}</span>
+            <h3>{data.title}</h3>
+            <p>{data.blurb}</p>
+            <span class="pill">{data.pill}</span>
+          </Tag>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .work { background: var(--blue-50); }
+  .work .kicker { color: var(--blue-s); }
+  .work h2 { margin-top: 12px; font-size: 29px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 30px; }
+  .card {
+    background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px;
+    display: block; text-decoration: none; color: inherit;
+  }
+  a.card { transition: transform .12s ease, box-shadow .12s ease; }
+  a.card:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(44, 31, 14, .10); }
+  .card .tag { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; }
+  .card.k-p .tag { color: var(--pink-s); }
+  .card.k-b .tag { color: var(--blue-s); }
+  .card.k-y .tag { color: var(--yellow-s); }
+  .card.k-c .tag { color: var(--coral-s); }
+  .card h3 { font-size: 18px; margin: 8px 0 6px; }
+  .card p { font-size: 14px; color: var(--muted); }
+  .pill {
+    display: inline-block; font-size: 11px; color: var(--muted);
+    border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; margin-top: 10px;
+  }
+
+  @media (max-width: 820px) { .grid3 { grid-template-columns: 1fr 1fr; } }
+</style>

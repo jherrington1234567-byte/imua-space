@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 170" role="img" aria-label="Joshua Herrington — IMUA, horizontal lockup">
+  <g transform="translate(12,5) scale(0.8)">
+    <path d="M100 32 L155.4 64 L155.4 128 L100 160 L44.6 128 L44.6 64 Z" fill="none" stroke="#2c1f0e" stroke-width="3.4" stroke-linejoin="round"/>
+    <text x="100" y="114" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="54" font-weight="600" fill="#2c1f0e" letter-spacing="-2">JH</text>
+    <line x1="155.4" y1="96" x2="182" y2="96" stroke="#c0632c" stroke-width="6" stroke-linecap="round"/>
+    <path d="M177 89 L189 96 L177 103" fill="none" stroke="#c0632c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <line x1="178" y1="40" x2="178" y2="128" stroke="#2c1f0e" stroke-width="1" opacity="0.25"/>
+  <text x="200" y="82" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="600" fill="#2c1f0e" letter-spacing="0.5">Joshua Herrington</text>
+  <text x="201" y="110" font-family="'Helvetica Neue', system-ui, sans-serif" font-size="13" fill="#c0632c" letter-spacing="5">IMUA · MOVE FORWARD</text>
+</svg>

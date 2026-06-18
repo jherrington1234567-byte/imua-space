@@ -1,0 +1,81 @@
+/* ----------------------------------------------------------------------------
+   imua.space design tokens
+   Ported from the approved preview (imua-space-preview.html).
+   Palette: pink + blue pastel section backgrounds, cream base.
+   Brown is RESERVED for the spine (nav/footer) and the book section only.
+   Buttons = deep brown (not bright).
+---------------------------------------------------------------------------- */
+:root {
+  /* spine + base */
+  --brown: #2c1f0e;   /* nav, footer, book section, buttons */
+  --brown2: #3a2c17;  /* button hover, book cards */
+  --cream: #fdfaf4;   /* page base */
+  --ink: #2c2620;     /* body text */
+  --muted: #8a7d6b;   /* secondary text */
+  --line: #ece3d6;    /* hairline borders */
+  --ember: #c0632c;   /* the one warm accent / IMUA forward stroke */
+
+  /* value palette — section accents (brief §6) */
+  --pink: #f7cbdd;    --pink-s: #c75f86;  --pink-50: #fdeef4;
+  --blue: #c3dbf2;    --blue-s: #3f6fa8;  --blue-50: #eef5fd;
+  --yellow: #f8e6a8;  --yellow-s: #b88f2a; --yellow-50: #fdf6e3;
+  --coral: #f4bcae;   --coral-s: #d9624a; --coral-50: #fdeee9;
+
+  /* book volume spine colors */
+  --vol-origin: #b9532a;
+  --vol-imua: #c0632c;
+  --vol-ohana: #c98a3c;
+  --vol-pono: #4f6b54;
+  --vol-aloha: #e0915e;
+  --vol-mahalo: #5b7fb0;
+
+  /* type */
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* layout */
+  --maxw: 1080px;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+  line-height: 1.18;
+  color: var(--brown);
+}
+a { color: inherit; }
+img { max-width: 100%; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+.kicker { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; }
+section { padding: 80px 0; }
+.lead { color: var(--muted); max-width: 640px; margin-top: 10px; }
+
+/* shared card chrome */
+.chip {
+  font-size: 12.5px; padding: 6px 13px; border-radius: 999px; font-weight: 500;
+  background: #fff; border: 1px solid var(--line); color: var(--muted);
+}
+.chip.p { background: var(--pink-50); border-color: #f0cfdc; color: var(--pink-s); }
+.chip.b { background: var(--blue-50); border-color: #d2e1f3; color: var(--blue-s); }
+
+.cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--cream); background: var(--brown);
+  padding: 11px 18px; border-radius: 10px; font-size: 14px; text-decoration: none;
+}
+.cta:hover { background: var(--brown2); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

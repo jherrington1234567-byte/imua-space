@@ -1,0 +1,49 @@
+---
+// The Air Force "backbone" photo scroll. Images live in /public/images/mission.
+// Exclude Mission/1.jpg everywhere (watermarked, not Joshua's).
+const shots = [
+  { img: '/images/mission/chase-plane.webp', lead: 'Chase plane.', text: 'F-16 off the wing — shot over Ohio.', fallback: 'F-16 · from the tanker' },
+  { img: '/images/mission/formation.webp', lead: 'Formation.', text: 'Three vipers above the clouds, Ohio.', fallback: 'F-16 formation' },
+  { img: '/images/mission/kitchen.webp', lead: 'The kitchen.', text: 'Running chow at a Missile Alert Facility — in the base paper.', fallback: 'Newspaper feature' },
+  { img: '/images/mission/deployed.webp', lead: 'Deployed.', text: 'Morale, in cardboard.', fallback: 'Deployment humor' },
+  { img: '/images/mission/eighteen.webp', lead: 'Eighteen.', text: "The standard I'd been looking for.", fallback: 'Airman Herrington' },
+  { img: '/images/mission/blues.webp', lead: 'Blues.', text: 'The men who held a standard.', fallback: 'Dress blues' },
+];
+---
+<section class="backbone">
+  <div class="wrap">
+    <span class="kicker">The backbone</span>
+    <h2>Before any of this, there was the mission.</h2>
+    <p class="lead">U.S. Air Force. The Minuteman III missile field, a deployment, and the unglamorous logistics that let everything else run. Shots I took, and proof it was me.</p>
+    <div class="scroller">
+      {shots.map((s) => (
+        <div class="shot">
+          <div class="ph">
+            <img src={s.img} alt={s.lead} loading="lazy" onerror={`this.parentElement.innerHTML='${s.fallback}'`} />
+          </div>
+          <div class="c"><b>{s.lead}</b> {s.text}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .backbone { background: var(--blue-50); }
+  .backbone .kicker { color: var(--blue-s); }
+  .backbone h2 { margin-top: 12px; font-size: 28px; }
+  .scroller {
+    display: flex; gap: 16px; overflow-x: auto; padding: 24px 4px 10px;
+    scroll-snap-type: x mandatory;
+  }
+  .shot { flex: 0 0 auto; width: 260px; scroll-snap-align: start; }
+  .shot .ph {
+    height: 210px; border-radius: 12px; overflow: hidden;
+    background: #dfe9f4; border: 1px solid #d4e0ee;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--blue-s); font-size: 13px; text-align: center;
+  }
+  .shot .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .shot .c { font-size: 13px; color: var(--muted); margin-top: 9px; }
+  .shot .c b { color: var(--ink); font-weight: 600; }
+</style>

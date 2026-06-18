@@ -1,0 +1,63 @@
+{
+  "name": "Joshua Herrington",
+  "domain": "imua.space",
+  "tagline": "IMUA — move forward.",
+  "substackUrl": "https://imuaspace.substack.com",
+  "bookUrl": "/writing",
+  "ppvaDemoUrl": "https://ppva-demo.netlify.app",
+
+  "nav": [
+    { "label": "Work", "href": "#work" },
+    { "label": "MDRT", "href": "#gallery" },
+    { "label": "Writing", "href": "#writing" },
+    { "label": "About", "href": "#about" },
+    { "label": "Photography", "href": "#photography" },
+    { "label": "Connect", "href": "#connect" }
+  ],
+
+  "hero": {
+    "kicker": "Joshua Herrington",
+    "headlineLead": "Moving people, money, and systems forward",
+    "headlineDash": "—",
+    "headlineTail": "documenting the proof as I go.",
+    "sub": "Court of the Table advisor · compulsive builder · always drafting the next chapter.",
+    "chips": [
+      { "label": "Court of the Table 2026", "style": "p" },
+      { "label": "NAIFA National AI Task Force", "style": "b" },
+      { "label": "U.S. Air Force", "style": "p" }
+    ],
+    "ctaLabel": "Try something I built →",
+    "ctaHref": "#work",
+    "image": "/images/hero/kyrgyzstan.webp",
+    "imageAlt": "Three airmen at dusk, Kyrgyzstan",
+    "caption": "Kyrgyzstan — the three of us"
+  },
+
+  "mission": {
+    "kicker": "The call to service",
+    "heading": "A check. Not a maybe.",
+    "body1": "My work is protecting Americans — the middle class, the mass affluent, the next-door millionaire — with guarantees and risk-based planning. On the worst day of someone's life, the diagnosis or the breadwinner who doesn't come home, I want to show up with a check. Not a market-dependent figure. A check.",
+    "body2": "A man of two worlds: I served the world — Japan, Europe, Canada — and came home to protect the people who build this country. The American taxpayer, the mass-affluent resident, the expat and the immigrant whose money is American-taxed. If it protects a family, that's my front."
+  },
+
+  "credentials": [
+    "MDRT Academy 2022 → first MDRT qualification 2025 → Court of the Table 2026",
+    "MDRT EDGE 2026 — invited speaker (signed contract)",
+    "Lincoln Distributors annual meeting — speaker: partnership mentality & culture as a system",
+    "NAIFA National Artificial Intelligence Task Force",
+    "Leads five global MDRT AI study groups",
+    "NAIFA-Indiana Board of Trustees — Membership & Communications Chair",
+    "U.S. Air Force veteran — Minuteman III missile field",
+    "Board of Trustees — Jammin for the Camp (Hoosier Burn Camp)",
+    "B.S. Business Administration, SFSU — Magna Cum Laude"
+  ],
+
+  "personal": [
+    { "title": "Juno & Kira", "blurb": "The fur babies. Miles of road." },
+    { "title": "Holly & the girls", "blurb": "The window is narrow. Be present for it." },
+    { "title": "Longboarding", "blurb": "Carving the neighborhood on a Landyachtz." },
+    { "title": "Competitive gaming", "blurb": "Top 1% on Tetris Effect. Chess: Just-A-Dad." }
+  ],
+
+  "values": ["Mahalo", "Aloha", "Ohana", "Pono", "Imua"]
+}

@@ -1,0 +1,45 @@
+---
+import site from '../data/site.json';
+---
+<section class="connect" id="connect">
+  <div class="wrap">
+    <span class="kicker">Connect</span>
+    <h2>News from the Desk</h2>
+    <p class="lead">Field notes on the work, the build, and the becoming. Delivered when there's something worth saying.</p>
+
+    <a class="cta sub" href={site.substackUrl} target="_blank" rel="noopener">Subscribe on Substack →</a>
+
+    <h3 class="formh">Or send a note</h3>
+    <!-- Netlify Forms: the proven quoter-app pattern. -->
+    <form class="form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contact" />
+      <p class="hp"><label>Leave blank: <input name="bot-field" /></label></p>
+      <input type="text" name="name" placeholder="Your name" aria-label="Your name" required />
+      <input type="email" name="email" placeholder="you@example.com" aria-label="Your email" required />
+      <textarea name="message" placeholder="What's on your mind?" aria-label="Message" rows="3" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+</section>
+
+<style>
+  .connect { background: var(--pink-50); }
+  .connect .kicker { color: var(--pink-s); }
+  .connect h2 { margin-top: 12px; font-size: 29px; }
+  .cta.sub { margin-top: 24px; }
+  .formh { font-size: 16px; margin-top: 40px; color: var(--ink); }
+
+  .form { margin-top: 16px; display: grid; gap: 10px; max-width: 520px; }
+  .form input, .form textarea {
+    width: 100%; border-radius: 10px; border: 1px solid var(--line);
+    background: #fff; padding: 12px 14px; font-size: 14px; font-family: var(--sans);
+  }
+  .form input { height: 46px; }
+  .form button {
+    height: 46px; padding: 0 20px; border: none; border-radius: 10px;
+    background: var(--brown); color: var(--cream); font-size: 14px; cursor: pointer;
+    justify-self: start;
+  }
+  .form button:hover { background: var(--brown2); }
+  .hp { display: none; }
+</style>
