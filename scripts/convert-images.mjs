@@ -8,6 +8,7 @@
 // HARD RULES: exclude Mission/1.jpg (watermarked, not Joshua's); keep captions client-clean.
 
 import sharp from 'sharp';
+import heicConvert from 'heic-convert';
 import { existsSync, mkdirSync, readdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve, extname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,12 +21,20 @@ const OUT = join(ROOT, 'public', 'images');
 
 const ensure = (p) => { if (!existsSync(p)) mkdirSync(p, { recursive: true }); };
 
-async function toWebp(src, outRel, { width, height, quality = 78 } = {}) {
-  if (!existsSync(src)) { console.warn(`  ⚠ missing source: ${src}`); return false; }
+// sharp's Windows build can't decode iOS HEVC-encoded HEIC, so route .heic/.heif
+// through heic-convert (pure-JS HEVC decoder) into a JPEG buffer first.
+const isHeic = (p) => /\.(heic|heif)$/i.test(p);
+async function loadInput(src) {
+  if (!isHeic(src)) return src; // sharp reads JPG/PNG directly
+  const buffer = await heicConvert({ buffer: readFileSync(src), format: 'JPEG', quality: 0.92 });
+  return Buffer.from(buffer);
+}
+
+async function toWebp(input, outRel, { width, height, quality = 78, fit = 'cover' } = {}) {
   const out = join(OUT, outRel);
   ensure(dirname(out));
-  let img = sharp(src).rotate(); // respect EXIF orientation
-  if (width || height) img = img.resize({ width, height, fit: 'cover', withoutEnlargement: true });
+  let img = sharp(input).rotate(); // respect EXIF orientation
+  if (width || height) img = img.resize({ width, height, fit, withoutEnlargement: true });
   await img.webp({ quality }).toFile(out);
   console.log(`  ✓ ${outRel}`);
   return true;
@@ -47,7 +56,9 @@ const FIXED = [
 async function buildFixed() {
   console.log('Hero / mission / photog selects:');
   for (const [src, out, opts] of FIXED) {
-    await toWebp(join(PHOTOS, src), out, opts);
+    const full = join(PHOTOS, src);
+    if (!existsSync(full)) { console.warn(`  ⚠ missing source: ${src}`); continue; }
+    await toWebp(await loadInput(full), out, opts);
   }
 }
 
@@ -66,19 +77,25 @@ async function buildMdrt(dir) {
     .sort();
 
   const manifest = [];
+  let done = 0;
   for (const f of files) {
     const id = basename(f, extname(f)).replace(/[^a-z0-9]+/gi, '-').toLowerCase();
     const src = join(srcDir, f);
     try {
-      await toWebp(src, `mdrt/thumb/${id}.webp`, { width: 480, height: 480, quality: 72 });
-      await toWebp(src, `mdrt/full/${id}.webp`, { width: 1600, quality: 80 });
+      const input = await loadInput(src); // decode HEIC once, reuse for both sizes
+      await toWebp(input, `mdrt/thumb/${id}.webp`, { width: 480, height: 480, quality: 72 });
+      await toWebp(input, `mdrt/full/${id}.webp`, { width: 1600, quality: 80, fit: 'inside' });
+      // Day from the iOS filename timestamp (YYYYMMDD...), if present.
+      const ymd = f.match(/^(\d{4})(\d{2})(\d{2})/);
       manifest.push({
         thumb: `/images/mdrt/thumb/${id}.webp`,
         full: `/images/mdrt/full/${id}.webp`,
         alt: 'MDRT 2026',
+        date: ymd ? `${ymd[1]}-${ymd[2]}-${ymd[3]}` : '',
         day: '',      // tag later: "Day 1" / "Day 2"
         session: '',  // tag later: "Main stage" / "The floor" / "After hours"
       });
+      console.log(`  (${++done}/${files.length})`);
     } catch (err) {
       console.warn(`  ⚠ skipped ${f}: ${err.message}`);
     }

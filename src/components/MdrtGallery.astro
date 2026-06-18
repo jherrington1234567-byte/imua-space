@@ -1,25 +1,32 @@
 ---
 import mdrt from '../data/mdrt.json';
-const { filters, images } = mdrt;
+const { images } = mdrt;
 // Until the 173 stills are converted (npm run images), show a placeholder grid.
 const placeholders = images.length === 0 ? Array.from({ length: 18 }) : [];
+
+// Build filter pills from the distinct capture dates present in the manifest.
+// (The set spans many days, so a fixed "Day 1/Day 2" model doesn't fit — filter by date.)
+const fmt = (iso: string) =>
+  new Date(iso + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+const dates = [...new Set(images.map((i) => i.date).filter(Boolean))].sort();
+const filters = [{ key: 'All', label: `All ${images.length}` }, ...dates.map((d) => ({ key: d, label: fmt(d) }))];
 ---
 <section class="gallery" id="gallery">
   <div class="wrap">
     <span class="kicker">Signature feature</span>
     <h2>MDRT — find yourself</h2>
-    <p class="lead">173 frames from the floor. Filter by day and session, find the photo you're in, and take it with you.</p>
+    <p class="lead">Frames from the floor. Filter by the day it was taken, find the photo you're in, and take it with you.</p>
 
     <div class="filterrow" role="tablist" aria-label="Filter MDRT photos">
       {filters.map((f, i) => (
-        <button class={`fpill${i === 0 ? ' active' : ''}`} data-filter={f}>{f}</button>
+        <button class={`fpill${i === 0 ? ' active' : ''}`} data-filter={f.key}>{f.label}</button>
       ))}
     </div>
 
     {images.length > 0 ? (
       <div class="mgrid" id="mgrid">
         {images.map((im, i) => (
-          <button class="t" data-session={im.session} data-day={im.day} data-full={im.full} data-index={i} aria-label="Open photo">
+          <button class="t" data-date={im.date} data-full={im.full} data-index={i} aria-label="Open photo">
             <img src={im.thumb} alt={im.alt ?? 'MDRT 2026'} loading="lazy" width="300" height="300" />
           </button>
         ))}
@@ -94,7 +101,7 @@ const placeholders = images.length === 0 ? Array.from({ length: 18 }) : [];
       p.classList.add('active');
       const f = p.dataset.filter;
       tiles().forEach((t) => {
-        const show = f === 'All' || t.dataset.session === f || t.dataset.day === f;
+        const show = f === 'All' || t.dataset.date === f;
         t.style.display = show ? '' : 'none';
       });
     }),
