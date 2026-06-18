@@ -1,7 +1,7 @@
 ---
 title: Clear the Deck
 tag: Live demo
-blurb: A year-end operating ritual — clear the backlog, build the SOPs, leave it better than you found it. Built in React.
+blurb: An operating ritual built to rally operations through a sprint — clear the backlog, build the SOPs, and make the team feel why it mattered. Built in React.
 pill: React · live
 accent: b
 order: 2

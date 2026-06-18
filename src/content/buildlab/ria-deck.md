@@ -5,7 +5,7 @@ blurb: The PPLI/PPVA primer I use to bring RIAs and BDs up to speed — the safe
 pill: Education
 accent: b
 order: 6
-featured: true
+featured: false
 ---
 
 The "Safe Copy" RIA Training Deck — already a cleaned version. RIA-channel education.

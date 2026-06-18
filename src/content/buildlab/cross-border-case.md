@@ -4,7 +4,7 @@ tag: Case study
 blurb: FX-gain mitigation and tax-efficient restructuring, walked through as an anonymized teaching case.
 pill: Method, not the client
 accent: b
-order: 2
+order: 6
 featured: true
 ---
 

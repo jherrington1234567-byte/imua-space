@@ -5,7 +5,7 @@ blurb: Distribution growth by type and channel — the kind of interactive board
 pill: Data viz
 accent: c
 order: 4
-featured: true
+featured: false
 ---
 
 A client-clean rebuild on synthetic distribution data. The build and the method, never
