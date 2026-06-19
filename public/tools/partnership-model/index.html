@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#0a141d;color:#ece7da;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 1}
+  ::selection{background:#c9a227;color:#0a141d}
+  input[type=range]{-webkit-appearance:none;appearance:none;height:2px;background:#2a3f4d;border-radius:2px;outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:#e6c659;cursor:pointer;border:3px solid #0a141d;box-shadow:0 0 0 1px #c9a227}
+  input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#e6c659;cursor:pointer;border:3px solid #0a141d;box-shadow:0 0 0 1px #c9a227}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+</style>
+</helmet>
+
+<div style="position:relative;width:100%;overflow-x:hidden">
+
+<nav style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(10,20,29,0.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(201,162,39,0.16)">
+  <a href="#hero" style="display:flex;align-items:center;gap:12px;text-decoration:none">
+    <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #c9a227;color:#e6c659;font-family:'Spectral',serif;font-weight:600;font-size:15px;letter-spacing:0.5px">JH</span>
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#9cb0bd;text-transform:uppercase">Joshua Herrington</span>
+  </a>
+  <div style="display:flex;align-items:center;gap:26px">
+    <a href="#market" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;color:#9cb0bd;text-decoration:none;text-transform:uppercase">Market</a>
+    <a href="#architecture" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;color:#9cb0bd;text-decoration:none;text-transform:uppercase">Architecture</a>
+    <a href="#unit" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;color:#9cb0bd;text-decoration:none;text-transform:uppercase">Unit</a>
+    <a href="#scale" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;color:#9cb0bd;text-decoration:none;text-transform:uppercase">Scale</a>
+    <a href="#house" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;color:#9cb0bd;text-decoration:none;text-transform:uppercase">The House</a>
+    <a href="#earnout" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;color:#e6c659;text-decoration:none;text-transform:uppercase">The Earnout</a>
+  </div>
+</nav>
+
+<section id="hero" data-screen-label="Hero" style="position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 40px 80px;max-width:1180px;margin:0 auto">
+  <div style="position:absolute;top:0;right:0;width:520px;height:520px;background:radial-gradient(circle at 70% 30%,rgba(201,162,39,0.10),transparent 62%);pointer-events:none"></div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.34em;color:#c9a227;text-transform:uppercase;margin-bottom:34px">Interactive Economic Model</div>
+  <h1 style="font-family:'Spectral',serif;font-weight:400;font-size:clamp(44px,6.4vw,86px);line-height:1.02;letter-spacing:-0.018em;margin:0 0 30px;max-width:15ch">The architecture of a <span style="font-style:italic;color:#e6c659">distribution force.</span></h1>
+  <p style="font-size:clamp(17px,1.5vw,21px);line-height:1.6;color:#9cb0bd;max-width:60ch;margin:0 0 46px;font-weight:400">A working model of how partnerships are engineered — from the first sales conversation to the unit economics, the house P&amp;L, and the compensation structure that scales a sales force without breaking the margin.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:64px">
+    <div style="display:flex;align-items:baseline;gap:10px;padding:14px 20px;border:1px solid rgba(201,162,39,0.22);background:rgba(19,36,47,0.5)">
+      <span style="font-family:'Spectral',serif;font-size:26px;color:#ece7da">66+</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#61788a;text-transform:uppercase">Carrier shelf</span>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:10px;padding:14px 20px;border:1px solid rgba(201,162,39,0.22);background:rgba(19,36,47,0.5)">
+      <span style="font-family:'Spectral',serif;font-size:26px;color:#ece7da">7</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#61788a;text-transform:uppercase">Contracting tiers</span>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:10px;padding:14px 20px;border:1px solid rgba(201,162,39,0.22);background:rgba(19,36,47,0.5)">
+      <span style="font-family:'Spectral',serif;font-size:26px;color:#ece7da">4</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#61788a;text-transform:uppercase">Partnership scenarios</span>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:18px;padding-top:30px;border-top:1px solid rgba(255,255,255,0.07);max-width:560px">
+    <div>
+      <div style="font-family:'Spectral',serif;font-size:19px;color:#ece7da">Joshua Herrington</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#c9a227;text-transform:uppercase;margin-top:4px">Managing Director · Author of the model</div>
+    </div>
+  </div>
+  <a href="#market" style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:8px;animation:floaty 2.6s ease-in-out infinite">
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.24em;color:#61788a;text-transform:uppercase">Begin</span>
+    <span style="color:#c9a227;font-size:18px">↓</span>
+  </a>
+</section>
+
+<section id="market" data-screen-label="Market" style="background:#0c1825;border-top:1px solid rgba(255,255,255,0.06);padding:108px 40px">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#c9a227;letter-spacing:0.1em">01</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.24em;color:#61788a;text-transform:uppercase">The Market</span>
+    </div>
+    <h2 style="font-family:'Spectral',serif;font-weight:400;font-size:clamp(32px,4vw,52px);line-height:1.08;letter-spacing:-0.015em;margin:0 0 26px;max-width:18ch">The next-door millionaire is <span style="font-style:italic;color:#e6c659">under-served by design.</span></h2>
+    <p style="font-size:18px;line-height:1.65;color:#9cb0bd;max-width:64ch;margin:0 0 56px">The mass-affluent household holds real wealth but sits beneath the threshold the wirehouses fight over. The opportunity is not a product — it is <span style="color:#ece7da">distribution at scale</span>: a commercial producer book worked through centers of influence, where every CPA, attorney, and banker is a door into a household that already trusts them.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;background:rgba(10,20,29,0.5);border:1px solid rgba(201,162,39,0.18);padding:44px">
+      <div style="display:flex;flex-direction:column;gap:34px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#c9a227;text-transform:uppercase">Size the book →</div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font-size:14px;color:#9cb0bd">Households in the producer book</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#e6c659">{{ mClients }}</span></div>
+          <input type="range" min="200" max="6000" step="100" value="{{ mClients }}" onInput="{{ onClients }}" style="width:100%">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font-size:14px;color:#9cb0bd">Centers-of-influence penetration</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#e6c659">{{ mPen }}%</span></div>
+          <input type="range" min="5" max="60" step="1" value="{{ mPen }}" onInput="{{ onPen }}" style="width:100%">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font-size:14px;color:#9cb0bd">Average gross income per case</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#e6c659">{{ mAvgLabel }}</span></div>
+          <input type="range" min="3000" max="25000" step="500" value="{{ mAvgCase }}" onInput="{{ onAvg }}" style="width:100%">
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding-left:40px;border-left:1px solid rgba(255,255,255,0.08)">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#61788a;text-transform:uppercase">Reachable households</span>
+        <span style="font-family:'Spectral',serif;font-size:38px;color:#ece7da;line-height:1">{{ mReachable }}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#61788a;text-transform:uppercase;margin-top:24px">Addressable annual gross</span>
+        <span style="font-family:'Spectral',serif;font-size:clamp(44px,5vw,68px);color:#e6c659;line-height:1;transition:color .3s">{{ mGross }}</span>
+        <span style="font-size:13px;color:#61788a;margin-top:14px;line-height:1.5">Top-of-funnel revenue if the book is worked through the COI network at the modeled penetration.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="architecture" data-screen-label="Architecture" style="background:#0a141d;padding:108px 40px">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#c9a227;letter-spacing:0.1em">02</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.24em;color:#61788a;text-transform:uppercase">The Architecture</span>
+    </div>
+    <h2 style="font-family:'Spectral',serif;font-weight:400;font-size:clamp(32px,4vw,52px);line-height:1.08;letter-spacing:-0.015em;margin:0 0 26px;max-width:20ch">The partner decides how much they keep. <span style="font-style:italic;color:#e6c659">Points decide the split.</span></h2>
+    <p style="font-size:18px;line-height:1.65;color:#9cb0bd;max-width:64ch;margin:0 0 56px">The hardest conversation in distribution is the comp split. This model removes the argument: every function the platform performs carries a point value. Add up what the platform does, and the contracting tier — and the partner's payout — is determined, not negotiated. <span style="color:#ece7da">Independence is rewarded; support is paid for.</span></p>
+
+    <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:44px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#61788a;text-transform:uppercase;margin-bottom:6px">Tap each function — who does it?</div>
+        <sc-for list="{{ services }}" as="svc" hint-placeholder-count="7">
+          <div onClick="{{ svc.onToggle }}" style="display:flex;align-items:center;gap:16px;padding:16px 18px;cursor:pointer;background:{{ svc.rowBg }};border:1px solid {{ svc.rowBorder }};transition:background .2s,border-color .2s">
+            <span style="display:inline-flex;align-items:center;justify-content:center;min-width:46px;height:32px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;background:{{ svc.badgeBg }};color:{{ svc.badgeColor }};border:1px solid {{ svc.badgeBorder }};transition:all .2s">{{ svc.ptLabel }}</span>
+            <div style="flex:1">
+              <div style="font-size:15px;color:#ece7da;font-weight:500">{{ svc.label }}</div>
+              <div style="font-size:12px;color:#61788a;margin-top:2px">{{ svc.desc }}</div>
+            </div>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:{{ svc.statusColor }}">{{ svc.statusText }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="position:sticky;top:96px;background:rgba(12,24,37,0.7);border:1px solid rgba(201,162,39,0.2);padding:34px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#61788a;text-transform:uppercase">Platform points</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:15px;color:#9cb0bd">{{ points }} / 100</span>
+        </div>
+        <div style="height:6px;background:#1a2c39;margin-bottom:30px;overflow:hidden"><div style="height:100%;width:{{ pointsBarW }};background:linear-gradient(90deg,#c9a227,#e6c659);transition:width .35s"></div></div>
+
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#61788a;text-transform:uppercase;margin-bottom:6px">Contracting tier</div>
+        <div style="font-family:'Spectral',serif;font-size:42px;color:#e6c659;line-height:1;margin-bottom:8px">{{ levelName }}</div>
+        <div style="font-size:13px;color:#9cb0bd;line-height:1.5;margin-bottom:32px">{{ levelBlurb }}</div>
+
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9cb0bd;margin-bottom:10px"><span>PARTNER {{ partnerPct }}%</span><span style="color:#61788a">PLATFORM {{ housePct }}%</span></div>
+        <div style="display:flex;height:34px;border:1px solid rgba(255,255,255,0.1);overflow:hidden">
+          <div style="width:{{ partnerBarW }};background:linear-gradient(90deg,#c9a227,#e6c659);transition:width .35s"></div>
+          <div style="width:{{ houseBarW }};background:#16293a;transition:width .35s"></div>
+        </div>
+        <div style="font-size:12px;color:#61788a;margin-top:14px;line-height:1.5">More platform support → higher tier number → lower partner payout. The partner controls the trade-off.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="unit" data-screen-label="Unit Economics" style="background:#0c1825;border-top:1px solid rgba(255,255,255,0.06);padding:108px 40px">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#c9a227;letter-spacing:0.1em">03</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.24em;color:#61788a;text-transform:uppercase">Unit Economics</span>
+    </div>
+    <h2 style="font-family:'Spectral',serif;font-weight:400;font-size:clamp(32px,4vw,52px);line-height:1.08;letter-spacing:-0.015em;margin:0 0 26px;max-width:18ch">One case, every dollar <span style="font-style:italic;color:#e6c659">accounted for.</span></h2>
+    <p style="font-size:18px;line-height:1.65;color:#9cb0bd;max-width:64ch;margin:0 0 56px">A single indexed life case, traced from gross commission to net margin. The tier you set in the architecture flows straight through. Nothing is hidden — the override, the split, and the real cost to execute are all on the table.</p>
+
+    <div style="display:grid;grid-template-columns:0.85fr 1.15fr;gap:44px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:30px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#c9a227;text-transform:uppercase">Deal inputs →</div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font-size:14px;color:#9cb0bd">Target premium</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#e6c659">${{ targetPrem }}</span></div>
+          <input type="range" min="5000" max="100000" step="1000" value="{{ targetPrem }}" onInput="{{ onTarget }}" style="width:100%">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font-size:14px;color:#9cb0bd">Excess premium</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#e6c659">${{ excessPrem }}</span></div>
+          <input type="range" min="0" max="100000" step="1000" value="{{ excessPrem }}" onInput="{{ onExcess }}" style="width:100%">
+        </div>
+        <div style="margin-top:8px;padding:20px;background:rgba(10,20,29,0.55);border:1px solid rgba(255,255,255,0.08)">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#61788a;text-transform:uppercase;margin-bottom:14px">Why the platform earns its share</div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:#9cb0bd;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span>Specialist labor / case</span><span style="font-family:'IBM Plex Mono',monospace;color:#ece7da">21 hrs</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:#9cb0bd;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span>Real cost to execute</span><span style="font-family:'IBM Plex Mono',monospace;color:#ece7da">{{ uCost }}</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:#9cb0bd;padding:7px 0"><span>To replicate in-house</span><span style="font-family:'IBM Plex Mono',monospace;color:#e6c659">$313,000/yr</span></div>
+        </div>
+      </div>
+
+      <div style="background:rgba(10,20,29,0.5);border:1px solid rgba(201,162,39,0.18);padding:34px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:18px;border-bottom:1px solid rgba(201,162,39,0.25)">
+          <span style="font-family:'Spectral',serif;font-size:17px;color:#ece7da">Gross deal income</span>
+          <span style="font-family:'Spectral',serif;font-size:30px;color:#e6c659">{{ uGross }}</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.06)">
+          <div style="flex:1"><div style="font-size:14px;color:#ece7da">Manager override</div><div style="font-size:11px;color:#61788a;font-family:'IBM Plex Mono',monospace">5% of gross · house</div></div>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:15px;color:#9cb0bd">– {{ uOverride }}</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.06)">
+          <div style="flex:1"><div style="font-size:14px;color:#ece7da">Net after overrides</div><div style="font-size:11px;color:#61788a;font-family:'IBM Plex Mono',monospace">split at the contracting tier</div></div>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:15px;color:#ece7da">{{ uNet }}</span>
+        </div>
+
+        <div style="margin:22px 0 8px;display:flex;height:40px;border:1px solid rgba(255,255,255,0.1);overflow:hidden">
+          <div style="width:{{ uPartnerW }};background:linear-gradient(90deg,#c9a227,#e6c659);display:flex;align-items:center;padding-left:12px;transition:width .35s;min-width:0"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0a141d;font-weight:600;white-space:nowrap">PARTNER</span></div>
+          <div style="width:{{ uHouseW }};background:#16293a;display:flex;align-items:center;padding-left:12px;transition:width .35s;min-width:0"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9cb0bd;white-space:nowrap">PLATFORM</span></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.08);margin-top:18px">
+          <div style="background:#0c1825;padding:18px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#61788a;text-transform:uppercase;margin-bottom:8px">Partner income · {{ uPartnerPct }}</div><div style="font-family:'Spectral',serif;font-size:28px;color:#e6c659">{{ uPartner }}</div></div>
+          <div style="background:#0c1825;padding:18px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#61788a;text-transform:uppercase;margin-bottom:8px">Platform retained · {{ uHousePct }}</div><div style="font-family:'Spectral',serif;font-size:28px;color:#ece7da">{{ uHouse }}</div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08)">
+          <span style="font-size:13px;color:#9cb0bd">Platform net, after the {{ uCost }} cost to execute</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:18px;color:#6aa886">{{ uHouseNet }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="scale" data-screen-label="Scale" style="background:#0a141d;padding:108px 40px">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#c9a227;letter-spacing:0.1em">04</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.24em;color:#61788a;text-transform:uppercase">The Scale</span>
+    </div>
+    <h2 style="font-family:'Spectral',serif;font-weight:400;font-size:clamp(32px,4vw,52px);line-height:1.08;letter-spacing:-0.015em;margin:0 0 26px;max-width:18ch">Unit economics, <span style="font-style:italic;color:#e6c659">compounded over five years.</span></h2>
+    <p style="font-size:18px;line-height:1.65;color:#9cb0bd;max-width:64ch;margin:0 0 56px">A single case is a proof; a book is a business. Hold the deal economics from the prior chapter and let volume and case size grow. The platform's retained revenue and the partner's income both compound — same split, larger base.</p>
+
+    <div style="display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:stretch">
+      <div style="display:flex;flex-direction:column;gap:30px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#c9a227;text-transform:uppercase">Growth assumptions →</div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font-size:14px;color:#9cb0bd">Deals in year one</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#e6c659">{{ dealsYr1 }}</span></div>
+          <input type="range" min="2" max="50" step="1" value="{{ dealsYr1 }}" onInput="{{ onDeals }}" style="width:100%">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font-size:14px;color:#9cb0bd">Annual deal growth</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#e6c659">{{ dealGrowth }}%</span></div>
+          <input type="range" min="0" max="40" step="1" value="{{ dealGrowth }}" onInput="{{ onDealGrowth }}" style="width:100%">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font-size:14px;color:#9cb0bd">Case size growth</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#e6c659">{{ sizeGrowth }}%</span></div>
+          <input type="range" min="0" max="15" step="1" value="{{ sizeGrowth }}" onInput="{{ onSizeGrowth }}" style="width:100%">
+        </div>
+        <div style="margin-top:auto;display:flex;flex-direction:column;gap:14px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08)">
+          <div><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#61788a;text-transform:uppercase">5-yr gross</div><div style="font-family:'Spectral',serif;font-size:26px;color:#ece7da">{{ projGross }}</div></div>
+          <div><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#61788a;text-transform:uppercase">5-yr partner income</div><div style="font-family:'Spectral',serif;font-size:26px;color:#e6c659">{{ projPartner }}</div></div>
+        </div>
+      </div>
+
+      <div style="background:rgba(12,24,37,0.6);border:1px solid rgba(201,162,39,0.18);padding:34px 34px 26px;display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;gap:22px;margin-bottom:24px">
+          <span style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9cb0bd"><span style="width:11px;height:11px;background:linear-gradient(90deg,#c9a227,#e6c659)"></span>Partner income</span>
+          <span style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9cb0bd"><span style="width:11px;height:11px;background:#16293a;border:1px solid #2a3f4d"></span>Platform net</span>
+        </div>
+        <div style="flex:1;display:flex;align-items:flex-end;gap:24px;min-height:260px">
+          <sc-for list="{{ projYears }}" as="yr" hint-placeholder-count="5">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:10px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#e6c659">{{ yr.grossLabel }}</div>
+              <div style="width:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:stretch;height:200px">
+                <div style="height:{{ yr.houseH }};background:#16293a;border:1px solid #2a3f4d;border-bottom:none;transition:height .4s"></div>
+                <div style="height:{{ yr.partnerH }};background:linear-gradient(180deg,#e6c659,#c9a227);transition:height .4s"></div>
+              </div>
+              <div style="text-align:center;border-top:1px solid rgba(255,255,255,0.08);padding-top:8px;width:100%">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#ece7da">{{ yr.year }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#61788a">{{ yr.deals }} deals</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="house" data-screen-label="The House" style="background:#0c1825;border-top:1px solid rgba(255,255,255,0.06);padding:108px 40px">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#c9a227;letter-spacing:0.1em">05</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.24em;color:#61788a;text-transform:uppercase">The House P&amp;L</span>
+    </div>
+    <h2 style="font-family:'Spectral',serif;font-weight:400;font-size:clamp(32px,4vw,52px);line-height:1.08;letter-spacing:-0.015em;margin:0 0 26px;max-width:20ch">Four ways to structure a partner. <span style="font-style:italic;color:#e6c659">Four different margins.</span></h2>
+    <p style="font-size:18px;line-height:1.65;color:#9cb0bd;max-width:66ch;margin:0 0 44px">The same $1.95M book runs very differently depending on how the partner is contracted. This is the operator's decision: how much production to give away to win the relationship, and what it does to the house margin. Switch the structure and watch the P&amp;L move.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:36px">
+      <sc-for list="{{ scenarios }}" as="sc" hint-placeholder-count="4">
+        <div onClick="{{ sc.onPick }}" style="cursor:pointer;padding:18px;background:{{ sc.btnBg }};border:1px solid {{ sc.btnBorder }};transition:all .2s">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><span style="font-size:14px;font-weight:600;color:{{ sc.btnColor }}">{{ sc.label }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#61788a">{{ sc.splitLabel }}</span></div>
+          <div style="font-size:11px;color:#61788a;line-height:1.45">{{ sc.desc }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(201,162,39,0.18);border:1px solid rgba(201,162,39,0.18)">
+      <div style="background:#0a141d;padding:32px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#c9a227;text-transform:uppercase;margin-bottom:22px">Revenue</div>
+        <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span style="font-size:14px;color:#9cb0bd">Total gross revenue</span><span style="font-family:'IBM Plex Mono',monospace;font-size:15px;color:#ece7da">{{ hGross }}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span style="font-size:14px;color:#9cb0bd">Partner / advisor comp paid</span><span style="font-family:'IBM Plex Mono',monospace;font-size:15px;color:#cf7a63">– {{ hPartnerPaid }}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:14px 0"><span style="font-size:15px;color:#ece7da;font-weight:600">Net revenue to house</span><span style="font-family:'IBM Plex Mono',monospace;font-size:18px;color:#e6c659">{{ hNetRev }}</span></div>
+      </div>
+      <div style="background:#0a141d;padding:32px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#c9a227;text-transform:uppercase;margin-bottom:22px">Operating costs</div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span style="font-size:14px;color:#9cb0bd">Case labor (240 cases)</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#ece7da">{{ hLabor }}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span style="font-size:14px;color:#9cb0bd">Technology stack</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#ece7da">{{ hTech }}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span style="font-size:14px;color:#9cb0bd">Sales leader base + benefits</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#ece7da">{{ hSlBase }}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span style="font-size:14px;color:#9cb0bd">Sales leader earnout</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#ece7da">{{ hEarnout }}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:14px 0"><span style="font-size:15px;color:#ece7da;font-weight:600">Total operating cost</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#cf7a63">{{ hTotalCosts }}</span></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px">
+      <div style="background:#0a141d;border:1px solid rgba(201,162,39,0.18);padding:24px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#61788a;text-transform:uppercase;margin-bottom:10px">House gross profit</div><div style="font-family:'Spectral',serif;font-size:34px;color:{{ hProfitColor }}">{{ hProfit }}</div></div>
+      <div style="background:#0a141d;border:1px solid rgba(201,162,39,0.18);padding:24px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#61788a;text-transform:uppercase;margin-bottom:10px">Net margin · {{ hMeets }}</div><div style="font-family:'Spectral',serif;font-size:34px;color:{{ hMeetsColor }}">{{ hMargin }}</div></div>
+      <div style="background:#0a141d;border:1px solid rgba(201,162,39,0.18);padding:24px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#61788a;text-transform:uppercase;margin-bottom:10px">Break-even cases / yr</div><div style="font-family:'Spectral',serif;font-size:34px;color:#ece7da">{{ hBe }}</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="earnout" data-screen-label="The Earnout" style="background:#0a141d;padding:108px 40px">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#c9a227;letter-spacing:0.1em">06</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.24em;color:#61788a;text-transform:uppercase">The Sales Leader</span>
+    </div>
+    <h2 style="font-family:'Spectral',serif;font-weight:400;font-size:clamp(32px,4vw,52px);line-height:1.08;letter-spacing:-0.015em;margin:0 0 26px;max-width:20ch">Pay the leader on <span style="font-style:italic;color:#e6c659">net revenue you've already earned.</span></h2>
+    <p style="font-size:18px;line-height:1.65;color:#9cb0bd;max-width:66ch;margin:0 0 56px">The compensation structure is the whole bet. The sales leader carries a modest base, then shares in net revenue — but only above a threshold the house keeps first. Upside is uncapped and fully aligned: the leader can only get rich by making the house profitable. This is what de-risks the hire.</p>
+
+    <div style="display:grid;grid-template-columns:320px 1fr;gap:48px;align-items:stretch">
+      <div style="display:flex;flex-direction:column;gap:32px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#c9a227;text-transform:uppercase">Structure the deal →</div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font-size:14px;color:#9cb0bd">Earnout threshold</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#e6c659">${{ earnoutThreshold }}</span></div>
+          <input type="range" min="0" max="400000" step="10000" value="{{ earnoutThreshold }}" onInput="{{ onThreshold }}" style="width:100%">
+          <div style="font-size:12px;color:#61788a;margin-top:8px;line-height:1.45">Net revenue the house keeps before the leader earns any override.</div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font-size:14px;color:#9cb0bd">Override split above threshold</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#e6c659">{{ earnoutSplit }}%</span></div>
+          <input type="range" min="10" max="70" step="5" value="{{ earnoutSplit }}" onInput="{{ onSplit }}" style="width:100%">
+          <div style="font-size:12px;color:#61788a;margin-top:8px;line-height:1.45">Leader's share of net revenue earned above the threshold.</div>
+        </div>
+        <div style="margin-top:auto;padding:18px;background:rgba(12,24,37,0.6);border:1px solid rgba(255,255,255,0.08)">
+          <div style="font-size:13px;color:#9cb0bd;line-height:1.55">At the current structure, the leader's total comp is <span style="color:#e6c659;font-family:'IBM Plex Mono',monospace">{{ eSlTotal }}</span> — and the house still nets <span style="color:#6aa886;font-family:'IBM Plex Mono',monospace">{{ eHouseProfit }}</span>.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="background:rgba(12,24,37,0.6);border:1px solid rgba(201,162,39,0.2);padding:34px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#61788a;text-transform:uppercase;margin-bottom:20px">Sales leader compensation</div>
+          <div style="display:flex;height:46px;border:1px solid rgba(255,255,255,0.1);overflow:hidden;margin-bottom:18px">
+            <div style="width:calc(100% - {{ eEarnoutW }});background:#16293a;display:flex;align-items:center;padding-left:14px;min-width:0;transition:width .35s"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9cb0bd;white-space:nowrap">BASE + BENEFITS</span></div>
+            <div style="width:{{ eEarnoutW }};background:linear-gradient(90deg,#c9a227,#e6c659);display:flex;align-items:center;padding-left:14px;min-width:0;transition:width .35s"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0a141d;font-weight:600;white-space:nowrap">EARNOUT</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,0.08)">
+            <div style="background:#0c1825;padding:18px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;color:#61788a;text-transform:uppercase;margin-bottom:8px">Base + benefits</div><div style="font-family:'Spectral',serif;font-size:24px;color:#ece7da">{{ eSlBase }}</div></div>
+            <div style="background:#0c1825;padding:18px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;color:#61788a;text-transform:uppercase;margin-bottom:8px">Earnout</div><div style="font-family:'Spectral',serif;font-size:24px;color:#e6c659">{{ eEarnout }}</div></div>
+            <div style="background:#0c1825;padding:18px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;color:#61788a;text-transform:uppercase;margin-bottom:8px">Total comp</div><div style="font-family:'Spectral',serif;font-size:24px;color:#ece7da">{{ eSlTotal }}</div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="background:rgba(12,24,37,0.6);border:1px solid rgba(201,162,39,0.2);padding:26px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#61788a;text-transform:uppercase;margin-bottom:10px">Net revenue to house</div><div style="font-family:'Spectral',serif;font-size:30px;color:#ece7da">{{ eNetRev }}</div></div>
+          <div style="background:rgba(201,162,39,0.07);border:1px solid rgba(201,162,39,0.35);padding:26px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#61788a;text-transform:uppercase;margin-bottom:10px">House profit, after the leader</div><div style="font-family:'Spectral',serif;font-size:30px;color:#6aa886">{{ eHouseProfit }}</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="close" data-screen-label="Close" style="background:#0c1825;border-top:1px solid rgba(201,162,39,0.18);padding:120px 40px">
+  <div style="max-width:920px;margin:0 auto;text-align:center">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.28em;color:#c9a227;text-transform:uppercase;margin-bottom:32px">The Operator Behind the Model</div>
+    <p style="font-family:'Spectral',serif;font-weight:300;font-size:clamp(26px,3.4vw,40px);line-height:1.34;letter-spacing:-0.01em;color:#ece7da;margin:0 0 48px">"A sales force doesn't scale on talent alone. It scales on an <span style="font-style:italic;color:#e6c659">economic engine</span> — one where the partner, the producer, and the house can each see exactly why the split is fair, and exactly how everybody wins."</p>
+    <div style="display:inline-flex;align-items:center;gap:18px;padding:22px 30px;border:1px solid rgba(201,162,39,0.25);background:rgba(10,20,29,0.5)">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border:1px solid #c9a227;color:#e6c659;font-family:'Spectral',serif;font-weight:600;font-size:20px">JH</span>
+      <div style="text-align:left">
+        <div style="font-family:'Spectral',serif;font-size:22px;color:#ece7da">Joshua Herrington</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#c9a227;text-transform:uppercase;margin-top:4px">Managing Director · Built this model</div>
+      </div>
+    </div>
+    <div style="margin-top:56px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;color:#3f5260;text-transform:uppercase">Interactive economic model · Figures illustrative · Carrier &amp; firm names withheld</div>
+  </div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    mClients: 1800, mAvgCase: 9000, mPenetration: 0.18,
+    svc: { acq:true, design:true, struct:false, nb:true, illus:false, inforce:false, train:false },
+    targetPrem: 25000, excessPrem: 10000,
+    dealsYr1: 10, dealGrowth: 0.10, sizeGrowth: 0.03,
+    scenario: 'spread',
+    earnoutThreshold: 50000, earnoutSplit: 0.5
+  };
+
+  money(n){ return '$' + Math.round(n).toLocaleString('en-US'); }
+  moneyK(n){ const a=Math.abs(n); if(a>=1e6) return '$'+(n/1e6).toFixed(2)+'M'; if(a>=1000) return '$'+Math.round(n/1000)+'K'; return '$'+Math.round(n); }
+  pct(n){ return Math.round(n*100)+'%'; }
+  pct1(n){ return (n*100).toFixed(1)+'%'; }
+
+  svcPoints(){ const s=this.state.svc; let p=0; if(s.acq)p+=35; if(s.design)p+=20; if(s.struct)p+=10; if(s.nb)p+=10; if(s.illus)p+=10; if(s.inforce)p+=10; if(s.train)p+=5; return p; }
+  levelInfo(){ const p=this.svcPoints();
+    if(p<=10) return {name:'Bronze', mult:0.95, blurb:'Partner runs nearly everything — top payout'};
+    if(p<=25) return {name:'Silver', mult:0.87, blurb:'Light platform support — high payout'};
+    if(p<=40) return {name:'Gold', mult:0.79, blurb:'Selective platform involvement'};
+    if(p<=58) return {name:'Platinum', mult:0.70, blurb:'Balanced, collaborative partnership'};
+    if(p<=72) return {name:'Elite', mult:0.62, blurb:'Platform handles most operations'};
+    if(p<=88) return {name:'Elite 2', mult:0.54, blurb:'Platform handles nearly all execution'};
+    return {name:'Elite 3', mult:0.45, blurb:'Full-service — platform runs everything'};
+  }
+
+  deal(){
+    const tp=+this.state.targetPrem, ep=+this.state.excessPrem;
+    const gross = tp*0.95 + ep*0.05;
+    const override = gross*0.05;
+    const net = gross-override;
+    const mult = this.levelInfo().mult;
+    const partner = net*mult;
+    const house = net*(1-mult);
+    const cost = 3450;
+    const houseNet = house-cost;
+    return {gross, override, net, partner, house, cost, houseNet, mult};
+  }
+
+  projection(){
+    const d=this.deal();
+    const ratioP=d.gross?d.partner/d.gross:0, ratioH=d.gross?d.houseNet/d.gross:0;
+    const g=+this.state.dealGrowth, sg=+this.state.sizeGrowth;
+    let deals=Math.round(+this.state.dealsYr1), size=d.gross;
+    const ys=[];
+    for(let y=0;y<5;y++){
+      const gross=deals*size;
+      ys.push({year:y+1, deals, gross, partner:gross*ratioP, house:gross*ratioH});
+      deals=Math.round(deals*(1+g)); size=size*(1+sg);
+    }
+    return ys;
+  }
+
+  market(){
+    const clients=+this.state.mClients, avg=+this.state.mAvgCase, pen=+this.state.mPenetration;
+    const reachable=Math.round(clients*pen);
+    const gross=reachable*avg;
+    return {clients, avg, pen, reachable, gross};
+  }
+
+  scenarioMeta(){ return {
+    direct:{label:'Direct Write', split:0, desc:'Platform writes the case and keeps the full margin.'},
+    spread:{label:'Spread / Override', split:0.75, desc:'Advisor produces; the house earns the spread between grid and payout.'},
+    backofapp:{label:'Back-of-App', split:0.5, desc:'Joint work — economics shared 50/50 per agreement.'},
+    overrideonly:{label:'Override-Only', split:0.9, desc:'Agency earns an override on sub-advisor production.'}
+  };}
+
+  house(){
+    const iul=48*10000*1.0, term=120*3500*1.1, ann=72*350000*0.04;
+    const gross=iul+term+ann;
+    const overridePct=0.05;
+    const split=this.scenarioMeta()[this.state.scenario].split;
+    const partnerPaid=gross*(1-overridePct)*split;
+    const netRev=gross-partnerPaid;
+    const cases=240, varPer=70000/240;
+    const labor=cases*varPer, tech=11400, slBase=104125;
+    const earnout=Math.max(0,(netRev-(+this.state.earnoutThreshold))*(+this.state.earnoutSplit));
+    const totalCosts=labor+tech+slBase+earnout;
+    const profit=netRev-totalCosts;
+    const margin=gross?profit/gross:0;
+    const netPerCase=netRev/cases, fixed=tech+slBase;
+    const be=(netPerCase-varPer)<=0?null:Math.ceil(fixed/(netPerCase-varPer));
+    return {gross,iul,term,ann,split,partnerPaid,netRev,labor,tech,slBase,earnout,totalCosts,profit,margin,be,cases,netPerCase,varPer,slTotal:slBase+earnout};
+  }
+
+  toggleSvc(k){ this.setState(s=>({svc:{...s.svc,[k]:!s.svc[k]}})); }
+  setNum(k,v){ this.setState({[k]:+v}); }
+  setScenario(s){ this.setState({scenario:s}); }
+
+  renderVals(){
+    const lvl=this.levelInfo(), pts=this.svcPoints(), d=this.deal(), proj=this.projection(), mk=this.market(), h=this.house(), meta=this.scenarioMeta();
+    const svcDefs=[
+      {key:'acq',label:'Client Acquisition',points:35,desc:'Sourcing, discovery, lead generation'},
+      {key:'design',label:'Case Design & Consultation',points:20,desc:'Product design, illustration, strategy'},
+      {key:'struct',label:'Structures & Strategies',points:10,desc:'Premium finance, trust alignment'},
+      {key:'nb',label:'New Business & Underwriting',points:10,desc:'Intake, medical, carrier comms'},
+      {key:'illus',label:'Illustration Services',points:10,desc:'Modeling and formatting illustrations'},
+      {key:'inforce',label:'In-Force Servicing',points:10,desc:'Annual reviews, policy changes'},
+      {key:'train',label:'Training & Enablement',points:5,desc:'Advisor training, playbooks, mentorship'}
+    ];
+    const services=svcDefs.map(s=>{ const on=this.state.svc[s.key]; return {
+      ...s, on,
+      rowBg: on?'rgba(201,162,39,0.07)':'transparent',
+      rowBorder: on?'rgba(201,162,39,0.45)':'rgba(255,255,255,0.09)',
+      badgeBg: on?'#c9a227':'transparent',
+      badgeColor: on?'#0a141d':'#61788a',
+      badgeBorder: on?'#c9a227':'rgba(255,255,255,0.18)',
+      statusText: on?'PLATFORM':'PARTNER',
+      statusColor: on?'#e6c659':'#61788a',
+      ptLabel: '+'+s.points,
+      onToggle: ()=>this.toggleSvc(s.key)
+    };});
+
+    const maxGross=Math.max(...proj.map(y=>y.gross),1);
+    const projYears=proj.map(y=>({
+      year:'Y'+y.year, deals:y.deals,
+      grossLabel:this.moneyK(y.gross),
+      partnerLabel:this.moneyK(y.partner),
+      houseH:(y.house/maxGross*100).toFixed(1)+'%',
+      partnerH:(y.partner/maxGross*100).toFixed(1)+'%'
+    }));
+    const projTotals={ gross:this.moneyK(proj.reduce((a,y)=>a+y.gross,0)), partner:this.moneyK(proj.reduce((a,y)=>a+y.partner,0)), house:this.moneyK(proj.reduce((a,y)=>a+y.house,0)) };
+
+    const scenarios=Object.keys(meta).map(k=>{ const on=this.state.scenario===k; return {
+      key:k, label:meta[k].label, desc:meta[k].desc,
+      onPick:()=>this.setScenario(k),
+      btnBg:on?'rgba(201,162,39,0.12)':'rgba(19,36,47,0.4)',
+      btnBorder:on?'#c9a227':'rgba(255,255,255,0.1)',
+      btnColor:on?'#e6c659':'#9cb0bd',
+      splitLabel:Math.round(meta[k].split*100)+'%'
+    };});
+
+    return {
+      // market
+      mClients:this.state.mClients, mClientsF:(+this.state.mClients).toLocaleString('en-US'), mAvgCase:this.state.mAvgCase, mPen:Math.round(this.state.mPenetration*100),
+      mReachable:mk.reachable.toLocaleString('en-US'), mGross:this.moneyK(mk.gross), mAvgLabel:this.money(mk.avg),
+      onClients:(e)=>this.setNum('mClients',e.target.value),
+      onAvg:(e)=>this.setNum('mAvgCase',e.target.value),
+      onPen:(e)=>this.setState({mPenetration:+e.target.value/100}),
+      // architecture
+      services, points:pts, levelName:lvl.name, levelBlurb:lvl.blurb,
+      partnerPct:Math.round(lvl.mult*100), housePct:Math.round((1-lvl.mult)*100),
+      partnerBarW:Math.round(lvl.mult*100)+'%', houseBarW:Math.round((1-lvl.mult)*100)+'%',
+      pointsBarW:pts+'%',
+      // unit
+      targetPrem:this.state.targetPrem, excessPrem:this.state.excessPrem,
+      onTarget:(e)=>this.setNum('targetPrem',e.target.value),
+      onExcess:(e)=>this.setNum('excessPrem',e.target.value),
+      uGross:this.money(d.gross), uOverride:this.money(d.override), uNet:this.money(d.net),
+      uPartner:this.money(d.partner), uHouse:this.money(d.house), uCost:this.money(d.cost), uHouseNet:this.money(d.houseNet),
+      uPartnerPct:this.pct(d.gross?d.partner/d.gross:0), uHousePct:this.pct(d.gross?d.house/d.gross:0),
+      uPartnerW:(d.gross?d.partner/d.gross*100:0).toFixed(1)+'%',
+      uHouseW:(d.gross?d.house/d.gross*100:0).toFixed(1)+'%',
+      uOverrideW:(d.gross?d.override/d.gross*100:0).toFixed(1)+'%',
+      // projection
+      dealsYr1:this.state.dealsYr1, dealGrowth:Math.round(this.state.dealGrowth*100), sizeGrowth:Math.round(this.state.sizeGrowth*100),
+      onDeals:(e)=>this.setNum('dealsYr1',e.target.value),
+      onDealGrowth:(e)=>this.setState({dealGrowth:+e.target.value/100}),
+      onSizeGrowth:(e)=>this.setState({sizeGrowth:+e.target.value/100}),
+      projYears, projGross:projTotals.gross, projPartner:projTotals.partner, projHouse:projTotals.house,
+      // house
+      scenarios, hScenarioLabel:meta[this.state.scenario].label, hScenarioDesc:meta[this.state.scenario].desc,
+      hGross:this.money(h.gross), hPartnerPaid:this.money(h.partnerPaid), hNetRev:this.money(h.netRev),
+      hLabor:this.money(h.labor), hTech:this.money(h.tech), hSlBase:this.money(h.slBase), hEarnout:this.money(h.earnout),
+      hTotalCosts:this.money(h.totalCosts), hProfit:this.money(h.profit), hMargin:this.pct1(h.margin),
+      hBe:h.be===null?'N/A':h.be, hMeets:h.margin>=0.15?'MEETS TARGET':'BELOW TARGET',
+      hMeetsColor:h.margin>=0.15?'#6aa886':'#cf7a63',
+      hProfitColor:h.profit>=0?'#ece7da':'#cf7a63',
+      // earnout
+      earnoutThreshold:this.state.earnoutThreshold, earnoutSplit:Math.round(this.state.earnoutSplit*100),
+      onThreshold:(e)=>this.setNum('earnoutThreshold',e.target.value),
+      onSplit:(e)=>this.setState({earnoutSplit:+e.target.value/100}),
+      eSlBase:this.money(h.slBase), eEarnout:this.money(h.earnout), eSlTotal:this.money(h.slTotal),
+      eHouseProfit:this.money(h.profit), eNetRev:this.money(h.netRev),
+      eEarnoutW:Math.min(100,(h.earnout/(h.slBase+h.earnout||1)*100)).toFixed(1)+'%'
+    };
+  }
+}
+</script>
+</body>
+</html>
