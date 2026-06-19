@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Discovery — Joshua Herrington</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:       #0d1e2e;
+  --ink-mid:   #2a3d52;
+  --ink-light: #4a6070;
+  --ink-dim:   #7a9ab0;
+  --paper:     #faf6ef;
+  --paper-mid: #f0ead8;
+  --paper-warm:#e8dfc8;
+  --rule:      rgba(13,30,46,.12);
+  --rule-dark: rgba(13,30,46,.22);
+  --teal:      #c75f86;
+  --teal-light:#e08aab;
+  --teal-pale: rgba(199,95,134,.1);
+  --gold:      #4f86c4;
+  --gold-light:#7aacdb;
+  --gold-pale: rgba(79,134,196,.12);
+  --green:     #2a6b4a;
+  --green-pale:rgba(42,107,74,.12);
+  --amber:     #b87020;
+  --amber-pale:rgba(184,112,32,.12);
+  --red:       #9e2a2a;
+  --red-pale:  rgba(158,42,42,.1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(199,95,134,.07) 0%, transparent 50%),
+    radial-gradient(ellipse at 0% 100%, rgba(79,134,196,.05) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ─── MASTHEAD ─── */
+.mast {
+  background: var(--ink);
+  padding: 18px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; z-index: 10;
+}
+
+.mast-brand {
+  display: flex; align-items: center; gap: 14px;
+}
+
+.mast-gem {
+  width: 36px; height: 36px; flex-shrink: 0;
+}
+
+.gem-o {
+  width: 36px; height: 36px;
+  background: linear-gradient(145deg, var(--teal-light), var(--teal));
+  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.gem-i {
+  width: 26px; height: 26px;
+  background: var(--ink);
+  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.gem-g { color: var(--teal-light); font-size: .75rem; }
+
+.mast-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 600;
+  color: #f0e8d8; letter-spacing: .02em;
+}
+
+.mast-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: .58rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--teal-light); margin-top: 2px;
+}
+
+.mast-right {
+  display: flex; align-items: center; gap: 12px;
+}
+
+.mast-tool-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--ink-dim); border: 1px solid rgba(255,255,255,.12);
+  padding: 5px 11px; border-radius: 2px;
+}
+
+/* ─── PROGRESS ─── */
+.progress-bar {
+  position: relative; z-index: 5;
+  background: var(--ink-mid);
+  padding: 0 48px;
+  display: flex; align-items: stretch;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.step-indicator {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 20px 14px 0;
+  border-right: 1px solid rgba(255,255,255,.1);
+  margin-right: 20px;
+  cursor: pointer;
+  opacity: .45;
+  transition: opacity .2s;
+}
+
+.step-indicator:last-child { border-right: none; margin-right: 0; }
+.step-indicator.active { opacity: 1; }
+.step-indicator.completed { opacity: .7; cursor: pointer; }
+.step-indicator.completed:hover { opacity: .9; }
+
+.step-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: .65rem;
+  color: rgba(255,255,255,.5); flex-shrink: 0;
+  transition: all .2s;
+}
+
+.step-indicator.active .step-num {
+  background: var(--teal-light);
+  color: var(--ink); font-weight: 500;
+}
+
+.step-indicator.completed .step-num {
+  background: rgba(42,143,160,.4);
+  color: var(--teal-light);
+}
+
+.step-indicator.completed .step-num::after { content: '✓'; }
+.step-indicator.completed .step-num span { display: none; }
+
+.step-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .58rem; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  white-space: nowrap;
+}
+
+.step-indicator.active .step-label { color: rgba(255,255,255,.9); }
+
+.progress-line {
+  position: absolute; bottom: 0; left: 0;
+  height: 2px; background: var(--teal-light);
+  transition: width .4s ease;
+}
+
+/* ─── MAIN WRAPPER ─── */
+.main-wrap {
+  position: relative; z-index: 1;
+  max-width: 780px; margin: 0 auto;
+  padding: 56px 40px 80px;
+}
+
+/* ─── STEP PANES ─── */
+.step-pane { display: none; }
+.step-pane.active { display: block; animation: stepIn .35s ease both; }
+
+@keyframes stepIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* STEP HEADER */
+.step-hd {
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--rule-dark);
+}
+
+.step-hd .step-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 10px;
+}
+
+.step-hd h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; font-weight: 500; line-height: 1.15;
+  color: var(--ink); margin-bottom: 10px;
+}
+
+.step-hd p {
+  font-size: 1rem; color: var(--ink-light); line-height: 1.6;
+}
+
+/* ─── FORM FIELDS ─── */
+.fields { display: flex; flex-direction: column; gap: 28px; }
+
+.field-row { display: grid; gap: 20px; }
+.col-2 { grid-template-columns: 1fr 1fr; }
+.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.field { display: flex; flex-direction: column; gap: 8px; }
+
+.field label {
+  font-family: 'DM Mono', monospace;
+  font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-mid); font-weight: 500;
+}
+
+.field input,
+.field select {
+  background: white;
+  border: 1.5px solid var(--rule-dark);
+  border-radius: 3px;
+  color: var(--ink);
+  padding: 14px 16px;
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.05rem;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.field input::placeholder { color: var(--ink-dim); }
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(199,95,134,.1);
+}
+
+.field .hint {
+  font-size: .85rem; color: var(--ink-dim);
+  font-style: italic; margin-top: -2px;
+  line-height: 1.5;
+}
+
+/* SELECT WRAP */
+.sel-wrap { position: relative; }
+.sel-wrap::after {
+  content: '▾'; position: absolute; right: 14px; top: 50%;
+  transform: translateY(-50%); color: var(--teal);
+  pointer-events: none; font-size: .85rem;
+}
+
+/* AMOUNT WRAP */
+.amt-wrap { position: relative; }
+.amt-pre {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%); color: var(--gold);
+  font-family: 'DM Mono', monospace; font-size: .85rem;
+  pointer-events: none; font-weight: 500;
+}
+.amt-wrap input { padding-left: 26px; }
+
+/* OBJECTIVE RADIO CARDS */
+.obj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.obj-card {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 16px 18px;
+  border: 1.5px solid var(--rule-dark);
+  border-radius: 4px; cursor: pointer;
+  transition: all .18s;
+  background: white;
+}
+
+.obj-card:hover { border-color: var(--teal); background: var(--teal-pale); }
+.obj-card.selected { border-color: var(--teal); background: var(--teal-pale); }
+
+.obj-card input[type=radio] {
+  width: 18px; height: 18px; flex-shrink: 0; margin-top: 3px;
+  accent-color: var(--teal); cursor: pointer;
+}
+
+.obj-card .oc-label {
+  font-size: 1rem; font-weight: 600; color: var(--ink); line-height: 1.3;
+}
+
+.obj-card .oc-desc {
+  font-size: .82rem; color: var(--ink-light); margin-top: 3px; line-height: 1.4;
+}
+
+/* ─── NEXUS SECTION ─── */
+.nexus-section { display: flex; flex-direction: column; gap: 6px; }
+
+.nx-item {
+  display: flex; align-items: flex-start; gap: 0;
+  border: 1.5px solid var(--rule);
+  border-radius: 4px; overflow: hidden;
+  background: white;
+  transition: border-color .15s;
+}
+
+.nx-item:hover { border-color: var(--rule-dark); }
+.nx-item.checked { border-color: var(--teal); background: var(--teal-pale); }
+
+.nx-check {
+  display: flex; align-items: center; gap: 14px;
+  flex: 1; padding: 14px 16px; cursor: pointer;
+  font-size: 1rem; color: var(--ink);
+  line-height: 1.4;
+}
+
+.nx-check input[type=checkbox] {
+  width: 18px; height: 18px; flex-shrink: 0;
+  accent-color: var(--teal); cursor: pointer;
+}
+
+.nx-detail-wrap {
+  width: 0; overflow: hidden; transition: width .2s ease;
+  border-left: 0px solid var(--rule);
+  flex-shrink: 0;
+}
+
+.nx-item.checked .nx-detail-wrap {
+  width: 180px;
+  border-left: 1px solid var(--rule-dark);
+}
+
+.nx-detail-wrap input {
+  width: 100%; height: 100%;
+  background: rgba(199,95,134,.04);
+  border: none; outline: none;
+  padding: 14px 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: .78rem; color: var(--teal);
+}
+
+.nx-detail-wrap input::placeholder { color: var(--ink-dim); opacity: .6; }
+
+/* THRESHOLD BOX */
+.thresh-box {
+  background: var(--gold-pale);
+  border: 1px solid rgba(79,134,196,.25);
+  border-radius: 4px; padding: 14px 16px;
+  margin-top: 4px; display: none;
+}
+
+.thresh-box.show { display: block; }
+
+.thresh-box p {
+  font-family: 'DM Mono', monospace;
+  font-size: .7rem; letter-spacing: .04em;
+  color: var(--ink-mid); line-height: 1.7;
+}
+
+.thresh-box strong { color: var(--gold); }
+
+/* BANK SUB-QS */
+.bank-qs { display: none; margin-top: 10px; }
+.bank-qs.show { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* YES/NO TOGGLE */
+.yn-toggle { display: flex; gap: 8px; }
+
+.yn-btn {
+  flex: 1; padding: 12px;
+  border: 1.5px solid var(--rule-dark);
+  border-radius: 3px; cursor: pointer; background: white;
+  font-family: 'Source Serif 4', serif; font-size: 1rem;
+  color: var(--ink-mid); transition: all .15s; text-align: center;
+  font-weight: 500;
+}
+
+.yn-btn:hover { border-color: var(--teal); color: var(--teal); }
+.yn-btn.sel-yes { border-color: var(--green); background: var(--green-pale); color: var(--green); }
+.yn-btn.sel-no  { border-color: var(--rule-dark); background: var(--paper-mid); color: var(--ink-light); }
+
+/* ─── FLAG SECTION ─── */
+.flag-section { display: flex; flex-direction: column; gap: 6px; }
+
+.flag-intro {
+  font-size: .9rem; color: var(--ink-light); font-style: italic; line-height: 1.5;
+  padding: 12px 16px;
+  background: var(--amber-pale);
+  border: 1px solid rgba(184,112,32,.2);
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+.flag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+.flag-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--rule);
+  border-radius: 3px; cursor: pointer;
+  background: white; transition: all .15s;
+  font-size: .95rem; color: var(--ink-mid);
+}
+
+.flag-item:hover { border-color: rgba(184,112,32,.4); background: var(--amber-pale); }
+.flag-item.flagged { border-color: rgba(158,42,42,.4); background: var(--red-pale); color: var(--red); }
+.flag-item input { width: 16px; height: 16px; accent-color: var(--red); cursor: pointer; flex-shrink: 0; }
+
+/* ─── NAVIGATION ─── */
+.step-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 48px; padding-top: 28px;
+  border-top: 1px solid var(--rule-dark);
+}
+
+.btn-back {
+  font-family: 'DM Mono', monospace;
+  font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-light); background: none; border: 1px solid var(--rule-dark);
+  padding: 13px 22px; border-radius: 3px; cursor: pointer; transition: all .2s;
+}
+
+.btn-back:hover { color: var(--ink); border-color: var(--rule-dark); background: var(--paper-mid); }
+
+.btn-next {
+  background: var(--ink);
+  color: var(--paper); border: none;
+  padding: 15px 36px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 500; letter-spacing: .04em;
+  border-radius: 3px; cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.btn-next:hover {
+  background: var(--teal);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(199,95,134,.2);
+}
+
+.btn-analyze {
+  background: linear-gradient(135deg, var(--teal) 0%, #0e4f5c 100%);
+  color: white; border: none;
+  padding: 18px 40px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; font-weight: 500; letter-spacing: .04em;
+  border-radius: 3px; cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; gap: 11px;
+}
+
+.btn-analyze:hover {
+  background: linear-gradient(135deg, var(--teal-light), var(--teal));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(199,95,134,.25);
+}
+
+.step-count {
+  font-family: 'DM Mono', monospace;
+  font-size: .68rem; letter-spacing: .1em; color: var(--ink-dim);
+}
+
+/* ─── RESULTS SCREEN ─── */
+#resultsScreen {
+  display: none;
+  position: relative; z-index: 1;
+  max-width: 820px; margin: 0 auto;
+  padding: 56px 40px 80px;
+  animation: stepIn .5s ease both;
+}
+
+#resultsScreen.show { display: block; }
+
+/* RESULT BANNER */
+.result-banner {
+  background: var(--ink);
+  border-radius: 6px; padding: 36px 40px;
+  margin-bottom: 36px;
+  position: relative; overflow: hidden;
+}
+
+.result-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 0% 50%, rgba(199,95,134,.25) 0%, transparent 60%),
+              radial-gradient(ellipse at 100% 50%, rgba(79,134,196,.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.result-banner-inner { position: relative; z-index: 1; }
+
+.rb-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--teal-light); margin-bottom: 10px;
+}
+
+.rb-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; font-weight: 500;
+  color: #f5ede0; margin-bottom: 8px; line-height: 1.2;
+}
+
+.rb-sub {
+  font-size: 1rem; color: rgba(245,237,224,.65);
+  line-height: 1.55; max-width: 520px;
+}
+
+.rb-meta {
+  display: flex; gap: 24px; margin-top: 24px; flex-wrap: wrap;
+}
+
+.rb-meta-item {
+  display: flex; flex-direction: column; gap: 3px;
+}
+
+.rb-meta-item .lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: .58rem; letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(245,237,224,.45);
+}
+
+.rb-meta-item .val {
+  font-size: .95rem; color: rgba(245,237,224,.9); font-weight: 500;
+}
+
+/* MATCH COUNT */
+.match-count {
+  text-align: center; padding: 28px 0 20px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--rule-dark);
+}
+
+.match-count .big {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem; font-weight: 600; line-height: 1;
+  color: var(--teal);
+}
+
+.match-count .big-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink-light); margin-top: 6px;
+}
+
+.match-count .sub-note {
+  font-size: .95rem; color: var(--ink-light);
+  margin-top: 10px; font-style: italic;
+}
+
+/* OPPORTUNITIES */
+.opp-section-title {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.opp-section-title::after { content: ''; flex: 1; height: 1px; background: var(--rule-dark); }
+
+.opp-grid { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+
+.opp-card {
+  background: white;
+  border: 1.5px solid var(--rule-dark);
+  border-radius: 5px; overflow: hidden;
+  transition: box-shadow .2s;
+}
+
+.opp-card:hover { box-shadow: 0 4px 20px rgba(13,30,46,.08); }
+
+.opp-card-top {
+  display: flex; align-items: stretch;
+}
+
+.opp-numeral {
+  width: 64px; flex-shrink: 0;
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; font-weight: 500; color: rgba(245,237,224,.6);
+  letter-spacing: .04em;
+}
+
+.opp-card.life-opp .opp-numeral { background: linear-gradient(180deg, var(--ink) 0%, #1a3a50 100%); }
+.opp-card.ann-opp  .opp-numeral { background: linear-gradient(180deg, #2a1050 0%, #4a2080 100%); }
+.opp-card.both-opp .opp-numeral { background: linear-gradient(180deg, var(--teal) 0%, #0d4050 100%); }
+
+.opp-main {
+  flex: 1; padding: 18px 22px;
+}
+
+.opp-type-row {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+}
+
+.opp-type-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem; letter-spacing: .1em; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 20px;
+}
+
+.badge-life  { background: rgba(13,30,46,.1);  color: var(--ink-mid); }
+.badge-ann   { background: rgba(74,32,128,.12); color: #6040a0; }
+.badge-both  { background: rgba(199,95,134,.12); color: var(--teal); }
+
+.opp-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 500; color: var(--ink);
+  line-height: 1.3; margin-bottom: 6px;
+}
+
+.opp-desc {
+  font-size: .9rem; color: var(--ink-light); line-height: 1.5;
+}
+
+.opp-attrs {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+}
+
+.opp-attr {
+  display: flex; align-items: center; gap: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem; letter-spacing: .05em;
+  padding: 4px 9px; border-radius: 20px;
+}
+
+.attr-green { background: var(--green-pale); color: var(--green); }
+.attr-teal  { background: var(--teal-pale);  color: var(--teal); }
+.attr-gold  { background: var(--gold-pale);  color: var(--gold); }
+.attr-amber { background: var(--amber-pale); color: var(--amber); }
+.attr-ink   { background: rgba(13,30,46,.07); color: var(--ink-mid); }
+.attr-cond  { background: var(--amber-pale); color: var(--amber); }
+
+.opp-card-bottom {
+  border-top: 1px solid var(--rule);
+  padding: 10px 22px 10px 86px;
+  background: var(--paper);
+  display: flex; align-items: center; gap: 8px;
+}
+
+.opp-locked {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem; letter-spacing: .06em;
+  color: var(--ink-dim); font-style: italic;
+}
+
+.lock-icon { font-size: .75rem; }
+
+/* LOCKED TEASER */
+.more-locked {
+  background: white;
+  border: 1.5px dashed var(--rule-dark);
+  border-radius: 5px; padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin-bottom: 36px; opacity: .7;
+}
+
+.more-locked p {
+  font-size: .95rem; color: var(--ink-light); font-style: italic;
+  line-height: 1.5;
+}
+
+.more-locked strong { color: var(--ink); font-style: normal; }
+
+/* ─── REPORT REQUEST BOX ─── */
+.report-box {
+  background: var(--ink);
+  border-radius: 6px; padding: 40px 44px;
+  text-align: center; position: relative; overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.report-box::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(199,95,134,.3) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.report-box-inner { position: relative; z-index: 1; }
+
+.report-box .eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--teal-light); margin-bottom: 12px;
+}
+
+.report-box h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem; font-weight: 500; color: #f5ede0;
+  line-height: 1.25; margin-bottom: 12px;
+}
+
+.report-box p {
+  font-size: 1rem; color: rgba(245,237,224,.65);
+  line-height: 1.6; max-width: 480px; margin: 0 auto 28px;
+}
+
+.report-includes {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; max-width: 500px; margin: 0 auto 32px;
+  text-align: left;
+}
+
+.ri-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: .88rem; color: rgba(245,237,224,.75); line-height: 1.45;
+}
+
+.ri-item::before {
+  content: '◆'; color: var(--teal-light); font-size: .45rem;
+  flex-shrink: 0; margin-top: 6px;
+}
+
+.btn-report {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: var(--ink); border: none;
+  padding: 18px 44px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; font-weight: 600; letter-spacing: .04em;
+  border-radius: 3px; cursor: pointer; text-decoration: none;
+  transition: all .22s;
+}
+
+.btn-report:hover {
+  background: linear-gradient(135deg, #a9cef0, var(--gold-light));
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(79,134,196,.3);
+}
+
+/* ─── RESTART ─── */
+.restart-row {
+  text-align: center; margin-top: 16px;
+}
+
+.btn-restart {
+  font-family: 'DM Mono', monospace;
+  font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-dim); background: none; border: none;
+  cursor: pointer; text-decoration: underline;
+  transition: color .15s; padding: 8px;
+}
+
+.btn-restart:hover { color: var(--ink-mid); }
+
+/* ─── DIVIDER ─── */
+.section-divider {
+  border: none; border-top: 1px solid var(--rule-dark);
+  margin: 32px 0;
+}
+
+/* SECTION LABEL */
+.sec-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+/* NOTE BOX */
+.note-box {
+  background: var(--teal-pale); border: 1px solid rgba(199,95,134,.22);
+  border-radius: 4px; padding: 14px 16px;
+  font-size: .9rem; color: var(--ink-mid); line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.note-box strong { color: var(--teal); }
+
+/* FOOTER */
+.app-footer {
+  position: relative; z-index: 1;
+  background: var(--ink);
+  padding: 14px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: auto;
+}
+
+.app-footer .fl {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: .85rem;
+  color: rgba(245,237,224,.5);
+}
+
+.app-footer .fr {
+  font-family: 'DM Mono', monospace;
+  font-size: .55rem; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(245,237,224,.3);
+}
+
+@media (max-width: 640px) {
+  .main-wrap, #resultsScreen { padding: 32px 20px 60px; }
+  .mast { padding: 14px 20px; }
+  .progress-bar { padding: 0 20px; overflow-x: auto; }
+  .col-2, .col-3 { grid-template-columns: 1fr; }
+  .obj-grid { grid-template-columns: 1fr; }
+  .flag-grid { grid-template-columns: 1fr; }
+  .report-includes { grid-template-columns: 1fr; }
+  .rb-meta { gap: 14px; }
+}
+
+@media print {
+  .mast, .progress-bar, .step-nav, .btn-restart, .report-box,
+  .more-locked, .app-footer { display: none !important; }
+  body { background: white; font-size: 14px; }
+  #resultsScreen { padding: 20px; }
+  .result-banner { background: var(--ink) !important; -webkit-print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="mast">
+  <div class="mast-brand">
+    <div class="mast-gem">
+      <div class="gem-o"><div class="gem-i"><span class="gem-g">⬡</span></div></div>
+    </div>
+    <div>
+      <div class="mast-name">Joshua Herrington</div>
+      <div class="mast-sub">Cross-border planning, made clear</div>
+    </div>
+  </div>
+  <div class="mast-right">
+    <div class="mast-tool-label">Foreign National Client Discovery</div>
+  </div>
+</header>
+
+<!-- PROGRESS -->
+<nav class="progress-bar" id="progressBar">
+  <div class="step-indicator active" id="si-1" onclick="jumpTo(1)">
+    <div class="step-num"><span>1</span></div>
+    <div class="step-label">Client Profile</div>
+  </div>
+  <div class="step-indicator" id="si-2" onclick="jumpTo(2)">
+    <div class="step-num"><span>2</span></div>
+    <div class="step-label">Financial Profile</div>
+  </div>
+  <div class="step-indicator" id="si-3" onclick="jumpTo(3)">
+    <div class="step-num"><span>3</span></div>
+    <div class="step-label">U.S. Connections</div>
+  </div>
+  <div class="step-indicator" id="si-4" onclick="jumpTo(4)">
+    <div class="step-num"><span>4</span></div>
+    <div class="step-label">Status &amp; Presence</div>
+  </div>
+  <div class="step-indicator" id="si-5" onclick="jumpTo(5)">
+    <div class="step-num"><span>5</span></div>
+    <div class="step-label">Risk Profile</div>
+  </div>
+  <div class="progress-line" id="progressLine" style="width:0%"></div>
+</nav>
+
+<!-- FORM STEPS -->
+<form id="discoveryForm" onsubmit="return false;">
+<div class="main-wrap" id="formWrap">
+
+  <!-- ══ STEP 1: CLIENT PROFILE ══ -->
+  <div class="step-pane active" id="step-1">
+    <div class="step-hd">
+      <div class="step-eyebrow">Step 1 of 5</div>
+      <h2>Client Profile</h2>
+      <p>Begin with your client's personal information. All fields are for analysis purposes only — this information is not stored.</p>
+    </div>
+    <div class="fields">
+      <div class="field-row col-2">
+        <div class="field">
+          <label for="cName">Client Name <em style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</em></label>
+          <input type="text" id="cName" placeholder="Proposed Insured / Annuitant">
+        </div>
+        <div class="field">
+          <label for="cDob">Date of Birth</label>
+          <input type="date" id="cDob">
+        </div>
+      </div>
+      <div class="field-row col-3">
+        <div class="field">
+          <label for="cAge">Age</label>
+          <input type="number" id="cAge" placeholder="e.g. 54" min="18" max="90">
+        </div>
+        <div class="field">
+          <label for="cGender">Gender</label>
+          <div class="sel-wrap">
+            <select id="cGender">
+              <option value="">— Select —</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="prodType">Product Interest</label>
+          <div class="sel-wrap">
+            <select id="prodType">
+              <option value="both">Life + Annuity</option>
+              <option value="life">Life Insurance Only</option>
+              <option value="annuity">Annuity Only</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="field-row col-2">
+        <div class="field">
+          <label for="cCitizen">Country of Citizenship</label>
+          <div class="sel-wrap">
+            <select id="cCitizen"><option value="">— Select country —</option></select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cResidence">Country of Residence</label>
+          <div class="sel-wrap">
+            <select id="cResidence"><option value="">— Select country —</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <span class="step-count">Step 1 of 5</span>
+      <button type="button" class="btn-next" onclick="nextStep(1)">Continue &nbsp;→</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 2: FINANCIAL PROFILE ══ -->
+  <div class="step-pane" id="step-2">
+    <div class="step-hd">
+      <div class="step-eyebrow">Step 2 of 5</div>
+      <h2>Financial Profile</h2>
+      <p>The client's financial profile determines carrier eligibility thresholds and coverage justification. Enter approximate values.</p>
+    </div>
+    <div class="fields">
+      <div class="field-row col-2">
+        <div class="field">
+          <label for="cNW">Global Net Worth (USD)</label>
+          <div class="amt-wrap">
+            <span class="amt-pre">$</span>
+            <input type="number" id="cNW" placeholder="5,000,000">
+          </div>
+          <div class="hint">Include worldwide assets</div>
+        </div>
+        <div class="field">
+          <label for="cIncome">Annual Income (USD)</label>
+          <div class="amt-wrap">
+            <span class="amt-pre">$</span>
+            <input type="number" id="cIncome" placeholder="350,000">
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="cAmount">Coverage / Premium Amount (USD)</label>
+        <div class="amt-wrap">
+          <span class="amt-pre">$</span>
+          <input type="number" id="cAmount" placeholder="2,000,000">
+        </div>
+        <div class="hint">Face amount for life insurance, or single/annual premium for annuity</div>
+      </div>
+      <div class="field">
+        <label>Primary Objective</label>
+        <div class="obj-grid" id="objGrid">
+          <label class="obj-card selected">
+            <input type="radio" name="cGoal" value="estate" checked>
+            <div><div class="oc-label">Estate Planning</div><div class="oc-desc">Wealth transfer, legacy, ILIT strategies</div></div>
+          </label>
+          <label class="obj-card">
+            <input type="radio" name="cGoal" value="income_replacement">
+            <div><div class="oc-label">Income Replacement</div><div class="oc-desc">Protect family income and obligations</div></div>
+          </label>
+          <label class="obj-card">
+            <input type="radio" name="cGoal" value="accumulation">
+            <div><div class="oc-label">Accumulation</div><div class="oc-desc">Tax-advantaged long-term wealth building</div></div>
+          </label>
+          <label class="obj-card">
+            <input type="radio" name="cGoal" value="retirement">
+            <div><div class="oc-label">Retirement Planning</div><div class="oc-desc">Income, distribution, and tax strategies</div></div>
+          </label>
+          <label class="obj-card">
+            <input type="radio" name="cGoal" value="business">
+            <div><div class="oc-label">Business Protection</div><div class="oc-desc">Key person, buy-sell, executive benefit</div></div>
+          </label>
+          <label class="obj-card">
+            <input type="radio" name="cGoal" value="tax_adv">
+            <div><div class="oc-label">Tax-Advantaged Growth</div><div class="oc-desc">Minimize tax on growth and income</div></div>
+          </label>
+        </div>
+      </div>
+      <div class="field-row col-2">
+        <div class="field">
+          <label>Spouse Also Seeking Coverage?</label>
+          <div class="sel-wrap">
+            <select id="spouseCov">
+              <option value="no">No</option>
+              <option value="yes">Yes — needs own coverage</option>
+              <option value="yes_nexus">Yes — spouse has own U.S. nexus</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="nw1m">Net Worth ≥ $1,000,000 USD?</label>
+          <div class="yn-toggle">
+            <button type="button" class="yn-btn sel-yes" id="nw1m-y" onclick="setYN('nw1m','yes')">Yes</button>
+            <button type="button" class="yn-btn" id="nw1m-n" onclick="setYN('nw1m','no')">No</button>
+          </div>
+          <input type="hidden" id="nw1m" value="yes">
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep(2)">← Back</button>
+      <span class="step-count">Step 2 of 5</span>
+      <button type="button" class="btn-next" onclick="nextStep(2)">Continue &nbsp;→</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 3: U.S. CONNECTIONS ══ -->
+  <div class="step-pane" id="step-3">
+    <div class="step-hd">
+      <div class="step-eyebrow">Step 3 of 5</div>
+      <h2>U.S. Connections</h2>
+      <p>Select all that apply to your client. These connections determine which carriers your client may access and at what tier.</p>
+    </div>
+    <div class="fields">
+      <div>
+        <div class="sec-label">Assets &amp; Business Interests</div>
+        <div class="nexus-section">
+          <label class="nx-item" id="nx-res">
+            <span class="nx-check"><input type="checkbox" class="ncb" value="us_residence" onchange="toggleNx(this,'nd-res')"> U.S. Residence</span>
+            <div class="nx-detail-wrap" id="nd-res"><input type="text" placeholder="City, State"></div>
+          </label>
+          <label class="nx-item" id="nx-re">
+            <span class="nx-check"><input type="checkbox" class="ncb" value="real_estate" onchange="toggleNx(this,'nd-re')"> U.S. Property / Real Estate</span>
+            <div class="nx-detail-wrap" id="nd-re"><input type="text" placeholder="Est. value $"></div>
+          </label>
+          <label class="nx-item">
+            <span class="nx-check"><input type="checkbox" class="ncb" value="us_employed"> Employed by a U.S. Business</span>
+          </label>
+          <label class="nx-item">
+            <span class="nx-check"><input type="checkbox" class="ncb" value="us_business"> Ownership of a U.S. Business</span>
+          </label>
+          <label class="nx-item">
+            <span class="nx-check"><input type="checkbox" class="ncb" value="us_biz_conducts"> Conducts business regularly with a U.S. Business</span>
+          </label>
+          <label class="nx-item" id="nx-brok">
+            <span class="nx-check"><input type="checkbox" class="ncb" value="us_brokerage" onchange="toggleNx(this,'nd-brok')"> U.S. Brokerage Account</span>
+            <div class="nx-detail-wrap" id="nd-brok"><input type="text" placeholder="Balance $"></div>
+          </label>
+          <label class="nx-item" id="nx-bank">
+            <span class="nx-check"><input type="checkbox" class="ncb" value="us_bank" onchange="toggleNx(this,'nd-bank');toggleBankQs(this)"> U.S. Bank Account</span>
+            <div class="nx-detail-wrap" id="nd-bank"><input type="text" placeholder="Balance $"></div>
+          </label>
+          <div class="thresh-box" id="thresh-box">
+            <p>
+              <strong>Key thresholds for carrier eligibility:</strong><br>
+              ≥ $250,000 held ≥ 6 months → John Hancock &amp; Pacific Life financial presence ✓<br>
+              ≥ $100,000 held ≥ 3 months → National Life (life &amp; annuity) nexus ✓<br>
+              ≥ $25,000 held ≥ 30 days → Lincoln Life nexus ✓<br>
+              ≥ $10,000 held ≥ 30 days → Symetra nexus ✓
+            </p>
+          </div>
+          <div class="bank-qs" id="bank-qs">
+            <div class="field">
+              <label>Account balance ≥ $250,000, held ≥ 6 months?</label>
+              <div class="yn-toggle">
+                <button type="button" class="yn-btn" id="b250k-y" onclick="setYN('bank250k','yes')">Yes</button>
+                <button type="button" class="yn-btn" id="b250k-n" onclick="setYN('bank250k','no')">No</button>
+              </div>
+              <input type="hidden" id="bank250k" value="">
+            </div>
+            <div class="field">
+              <label>Account balance ≥ $25,000, held ≥ 30 days?</label>
+              <div class="yn-toggle">
+                <button type="button" class="yn-btn" id="b25k-y" onclick="setYN('bank25k','yes')">Yes</button>
+                <button type="button" class="yn-btn" id="b25k-n" onclick="setYN('bank25k','no')">No</button>
+              </div>
+              <input type="hidden" id="bank25k" value="">
+            </div>
+          </div>
+          <label class="nx-item" id="nx-ann">
+            <span class="nx-check"><input type="checkbox" class="ncb" value="us_annuity" onchange="toggleNx(this,'nd-ann')"> Existing U.S. Annuity</span>
+            <div class="nx-detail-wrap" id="nd-ann"><input type="text" placeholder="Amount $"></div>
+          </label>
+          <label class="nx-item">
+            <span class="nx-check"><input type="checkbox" class="ncb" value="pct_assets_25"> More than 25% of total assets are in the U.S.</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep(3)">← Back</button>
+      <span class="step-count">Step 3 of 5</span>
+      <button type="button" class="btn-next" onclick="nextStep(3)">Continue &nbsp;→</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 4: STATUS & PRESENCE ══ -->
+  <div class="step-pane" id="step-4">
+    <div class="step-hd">
+      <div class="step-eyebrow">Step 4 of 5</div>
+      <h2>U.S. Status &amp; Presence</h2>
+      <p>Citizenship, visa status, and physical presence in the U.S. affect both nexus qualification and the ability to sign applications with domestic carriers.</p>
+    </div>
+    <div class="fields">
+      <div>
+        <div class="sec-label">Citizenship &amp; Legal Status</div>
+        <div class="nexus-section">
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="us_citizenship"> U.S. Citizenship</span></label>
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="spouse_citizen"> Spouse or Children have U.S. Citizenship</span></label>
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="green_card"> U.S. Green Card (Permanent Resident)</span></label>
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="spouse_green"> Spouse or Children have U.S. Green Card</span></label>
+          <label class="nx-item" id="nx-visa">
+            <span class="nx-check"><input type="checkbox" class="ncb" value="us_visa" onchange="toggleNx(this,'nd-visa')"> U.S. Visa (active)</span>
+            <div class="nx-detail-wrap" id="nd-visa"><input type="text" placeholder="Visa type"></div>
+          </label>
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="eb5"> EB-5 Investor Applicant</span></label>
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="ssn_tin"> U.S. Social Security Number or Tax ID (TIN)</span></label>
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="us_student"> Full-Time Student at a U.S. University</span></label>
+        </div>
+      </div>
+      <hr class="section-divider">
+      <div>
+        <div class="sec-label">Family Ties &amp; Physical Presence</div>
+        <div class="nexus-section">
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="family_us"> Immediate family (spouse, children, parents, siblings) living in the U.S.</span></label>
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="spouse_us"> Spouse or children live in the U.S.</span></label>
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="married_us_citizen"> Married to a U.S. Citizen</span></label>
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="regular_travel"> Travels to the U.S. regularly for business or pleasure</span></label>
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="present_15d"> Present in the U.S. for 15 or more days in the preceding 12 months</span></label>
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="present_6mo"> Present in the U.S. for 6 or more months in the preceding 12 months</span></label>
+          <label class="nx-item"><span class="nx-check"><input type="checkbox" class="ncb" value="can_travel_sign"> Client can travel to the U.S. to sign the application</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep(4)">← Back</button>
+      <span class="step-count">Step 4 of 5</span>
+      <button type="button" class="btn-next" onclick="nextStep(4)">Continue &nbsp;→</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 5: RISK PROFILE ══ -->
+  <div class="step-pane" id="step-5">
+    <div class="step-hd">
+      <div class="step-eyebrow">Step 5 of 5</div>
+      <h2>Risk Profile</h2>
+      <p>Certain occupations and statuses create automatic exclusions at one or more carriers. Please select any that apply to your client.</p>
+    </div>
+    <div class="fields">
+      <div class="flag-intro">
+        If any of the following apply, it does <strong>not</strong> disqualify your client entirely — it affects which carriers are available. Select all that are relevant.
+      </div>
+      <div class="flag-grid">
+        <label class="flag-item"><input type="checkbox" class="fcb" value="politician"> Politician / Government Official</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="military"> Military / Police / Security Personnel</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="journalist"> Journalist / Media Figure</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="missionary"> Missionary</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="athlete"> Professional Athlete</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="entertainer"> Entertainer / Performer</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="royal"> Member of a Royal Family</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="diplomat"> Diplomat</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="union"> Trade Union Official</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="aviation"> Pilot (Private or Commercial)</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="pep"> Politically Exposed Person (PEP)</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="aid_worker"> Aid / Humanitarian Worker</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="judge"> Judge / Judicial Personnel</label>
+        <label class="flag-item"><input type="checkbox" class="fcb" value="celebrity"> High-Profile Public Figure / Celebrity</label>
+      </div>
+      <div class="note-box" style="margin-top:6px">
+        <strong>None of the above apply?</strong> That's great — leave all unchecked and proceed to analyze.
+      </div>
+    </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep(5)">← Back</button>
+      <span class="step-count">Step 5 of 5</span>
+      <button type="button" class="btn-analyze" onclick="runAnalysis()">
+        Run Analysis &nbsp;⬡
+      </button>
+    </div>
+  </div>
+
+</div><!-- end main-wrap -->
+</form>
+
+<!-- RESULTS SCREEN -->
+<div id="resultsScreen">
+
+  <div class="result-banner">
+    <div class="result-banner-inner">
+      <div class="rb-eyebrow">Analysis Complete</div>
+      <div class="rb-title" id="rb-title">Foreign National Opportunity Analysis</div>
+      <div class="rb-sub" id="rb-sub">Based on the information provided, we have evaluated your client's eligibility across life insurance and annuity carriers in our network.</div>
+      <div class="rb-meta" id="rb-meta"></div>
+    </div>
+  </div>
+
+  <div class="match-count">
+    <div class="big" id="mc-count">—</div>
+    <div class="big-label">Potential Carrier Matches Identified</div>
+    <div class="sub-note" id="mc-note"></div>
+  </div>
+
+  <div class="opp-section-title">Highlighted Opportunities</div>
+  <div class="opp-grid" id="oppGrid"></div>
+
+  <div class="more-locked" id="moreLocked">
+    <p id="moreLockedText">Your full analysis includes additional carrier matches and detailed eligibility guidance.</p>
+    <span style="font-size:1.4rem;color:var(--ink-dim)">🔒</span>
+  </div>
+
+  <div class="report-box">
+    <div class="report-box-inner">
+      <div class="eyebrow">Request Your Full Report</div>
+      <h3>Get the Complete<br>Carrier Analysis</h3>
+      <p>Submit your client profile and our team will prepare a detailed, carrier-by-carrier eligibility report — including documentation requirements, nexus guidance, and recommended next steps.</p>
+      <div class="report-includes">
+        <div class="ri-item">Full carrier names &amp; eligibility status</div>
+        <div class="ri-item">Country tier classification per carrier</div>
+        <div class="ri-item">Nexus documentation requirements</div>
+        <div class="ri-item">Financial &amp; physical presence analysis</div>
+        <div class="ri-item">Occupation exclusion review</div>
+        <div class="ri-item">Ownership &amp; premium payment guidance</div>
+        <div class="ri-item">AML &amp; compliance checklist</div>
+        <div class="ri-item">Prioritized recommended next steps</div>
+      </div>
+      <a href="/#connect" target="_blank" class="btn-report" id="reportBtn">
+        Request Full Carrier Report &nbsp;→
+      </a>
+    </div>
+  </div>
+
+  <div class="restart-row">
+    <button class="btn-restart" onclick="restart()">← Start a new client analysis</button>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="app-footer">
+  <div class="fl">"Across Borders. Across Generations." — Joshua Herrington</div>
+  <div class="fr">For Licensed Advisors Only &nbsp;·&nbsp; Confidential &amp; Proprietary</div>
+</footer>
+
+<script>
+// ═══════════════════════════════════
+// COUNTRIES
+// ═══════════════════════════════════
+const COUNTRIES = ['Afghanistan','Albania','Algeria','American Samoa','Andorra','Anguilla','Antigua and Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belgium','Belize','Bermuda','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','British Virgin Islands','Brunei','Bulgaria','Burundi','Cambodia','Cameroon','Canada','Canary Islands','Cape Verde','Cayman Islands','Chile','China','Colombia','Cook Islands','Costa Rica','Croatia','Cuba','Curacao','Cyprus','Czech Republic','Denmark','Dominica','Dominican Republic','Ecuador','Egypt','El Salvador','Estonia','Ethiopia','Fiji','Finland','France','French Guiana','French Polynesia','Germany','Ghana','Greece','Greenland','Grenada','Guadeloupe','Guatemala','Guyana','Haiti','Honduras','Hong Kong','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kuwait','Latvia','Liechtenstein','Lithuania','Luxembourg','Macau','Malaysia','Maldives','Malta','Marshall Islands','Martinique','Mauritius','Mexico','Monaco','Mongolia','Montenegro','Morocco','Nepal','Netherlands','New Caledonia','New Zealand','Nicaragua','Nigeria','North Korea','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Puerto Rico','Qatar','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent','Samoa','San Marino','Saudi Arabia','Senegal','Serbia','Seychelles','Singapore','Sint Maarten','Slovakia','Slovenia','Solomon Islands','South Africa','South Korea','Spain','Sri Lanka','Sweden','Switzerland','Syria','Taiwan','Tanzania','Thailand','Trinidad and Tobago','Tunisia','Turkey','Turks and Caicos','Uganda','Ukraine','United Arab Emirates','United Kingdom','Uruguay','Uzbekistan','Vatican City','Venezuela','Vietnam','Zambia','Zimbabwe'];
+
+['cCitizen','cResidence'].forEach(id => {
+  const s = document.getElementById(id);
+  COUNTRIES.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; s.appendChild(o); });
+});
+
+// ═══════════════════════════════════
+// STEP NAVIGATION
+// ═══════════════════════════════════
+let currentStep = 1;
+const TOTAL_STEPS = 5;
+
+const progressWidths = ['0%','20%','40%','60%','80%','100%'];
+
+function updateProgress(step) {
+  document.querySelectorAll('.step-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.step-indicator').forEach((si, i) => {
+    si.classList.remove('active','completed');
+    if (i+1 < step) si.classList.add('completed');
+    if (i+1 === step) si.classList.add('active');
+  });
+  document.getElementById('step-'+step).classList.add('active');
+  document.getElementById('progressLine').style.width = progressWidths[step];
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function nextStep(from) {
+  if (from === 1) {
+    if (!document.getElementById('cResidence').value) {
+      alert('Please select the country of residence to continue.'); return;
+    }
+  }
+  currentStep = from + 1;
+  updateProgress(currentStep);
+}
+
+function prevStep(from) {
+  currentStep = from - 1;
+  updateProgress(currentStep);
+}
+
+function jumpTo(step) {
+  if (step <= currentStep) { currentStep = step; updateProgress(step); }
+}
+
+// ═══════════════════════════════════
+// FORM INTERACTIONS
+// ═══════════════════════════════════
+function toggleNx(cb, detId) {
+  const det = document.getElementById(detId);
+  const item = cb.closest('.nx-item');
+  if (cb.checked) item.classList.add('checked');
+  else { item.classList.remove('checked'); }
+}
+
+function toggleBankQs(cb) {
+  const bqs = document.getElementById('bank-qs');
+  const tb  = document.getElementById('thresh-box');
+  bqs.classList.toggle('show', cb.checked);
+  tb.classList.toggle('show', cb.checked);
+}
+
+function setYN(id, val) {
+  document.getElementById(id).value = val;
+  const yBtn = document.getElementById(id.replace('m','m')+'-y') || document.getElementById('b'+id.replace('bank','').replace('k','k')+'-y');
+  // simpler: find by id pattern
+  const allY = document.querySelectorAll('[id$="-y"]');
+  const allN = document.querySelectorAll('[id$="-n"]');
+  allY.forEach(b => { if (b.id.startsWith(id.replace('bank','b').replace('1m','1m').replace('250k','250k').replace('25k','25k'))) {
+    b.classList.toggle('sel-yes', val==='yes'); b.classList.toggle('sel-no', val==='no');
+  }});
+  allN.forEach(b => { if (b.id.startsWith(id.replace('bank','b').replace('1m','1m').replace('250k','250k').replace('25k','25k'))) {
+    b.classList.toggle('sel-no', val==='no'); b.classList.toggle('sel-yes', false);
+  }});
+
+  // simpler approach
+  const yId = id === 'nw1m' ? 'nw1m-y' : id === 'bank250k' ? 'b250k-y' : 'b25k-y';
+  const nId = id === 'nw1m' ? 'nw1m-n' : id === 'bank250k' ? 'b250k-n' : 'b25k-n';
+  const yEl = document.getElementById(yId);
+  const nEl = document.getElementById(nId);
+  if (yEl && nEl) {
+    yEl.className = 'yn-btn' + (val==='yes' ? ' sel-yes' : '');
+    nEl.className = 'yn-btn' + (val==='no'  ? ' sel-no'  : '');
+  }
+}
+
+// Objective card selection highlight
+document.getElementById('objGrid').addEventListener('change', e => {
+  document.querySelectorAll('.obj-card').forEach(c => c.classList.remove('selected'));
+  if (e.target.type==='radio') e.target.closest('.obj-card').classList.add('selected');
+});
+
+// Flag item checked state
+document.querySelectorAll('.flag-item').forEach(fi => {
+  fi.addEventListener('change', e => {
+    fi.classList.toggle('flagged', e.target.checked);
+  });
+});
+
+// ═══════════════════════════════════
+// ANALYSIS DATA (imported from platform)
+// ═══════════════════════════════════
+const PAN_APPROVED = ['Argentina','Australia','Austria','Bahrain','Belgium','Belize','Bermuda','Bolivia','Brazil','Canada','Canary Islands','Chile','China','Colombia','Costa Rica','Denmark','Dominican Republic','Ecuador','El Salvador','Finland','France','Germany','Greece','Guatemala','Honduras','Hong Kong','Israel','Italy','Japan','Luxembourg','Mexico','Monaco','Netherlands','New Zealand','Nicaragua','Norway','Panama','Paraguay','Peru','Portugal','Qatar','San Marino','Singapore','South Korea','Spain','Sweden','Switzerland','Taiwan','Turks and Caicos','United Kingdom','Uruguay','Venezuela'];
+const PAN_CARIBBEAN = ['Antigua','Aruba','Bermuda','Cayman Islands','Curacao','Grenada','Jamaica','Martinique','Montserrat','Netherlands Antilles','Saint Kitts','Saint Lucia','Saint Vincent','Sint Maarten','Trinidad','Virgin Islands','Dominican Republic'];
+const PAN_EXCL = ['Anguilla','Barbados','Cuba','Dominica','Guadeloupe','Haiti'];
+
+function panOK(c){ 
+  const cl=c.toLowerCase();
+  if(PAN_EXCL.some(x=>cl.includes(x.toLowerCase()))) return false;
+  if(PAN_APPROVED.some(x=>cl.includes(x.toLowerCase()))) return true;
+  if(PAN_CARIBBEAN.some(x=>cl.includes(x.toLowerCase()))) return true;
+  return false;
+}
+
+function lincolnOK(c){
+  const dec=['Afghanistan','Burundi','Central African Republic','Ivory Coast','Eritrea','Ethiopia','Haiti','Iran','Iraq','Sierra Leone','Mali','Niger','Nigeria','Pakistan','South Sudan','Syria','Tajikistan','Venezuela','Western Sahara'];
+  return !dec.some(x=>c.toLowerCase().includes(x.toLowerCase()));
+}
+
+function symetraOK(c){
+  const no=['Iran','Iraq','Syria','North Korea','Venezuela','Sudan','Cuba'];
+  return !no.some(x=>c.toLowerCase().includes(x.toLowerCase()));
+}
+
+function jhOK(c){
+  const noC=['Iran','Iraq','Syria','North Korea','Venezuela','Sudan','Cuba','Afghanistan','Pakistan'];
+  const a=['Andorra','Anguilla','Aruba','Australia','Austria','Bahrain','Barbados','Belgium','Bermuda','British Virgin Islands','Brunei','Canada','Canary Islands','Cayman Islands','Chile','China','Costa Rica','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland','France','Germany','Greece','Hong Kong','Hungary','Iceland','Ireland','Italy','Korea','Kuwait','Latvia','Liechtenstein','Lithuania','Luxembourg','Macau','Malta','Martinique','Monaco','Netherlands','New Zealand','Norway','Oman','Palau','Poland','Portugal','Qatar','San Marino','Saudi Arabia','Seychelles','Slovakia','Slovenia','Spain','Sweden','Taiwan','United Arab Emirates','United Kingdom','Uruguay'];
+  const b=['Albania','Antigua','Argentina','Armenia','Bahamas','Bosnia','Botswana','Brazil','Bulgaria','Curacao','Dominica','Dominican Republic','French Polynesia','Grenada','Guadeloupe','Indonesia','Jamaica','Jordan','Kazakhstan','Malaysia','Maldives','Mauritius','Mexico','Montenegro','Morocco','New Caledonia','Panama','Peru','Romania','Saint Kitts','Saint Lucia','Samoa','Serbia','Suriname','Thailand','Trinidad','Turkey','Vietnam'];
+  const cc=['Algeria','Bangladesh','Belize','Bhutan','Bolivia','Cambodia','Cape Verde','Colombia','Egypt','Fiji','French Guiana','Georgia','Ghana','Guatemala','Guyana','India','Kenya','Mongolia','Nepal','Nicaragua','Paraguay','Philippines','Rwanda','Senegal','South Africa','Sri Lanka','Tonga','Tunisia','Uzbekistan','Zambia'];
+  if(noC.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return 'no';
+  if(a.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return 'yes';
+  if(cc.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return 'conditional';
+  if(b.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return 'yes';
+  return 'no';
+}
+
+function pacOK(c){
+  const d=['Afghanistan','Chad','Congo','Ethiopia','Gaza','Haiti','Iran','Iraq','Liberia','Libya','North Korea','Pakistan','Sierra Leone','Somalia','Sudan','Syria','Venezuela','Yemen'];
+  const a=['Australia','Austria','Belgium','Bermuda','Canada','China','Czech Republic','Denmark','Dominican Republic','Finland','France','Germany','Greece','Hong Kong','Iceland','Ireland','Israel','Italy','Japan','Netherlands','New Zealand','Norway','Poland','Portugal','Puerto Rico','Singapore','Spain','Sweden','Switzerland','Taiwan','United Arab Emirates','United Kingdom','Vietnam','Zimbabwe'];
+  const b=['Argentina','Armenia','Aruba','Bahamas','Barbados','Brazil','Bulgaria','Chile','Costa Rica','Croatia','Cuba','Ecuador','Jamaica','Malaysia','Mexico','Panama','Romania','Russia','Saudi Arabia','Serbia','South Africa','South Korea','Turkey'];
+  const cc=['Belize','Bolivia','Bosnia','Cambodia','Cameroon','Cape Verde','Colombia','Egypt','El Salvador','Guatemala','Honduras','India','Indonesia','Jordan','Kenya','Nepal','Nicaragua','Nigeria','Paraguay','Peru','Philippines','Rwanda','Sri Lanka','Thailand','Uganda','Ukraine'];
+  if(d.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return 'no';
+  if(a.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return 'yes';
+  if(cc.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return 'conditional';
+  if(b.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return 'yes';
+  return 'no';
+}
+
+function ofacBlocked(c){
+  return ['Iran','Iraq','Syria','North Korea','Venezuela','Sudan','Cuba','Somalia','Yemen','Afghanistan','Libya'].some(x=>c.toLowerCase().includes(x.toLowerCase()));
+}
+
+// ═══════════════════════════════════
+// ANALYSIS ENGINE
+// ═══════════════════════════════════
+function runAnalysis() {
+  const country  = document.getElementById('cResidence').value;
+  const citizenship = document.getElementById('cCitizen').value;
+  const amount   = parseFloat(document.getElementById('cAmount').value)||0;
+  const nw       = parseFloat(document.getElementById('cNW').value)||0;
+  const income   = parseFloat(document.getElementById('cIncome').value)||0;
+  const name     = document.getElementById('cName').value.trim()||'Your Client';
+  const nexus    = Array.from(document.querySelectorAll('.ncb:checked')).map(cb=>cb.value);
+  const flags    = Array.from(document.querySelectorAll('.fcb:checked')).map(cb=>cb.value);
+  const bank250k = document.getElementById('bank250k').value;
+  const goal     = document.querySelector('input[name=cGoal]:checked')?.value || 'estate';
+  const prodType = document.getElementById('prodType').value;
+  const spouseCov = document.getElementById('spouseCov').value;
+
+  if (!country) { alert('Please select country of residence first.'); currentStep=1; updateProgress(1); return; }
+  if (amount===0) { alert('Please enter a coverage or premium amount.'); currentStep=2; updateProgress(2); return; }
+
+  const ctx = { country, citizenship, amount, nw, income, name, nexus, flags, bank250k, goal, prodType, spouseCov };
+
+  // ─── SCORE EACH CARRIER ───
+  const results = [];
+  const hasNexus = nexus.length > 0;
+  const canSign  = nexus.includes('can_travel_sign');
+  const hasFin   = bank250k==='yes' || nexus.includes('us_brokerage') || nexus.includes('pct_assets_25');
+  const hasPhys  = nexus.includes('present_15d') || nexus.includes('regular_travel') || nexus.includes('us_employed');
+  const hasWorkHome = nexus.includes('us_employed') || nexus.includes('real_estate') || nexus.includes('us_business');
+  const isOfac   = ofacBlocked(country);
+
+  // LIFE CARRIERS
+  if (prodType !== 'annuity') {
+    // Lincoln
+    const lincExcl = ['politician','military','journalist','missionary','athlete','entertainer','royal','diplomat','union','aviation','pep','judge','celebrity'];
+    const lincHit  = flags.filter(f=>lincExcl.includes(f));
+    const lincOK   = lincolnOK(country) && !lincHit.length && hasNexus;
+    const lincCond = lincolnOK(country) && !lincHit.length && !hasNexus;
+    if (lincolnOK(country) && !lincHit.length) {
+      results.push({
+        id:'lincoln', product:'life', status: lincOK?'eligible':'conditional',
+        headline:'Major U.S. Life Carrier — No Presence Requirements',
+        desc:'No financial or physical presence requirements beyond nexus. Accepts foreign address for individual owners. Spouse may be eligible up to $10M.',
+        attrs:[
+          {label:'No Fin. Presence Req.', cls:'attr-green'},
+          {label:'No Phys. Presence Req.', cls:'attr-green'},
+          {label: hasNexus?'Nexus: Documented':'Nexus: Required', cls: hasNexus?'attr-teal':'attr-amber'},
+          {label:'Country: '+( lincolnOK(country)?'Approved':'Review'), cls: lincolnOK(country)?'attr-teal':'attr-amber'},
+          {label:'Up to $60M Jumbo', cls:'attr-ink'},
+        ]
+      });
+    }
+
+    // Symetra
+    const symExcl = ['missionary','politician','judge','journalist','military','athlete','entertainer','aviation'];
+    const symHit  = flags.filter(f=>symExcl.includes(f));
+    if (symetraOK(country) && !symHit.length && hasNexus) {
+      results.push({
+        id:'symetra', product:'life', status:'eligible',
+        headline:'U.S. Life Carrier — Flexible Nexus Criteria',
+        desc:'Accepts a broad range of U.S. connections as nexus, including travel and family ties. LPOA available for policy delivery. No financial presence required.',
+        attrs:[
+          {label:'No Fin. Presence Req.', cls:'attr-green'},
+          {label:'LPOA for Delivery', cls:'attr-teal'},
+          {label:'Nexus: Documented', cls:'attr-teal'},
+          {label:'$10K Bank Account OK', cls:'attr-gold'},
+          {label:'$35M Jumbo', cls:'attr-ink'},
+        ]
+      });
+    }
+
+    // JH
+    const jhExcl = ['politician','military','journalist','missionary','athlete','entertainer','royal','diplomat','union','pep','judge'];
+    const jhHit  = flags.filter(f=>jhExcl.includes(f));
+    const jhC    = jhOK(country);
+    if (jhC!=='no' && !jhHit.length) {
+      const jhStatus = (jhC==='conditional'||!hasFin||!hasPhys) ? 'conditional' : 'eligible';
+      results.push({
+        id:'jh', product:'life', status: jhStatus,
+        headline:'Premium U.S. Life Carrier — Up to $65M',
+        desc:'Highest jumbo capacity. No separate LPOA required. Electronic delivery available. Requires financial and physical U.S. presence in addition to nexus.',
+        attrs:[
+          {label:'$65M Jumbo', cls:'attr-teal'},
+          {label: hasFin?'Fin. Presence: ✓':'Fin. Presence: ≥$250K Req.', cls: hasFin?'attr-green':'attr-amber'},
+          {label: hasPhys?'Phys. Presence: ✓':'≥15 Days/Year Req.', cls: hasPhys?'attr-green':'attr-amber'},
+          {label:'Country: '+(jhC==='yes'?'Approved':jhC==='conditional'?'Conditional':'Review'), cls: jhC==='yes'?'attr-teal':jhC==='conditional'?'attr-cond':'attr-amber'},
+          {label:'$5M Net Worth Req.', cls:'attr-ink'},
+        ]
+      });
+    }
+
+    // Pacific Life
+    const pacExcl = ['aid_worker','aviation','journalist','military','diplomat','pep','politician','missionary','union','athlete','royal','judge'];
+    const pacHit  = flags.filter(f=>pacExcl.includes(f));
+    const pacC    = pacOK(country);
+    if (pacC!=='no' && !pacHit.length) {
+      results.push({
+        id:'pacific', product:'life', status: (pacC==='conditional'||!hasFin||!hasPhys)?'conditional':'eligible',
+        headline:'Premium U.S. Life Carrier — Highest Retention',
+        desc:'Highest auto-bind and retention capacity. Requires verified U.S. financial and physical presence. IP tracking applies to electronic delivery.',
+        attrs:[
+          {label:'$65M Jumbo / Included', cls:'attr-teal'},
+          {label: hasFin?'Fin. Presence: ✓':'$250K U.S. Assets Req.', cls: hasFin?'attr-green':'attr-amber'},
+          {label: hasPhys?'Phys. Presence: ✓':'≥15 Days/Year Req.', cls: hasPhys?'attr-green':'attr-amber'},
+          {label:'Country: '+(pacC==='yes'?'Approved':pacC==='conditional'?'Conditional':'Review'), cls: pacC==='yes'?'attr-teal':pacC==='conditional'?'attr-cond':'attr-amber'},
+        ]
+      });
+    }
+
+    // National Life
+    const nlExcl = ['politician','military','pep','missionary','aviation','athlete','celebrity'];
+    const nlHit  = flags.filter(f=>nlExcl.includes(f));
+    if (!isOfac && !nlHit.length && (nexus.includes('real_estate')||nexus.includes('us_business')||nexus.includes('us_bank')||nexus.includes('us_residence')||nexus.includes('married_us_citizen')||nexus.includes('us_student')||nexus.includes('eb5'))) {
+      results.push({
+        id:'natlife', product:'life', status:'eligible',
+        headline:'U.S. Life Carrier — Permanent Products Specialist',
+        desc:'Strong permanent life insurance carrier for qualified foreign nationals with documented U.S. nexus. Valid U.S. address required. No financial presence hurdle.',
+        attrs:[
+          {label:'Permanent Products Only', cls:'attr-gold'},
+          {label:'U.S. Address Required', cls:'attr-amber'},
+          {label:'OFAC Compliant ✓', cls:'attr-green'},
+          {label:'Min. $500K Face', cls:'attr-ink'},
+          {label:'Up to $30M (70)', cls:'attr-ink'},
+        ]
+      });
+    }
+
+    // Pan Am
+    if (panOK(country) && !flags.includes('pep')) {
+      if (canSign) {
+        results.push({
+          id:'pan1', product:'life', status:'eligible',
+          headline:'International Life Carrier — No Nexus Required',
+          desc:'No U.S. nexus required. Wire transfers accepted from any global bank without U.S. sanctions. Credit card payment accepted. Broadest ownership structures including foreign entities.',
+          attrs:[
+            {label:'No Nexus Required ✓', cls:'attr-green'},
+            {label:'Global Wire + Credit Card', cls:'attr-teal'},
+            {label:'Foreign Entity Ownership OK', cls:'attr-teal'},
+            {label:'Country: Approved', cls:'attr-green'},
+            {label:'Sign in U.S.', cls:'attr-ink'},
+          ]
+        });
+      } else {
+        results.push({
+          id:'pan3', product:'life', status:'eligible',
+          headline:'Offshore Life Carrier — Sign Outside the U.S.',
+          desc:'No nexus required. No U.S. travel required. Signed entirely outside the U.S. Accepts global wire and credit card. Ideal for clients who cannot or prefer not to travel to the U.S.',
+          attrs:[
+            {label:'No Nexus Required ✓', cls:'attr-green'},
+            {label:'No U.S. Visit Needed', cls:'attr-green'},
+            {label:'Sign Abroad', cls:'attr-teal'},
+            {label:'Global Wire + AMEX', cls:'attr-teal'},
+            {label:'Country: Approved', cls:'attr-green'},
+          ]
+        });
+      }
+    }
+  }
+
+  // ANNUITY CARRIERS
+  if (prodType !== 'life' && !isOfac) {
+    const isNonUSTies = !nexus.some(n=>['real_estate','us_employed','us_business','us_bank','us_brokerage','us_residence','ssn_tin'].includes(n));
+
+    // Lincoln annuity
+    if (hasNexus && canSign && lincolnOK(country)) {
+      results.push({
+        id:'alincoln', product:'annuity', status:'eligible',
+        headline:'U.S. Annuity — Broad Product Range',
+        desc:'All individual annuity types available: fixed, indexed, variable, and immediate income (SPIA). Foreign address accepted for correspondence. No foreign currency.',
+        attrs:[
+          {label:'Fixed / Indexed / Variable', cls:'attr-teal'},
+          {label:'SPIA Available', cls:'attr-gold'},
+          {label:'Foreign Mail OK', cls:'attr-green'},
+          {label:'U.S. Sign Required', cls:'attr-amber'},
+          {label:'Nexus Required', cls:'attr-ink'},
+        ]
+      });
+    }
+
+    // Jackson annuity
+    if (hasWorkHome && canSign) {
+      results.push({
+        id:'ajkn', product:'annuity', status:hasWorkHome?'eligible':'conditional',
+        headline:'U.S. Annuity — Fixed, Indexed &amp; Variable',
+        desc:'Strong annuity provider for clients with substantive U.S. business or residential ties. POA can sign application. Correspondence mailed to foreign address after issue.',
+        attrs:[
+          {label:'Fixed / Indexed / Variable', cls:'attr-teal'},
+          {label:'POA Signing OK', cls:'attr-green'},
+          {label:'Foreign Mail Post-Issue', cls:'attr-green'},
+          {label:hasWorkHome?'Work/Home Nexus: ✓':'Work/Home Nexus: Req.', cls:hasWorkHome?'attr-teal':'attr-amber'},
+        ]
+      });
+    }
+
+    // Carrier B International (offshore annuity)
+    if (isNonUSTies && !nexus.includes('us_citizenship') && !nexus.includes('us_residence')) {
+      results.push({
+        id:'axointl', product:'annuity', status:'eligible',
+        headline:'Offshore Annuity — No Nexus or U.S. Presence',
+        desc:'The only annuity option for clients with no U.S. ties. No nexus required. No U.S. travel required. Application signed abroad. Guaranteed fixed and index strategies available.',
+        attrs:[
+          {label:'No Nexus Required ✓', cls:'attr-green'},
+          {label:'No U.S. Visit Needed ✓', cls:'attr-green'},
+          {label:'Fixed &amp; Index Strategies', cls:'attr-teal'},
+          {label:'Non-U.S. Persons Only', cls:'attr-gold'},
+          {label:'Sign Abroad', cls:'attr-ink'},
+        ]
+      });
+    }
+  }
+
+  // TOTAL MATCH COUNT (unique carrier IDs)
+  const totalPossible = results.length;
+  const eligibleCount = results.filter(r=>r.status==='eligible').length;
+  const condCount     = results.filter(r=>r.status==='conditional').length;
+
+  // Sort: eligible first
+  results.sort((a,b)=>(a.status==='eligible'?0:1)-(b.status==='eligible'?0:1));
+
+  // Pick top 3 to show
+  const shown  = results.slice(0,3);
+  const hidden = results.length - shown.length;
+
+  // ─── BUILD RESULTS UI ───
+  const goalLabels = {
+    estate:'Estate Planning / Legacy', income_replacement:'Income Replacement',
+    accumulation:'Tax-Advantaged Accumulation', retirement:'Retirement Planning',
+    business:'Business Protection', tax_adv:'Tax-Advantaged Growth'
+  };
+
+  const prodLabel = {life:'Life Insurance',annuity:'Annuity',both:'Life &amp; Annuity'}[prodType]||'Life &amp; Annuity';
+
+  // Banner
+  document.getElementById('rb-title').textContent = `${name} — ${country}`;
+  document.getElementById('rb-sub').textContent = `We evaluated your client's profile against our full carrier network${prodType!=='both'?' for '+document.getElementById('prodType').selectedOptions[0].text.toLowerCase():''}. Below are highlighted opportunities. The full analysis is available upon request.`;
+
+  document.getElementById('rb-meta').innerHTML = [
+    ['Product Interest', prodLabel],
+    ['Objective', goalLabels[goal]||goal],
+    ['Coverage / Premium', amount>0?'$'+Number(amount).toLocaleString():'—'],
+    ['U.S. Nexus Factors', nexus.length>0?nexus.length+' documented':'None documented'],
+  ].map(([l,v])=>`<div class="rb-meta-item"><div class="lbl">${l}</div><div class="val">${v}</div></div>`).join('');
+
+  // Count
+  document.getElementById('mc-count').textContent = totalPossible;
+  document.getElementById('mc-note').textContent = `${eligibleCount} fully eligible · ${condCount} conditional / subject to review`;
+
+  // Opportunity cards
+  const oppHTML = shown.map((r, i) => {
+    const numerals = ['I','II','III'];
+    const prodCls  = r.product==='life'?'life-opp':r.product==='annuity'?'ann-opp':'both-opp';
+    const prodBadge = r.product==='life'?'badge-life':r.product==='annuity'?'badge-ann':'badge-both';
+    const prodLabelS = r.product==='life'?'Life Insurance':r.product==='annuity'?'Annuity':'Life + Annuity';
+    const statusBadge = r.status==='eligible'
+      ? `<span class="opp-attr attr-green">✓ Eligible</span>`
+      : `<span class="opp-attr attr-amber">~ Conditional</span>`;
+
+    const attrsHTML = r.attrs.map(a=>`<span class="opp-attr ${a.cls}">${a.label}</span>`).join('');
+
+    return `<div class="opp-card ${prodCls}">
+      <div class="opp-card-top">
+        <div class="opp-numeral">${numerals[i]}</div>
+        <div class="opp-main">
+          <div class="opp-type-row">
+            <span class="opp-type-badge ${prodBadge}">${prodLabelS}</span>
+            ${statusBadge}
+          </div>
+          <div class="opp-headline">${r.headline}</div>
+          <div class="opp-desc">${r.desc}</div>
+          <div class="opp-attrs">${attrsHTML}</div>
+        </div>
+      </div>
+      <div class="opp-card-bottom">
+        <span class="lock-icon">🔒</span>
+        <span class="opp-locked">Carrier name, documentation requirements &amp; next steps included in full report</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('oppGrid').innerHTML = oppHTML || `<div style="padding:24px;text-align:center;color:var(--ink-light);font-style:italic">No strong matches found with the information provided. Contact the JH team — we may have additional options.</div>`;
+
+  // More locked
+  if (hidden > 0) {
+    document.getElementById('moreLocked').style.display = 'flex';
+    document.getElementById('moreLockedText').innerHTML = `Your full analysis includes <strong>${hidden} additional carrier match${hidden>1?'es':''}</strong> not shown here — plus detailed nexus documentation requirements, occupation exclusion review, AML compliance checklist, and prioritized next steps.`;
+  } else {
+    document.getElementById('moreLocked').style.display = 'none';
+  }
+
+  // Show results, hide form
+  document.getElementById('formWrap').style.display = 'none';
+  document.getElementById('progressBar').style.display = 'none';
+  document.getElementById('resultsScreen').classList.add('show');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function restart() {
+  document.getElementById('resultsScreen').classList.remove('show');
+  document.getElementById('formWrap').style.display = 'block';
+  document.getElementById('progressBar').style.display = 'flex';
+  document.getElementById('discoveryForm').reset();
+  document.querySelectorAll('.nx-item').forEach(n=>n.classList.remove('checked'));
+  document.querySelectorAll('.flag-item').forEach(f=>f.classList.remove('flagged'));
+  document.querySelectorAll('.obj-card').forEach((c,i)=>c.classList.toggle('selected',i===0));
+  document.getElementById('bank-qs').classList.remove('show');
+  document.getElementById('thresh-box').classList.remove('show');
+  document.getElementById('nw1m').value='yes';
+  document.getElementById('bank250k').value='';
+  document.getElementById('bank25k').value='';
+  currentStep = 1;
+  updateProgress(1);
+}
+</script>
+</body>
+</html>
