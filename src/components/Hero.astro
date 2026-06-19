@@ -6,7 +6,7 @@ const h = site.hero;
   <div class="wrap">
     <div>
       <span class="kicker">{h.kicker}</span>
-      <h1>{h.headlineLead} <span class="em">{h.headlineDash}</span> {h.headlineTail}</h1>
+      <h1>{h.headlineLead} <span class="em">{h.headlineEm}</span>{h.headlineTail}</h1>
       <div class="sub">{h.sub}</div>
       <div class="chips">
         {h.chips.map((c) => <span class={`chip ${c.style}`}>{c.label}</span>)}
