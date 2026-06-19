@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foreign National Advisor Platform — Joshua Herrington</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Mono:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#06111f; --navy-mid:#0b1d30; --navy-light:#112540;
+  --teal:#14697a; --teal-light:#22a0b8; --teal-dim:#0d4a57;
+  --gold:#c9a84c; --gold-light:#e4c87a; --gold-dim:#8a6f2e;
+  --cream:#f0e8d5; --cream-dim:#c5b899;
+  --green:#2e7d5a; --amber:#c97a1a; --red:#c0392b;
+  --violet:#5a3d8a; --violet-light:#9a7ad8;
+  --text:#ddd0b8; --text-dim:#6a7d90;
+  --border:rgba(20,105,122,0.22); --border-bright:rgba(20,105,122,0.5);
+  --gold-border:rgba(201,168,76,0.22); --gold-border-b:rgba(201,168,76,0.5);
+  --card-bg:rgba(11,29,48,0.75);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy);color:var(--text);font-family:'Libre Baskerville',Georgia,serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 0%,rgba(20,105,122,.12) 0%,transparent 45%),radial-gradient(ellipse at 88% 98%,rgba(8,32,53,.28) 0%,transparent 50%),repeating-linear-gradient(0deg,transparent,transparent 90px,rgba(20,105,122,.015) 90px,rgba(20,105,122,.015) 91px),repeating-linear-gradient(90deg,transparent,transparent 90px,rgba(20,105,122,.015) 90px,rgba(20,105,122,.015) 91px);pointer-events:none;z-index:0}
+
+/* ─── GATE ─── */
+#gate{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#06111f 0%,#0d2235 55%,#06111f 100%);transition:opacity .5s ease}
+#gate::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 28% 28%,rgba(20,105,122,.18) 0%,transparent 55%),radial-gradient(ellipse at 72% 72%,rgba(201,168,76,.07) 0%,transparent 50%);pointer-events:none}
+.gate-card{position:relative;z-index:1;width:460px;text-align:center;animation:gReveal .7s ease both}
+@keyframes gReveal{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.gate-emblem{display:flex;flex-direction:column;align-items:center;margin-bottom:30px}
+.gem{width:70px;height:70px;position:relative;margin-bottom:16px}
+.gem-outer{width:70px;height:70px;background:linear-gradient(145deg,var(--teal) 0%,var(--teal-dim) 100%);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center}
+.gem-inner{width:48px;height:48px;background:linear-gradient(145deg,var(--navy) 0%,var(--navy-mid) 100%);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center}
+.gem-glyph{color:var(--teal-light);font-size:1.3rem}
+.gate-title{font-family:'Cormorant Garamond',serif;font-size:1.95rem;font-weight:600;color:var(--cream);letter-spacing:.03em;line-height:1.1;margin-bottom:4px}
+.gate-pill{display:inline-block;background:linear-gradient(135deg,rgba(201,168,76,.14),rgba(201,168,76,.04));border:1px solid var(--gold-border-b);color:var(--gold);font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin:8px 0 5px}
+.gate-tag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:var(--teal-light);opacity:.85}
+.gate-form{background:rgba(11,29,48,.75);border:1px solid var(--border-bright);border-radius:6px;padding:32px;backdrop-filter:blur(14px);margin-top:4px}
+.gate-form label{display:block;font-family:'DM Mono',monospace;font-size:.59rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-dim);margin-bottom:9px;text-align:left}
+.gate-form input[type=password]{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border-bright);color:var(--text);padding:13px 16px;font-family:'Libre Baskerville',serif;font-size:1rem;border-radius:3px;outline:none;letter-spacing:.15em;text-align:center;transition:border-color .2s,background .2s}
+.gate-form input:focus{border-color:var(--teal-light);background:rgba(20,105,122,.07)}
+.gate-form input.shake{animation:shake .4s ease;border-color:rgba(192,57,43,.7)!important}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.gate-btn{width:100%;margin-top:14px;background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dim) 100%);color:var(--cream);border:none;padding:14px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;letter-spacing:.1em;border-radius:3px;cursor:pointer;text-transform:uppercase;transition:all .2s}
+.gate-btn:hover{background:linear-gradient(135deg,var(--teal-light),var(--teal));transform:translateY(-1px);box-shadow:0 6px 24px rgba(20,105,122,.3)}
+.gate-err{margin-top:10px;font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.08em;color:#e07070;min-height:18px}
+.gate-foot{margin-top:20px;font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+.gate-check{display:flex;gap:11px;align-items:flex-start;text-align:left;cursor:pointer;font-family:'Libre Baskerville',serif;font-size:.86rem;line-height:1.45;color:var(--cream)}
+.gate-check input{margin-top:3px;width:18px;height:18px;flex:0 0 auto;accent-color:var(--teal-light);cursor:pointer}
+.gate-disc{margin-top:16px;font-family:'DM Mono',monospace;font-size:.62rem;line-height:1.6;letter-spacing:.04em;color:var(--cream-dim);border-top:1px solid var(--border-bright);padding-top:14px}
+.fn-disc{position:relative;z-index:3;background:rgba(192,57,43,.10);border-bottom:1px solid rgba(192,57,43,.35);padding:11px 40px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;font-family:'DM Mono',monospace;font-size:.66rem;line-height:1.5;letter-spacing:.03em;color:#e8c9c2}
+.fn-disc b{color:#f0b8ad}
+.fn-disc a{flex:0 0 auto;background:linear-gradient(135deg,var(--teal),var(--teal-dim));color:var(--cream);text-decoration:none;padding:8px 16px;border-radius:3px;font-weight:700;letter-spacing:.06em;white-space:nowrap;text-transform:uppercase;font-size:.62rem}
+.fn-disc a:hover{background:linear-gradient(135deg,var(--teal-light),var(--teal))}
+
+/* ─── APP ─── */
+#app{display:none}
+#app.on{display:block}
+
+/* MASTHEAD */
+.mast{position:relative;z-index:2;border-bottom:1px solid var(--border-bright);background:linear-gradient(135deg,rgba(6,17,31,.99),rgba(11,29,48,.99));padding:0 40px;display:flex;align-items:stretch;min-height:68px}
+.mast-brand{display:flex;align-items:center;gap:13px;padding:11px 0;border-right:1px solid var(--border);padding-right:22px;margin-right:22px}
+.mast-gem{width:34px;height:34px;flex-shrink:0}
+.mast-gem-o{width:34px;height:34px;background:linear-gradient(145deg,var(--teal),var(--teal-dim));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center}
+.mast-gem-i{width:24px;height:24px;background:var(--navy-mid);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center}
+.mast-gem-g{color:var(--teal-light);font-size:.7rem}
+.mast-names h1{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--cream);letter-spacing:.03em;line-height:1}
+.mast-names .sub{font-family:'DM Mono',monospace;font-size:.53rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-light);margin-top:3px}
+.mast-center{display:flex;flex-direction:column;justify-content:center}
+.mast-center h2{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;color:var(--text);letter-spacing:.02em}
+.mast-center p{font-family:'DM Mono',monospace;font-size:.53rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-top:2px}
+.mast-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.quote-btn{display:flex;align-items:center;gap:7px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--navy);border:none;padding:8px 16px;font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:700;letter-spacing:.06em;border-radius:3px;cursor:pointer;text-decoration:none;text-transform:uppercase;transition:all .2s}
+.quote-btn:hover{background:linear-gradient(135deg,var(--gold-light),var(--gold));transform:translateY(-1px);box-shadow:0 4px 14px rgba(201,168,76,.22)}
+.mast-badge{font-family:'DM Mono',monospace;font-size:.53rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);border:1px solid var(--border);padding:4px 8px;border-radius:2px}
+
+/* LAYOUT */
+.layout{position:relative;z-index:1;display:grid;grid-template-columns:420px 1fr;min-height:calc(100vh - 68px - 36px)}
+
+/* SIDEBAR */
+.sidebar{background:rgba(6,17,31,.98);border-right:1px solid var(--border-bright);padding:22px 20px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;max-height:calc(100vh - 68px - 36px);position:sticky;top:0}
+.sec-title{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-light);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* PRODUCT TOGGLE */
+.prod-toggle{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.prod-btn{padding:9px 4px;border:1px solid var(--border);border-radius:3px;background:none;color:var(--text-dim);font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .18s;text-align:center;letter-spacing:.03em}
+.prod-btn:hover{border-color:var(--border-bright);color:var(--text)}
+.prod-btn.active{background:linear-gradient(135deg,rgba(20,105,122,.2),rgba(20,105,122,.07));border-color:var(--teal-light);color:var(--teal-light)}
+.prod-btn.active-life{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.07)}
+.prod-btn.active-annuity{border-color:var(--violet-light);color:var(--violet-light);background:rgba(90,61,138,.1)}
+
+/* FIELDS */
+.fg{display:flex;flex-direction:column;gap:10px}
+.f label{display:block;font-family:'DM Mono',monospace;font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px}
+.f input,.f select{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border-bright);color:var(--text);padding:9px 10px;font-family:'Libre Baskerville',serif;font-size:.81rem;border-radius:3px;outline:none;transition:border-color .2s,background .2s;appearance:none}
+.f input::placeholder{color:var(--text-dim);opacity:.4}
+.f input:focus,.f select:focus{border-color:var(--teal-light);background:rgba(20,105,122,.06)}
+.sw{position:relative}
+.sw::after{content:'▾';position:absolute;right:9px;top:50%;transform:translateY(-50%);color:var(--teal-light);pointer-events:none;font-size:.7rem}
+.aw{position:relative}
+.apre{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--gold);font-family:'DM Mono',monospace;font-size:.7rem;pointer-events:none}
+.aw input{padding-left:20px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* the platform-STYLE NEXUS TABLE */
+.nexus-table{display:flex;flex-direction:column;gap:4px}
+.nx{display:flex;align-items:flex-start;gap:0;border:1px solid transparent;border-radius:3px;overflow:hidden;transition:border-color .15s}
+.nx:hover{border-color:var(--border)}
+.nx-label{flex:1;padding:6px 9px;font-size:.73rem;color:var(--cream-dim);line-height:1.35;display:flex;align-items:flex-start;gap:7px;cursor:pointer}
+.nx-label input[type=checkbox]{width:13px;height:13px;flex-shrink:0;margin-top:2px;accent-color:var(--teal-light);cursor:pointer}
+.nx-detail{width:0;overflow:hidden;transition:width .2s}
+.nx.has-detail.checked .nx-detail{width:130px}
+.nx-detail input{width:100%;background:rgba(20,105,122,.08);border:none;border-left:1px solid var(--border-bright);color:var(--teal-light);padding:6px 8px;font-family:'DM Mono',monospace;font-size:.62rem;outline:none}
+.nx-detail input::placeholder{color:var(--text-dim);opacity:.5}
+
+/* THRESHOLD NOTE */
+.thresh-note{background:rgba(201,168,76,.06);border:1px solid var(--gold-border);border-radius:3px;padding:8px 10px;margin-top:4px}
+.thresh-note p{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.04em;color:var(--gold-dim);line-height:1.5}
+
+/* RADIO CARDS */
+.radio-cards{display:flex;flex-direction:column;gap:6px}
+.rc{display:flex;align-items:flex-start;gap:9px;padding:8px 10px;border:1px solid var(--border);border-radius:3px;cursor:pointer;transition:all .15s}
+.rc:hover{border-color:var(--border-bright);background:rgba(20,105,122,.04)}
+.rc input{flex-shrink:0;margin-top:2px;accent-color:var(--teal-light)}
+.rc-l{font-size:.78rem;font-weight:700;color:var(--cream-dim);line-height:1.3}
+.rc-d{font-size:.66rem;color:var(--text-dim);margin-top:2px;line-height:1.38}
+
+/* FLAG GRID */
+.flag-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.fc{display:flex;align-items:center;gap:6px;padding:5px 7px;border:1px solid transparent;border-radius:3px;cursor:pointer;font-size:.7rem;color:var(--cream-dim);transition:all .15s}
+.fc:hover{background:rgba(201,122,26,.05);border-color:rgba(201,122,26,.2)}
+.fc input{accent-color:var(--amber);cursor:pointer}
+
+/* ANALYZE BTN */
+.analyze-btn{background:linear-gradient(135deg,var(--teal),var(--teal-dim));color:var(--cream);border:none;padding:13px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;letter-spacing:.08em;border-radius:3px;cursor:pointer;width:100%;text-transform:uppercase;transition:all .2s}
+.analyze-btn:hover{background:linear-gradient(135deg,var(--teal-light),var(--teal));transform:translateY(-1px);box-shadow:0 6px 22px rgba(20,105,122,.28)}
+.sb-cta{background:linear-gradient(135deg,rgba(201,168,76,.07),rgba(11,29,48,.5));border:1px solid var(--gold-border-b);border-radius:4px;padding:13px;text-align:center}
+.sb-cta p{font-family:'DM Mono',monospace;font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;line-height:1.5}
+.sb-cta a{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--navy);padding:8px 16px;font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:700;letter-spacing:.07em;text-decoration:none;text-transform:uppercase;border-radius:3px;transition:all .2s}
+.sb-cta a:hover{background:linear-gradient(135deg,var(--gold-light),var(--gold));box-shadow:0 4px 12px rgba(201,168,76,.22)}
+
+/* RESULTS */
+.results-area{padding:28px 34px;overflow-y:auto}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:400px;text-align:center;opacity:.4}
+.empty-state h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--cream-dim);margin-bottom:5px}
+.empty-state p{font-size:.76rem;color:var(--text-dim);font-family:'DM Mono',monospace}
+.empty-aloha{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;color:var(--teal-light);margin-top:8px;opacity:.7}
+
+/* RESULT HEADER */
+.rhead{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--border-bright)}
+.rhead h2{font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:500;color:var(--cream);line-height:1.1}
+.rhead .meta{font-family:'DM Mono',monospace;font-size:.57rem;letter-spacing:.12em;color:var(--teal-light);text-transform:uppercase;margin-top:5px}
+.rhead .pills{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.07em}
+.head-acts{display:flex;gap:8px;align-items:flex-start;flex-shrink:0;margin-left:16px}
+.r-qbtn{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--navy);padding:8px 14px;font-family:'Cormorant Garamond',serif;font-size:.88rem;font-weight:700;letter-spacing:.05em;text-decoration:none;text-transform:uppercase;border-radius:3px;transition:all .2s;white-space:nowrap}
+.r-qbtn:hover{background:linear-gradient(135deg,var(--gold-light),var(--gold));box-shadow:0 4px 12px rgba(201,168,76,.18)}
+.print-btn{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);background:none;border:1px solid var(--border);padding:5px 9px;border-radius:2px;cursor:pointer;transition:all .15s}
+.print-btn:hover{color:var(--teal-light);border-color:var(--border-bright)}
+
+/* PRODUCT TABS */
+.prod-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--border-bright);border-radius:4px;overflow:hidden}
+.ptab{flex:1;padding:10px 8px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:600;cursor:pointer;border:none;background:rgba(11,29,48,.5);color:var(--text-dim);transition:all .18s;letter-spacing:.04em}
+.ptab.active-life{background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(201,168,76,.03));color:var(--gold);border-bottom:2px solid var(--gold)}
+.ptab.active-ann{background:linear-gradient(135deg,rgba(90,61,138,.15),rgba(90,61,138,.04));color:var(--violet-light);border-bottom:2px solid var(--violet-light)}
+.ptab.active-both{background:linear-gradient(135deg,rgba(20,105,122,.15),rgba(20,105,122,.04));color:var(--teal-light);border-bottom:2px solid var(--teal-light)}
+
+/* TAB PANE */
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* SECTION HEAD */
+.sh{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-light);margin-bottom:12px;display:flex;align-items:center;gap:9px}
+.sh::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* CARRIER CARDS */
+.cg{display:grid;gap:10px;margin-bottom:22px}
+.cg-4{grid-template-columns:repeat(4,1fr)}
+.cg-5{grid-template-columns:repeat(5,1fr)}
+.cg-3{grid-template-columns:repeat(3,1fr)}
+.cg-2{grid-template-columns:repeat(2,1fr)}
+.cc{border-radius:4px;overflow:hidden;border:1px solid var(--border);transition:all .2s}
+.cc.eligible{border-color:rgba(46,125,90,.5)}
+.cc.conditional{border-color:rgba(201,122,26,.45)}
+.cc.ineligible{border-color:rgba(192,57,43,.3);opacity:.6}
+.cc.offshore{border-color:rgba(90,61,138,.5)}
+.cc.pan{border-color:rgba(184,114,44,.5)}
+.cc-h{padding:9px 11px;font-family:'DM Mono',monospace;font-size:.67rem;font-weight:500;letter-spacing:.04em;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:3px}
+.eligible .cc-h{background:rgba(46,125,90,.17);color:#5dba8a}
+.conditional .cc-h{background:rgba(201,122,26,.16);color:#e09040}
+.ineligible .cc-h{background:rgba(192,57,43,.1);color:#e07070}
+.offshore .cc-h{background:rgba(90,61,138,.18);color:#b09ad8}
+.pan .cc-h{background:rgba(184,114,44,.17);color:#dda060}
+.cc-s{font-size:.52rem;padding:2px 5px;border-radius:20px;letter-spacing:.05em}
+.eligible .cc-s{background:rgba(46,125,90,.22);color:#5dba8a}
+.conditional .cc-s{background:rgba(201,122,26,.22);color:#e09040}
+.ineligible .cc-s{background:rgba(192,57,43,.18);color:#e07070}
+.offshore .cc-s{background:rgba(90,61,138,.25);color:#b09ad8}
+.pan .cc-s{background:rgba(184,114,44,.22);color:#dda060}
+.cc-b{padding:9px 11px;background:var(--card-bg)}
+.cs{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.7rem}
+.cs:last-child{border-bottom:none}
+.cs .l{color:var(--text-dim);font-family:'DM Mono',monospace;font-size:.53rem;letter-spacing:.03em}
+.cs .v{color:var(--text);font-weight:700;text-align:right;font-size:.65rem}
+.tag-y{color:#5dba8a}.tag-n{color:#e07070}.tag-c{color:#e09040}.tag-na{color:var(--text-dim)}
+.cc-issues{margin-top:5px;display:flex;flex-direction:column;gap:3px}
+.issue-bad{font-size:.65rem;color:#e07070;padding:3px 6px;background:rgba(192,57,43,.08);border-radius:2px}
+.issue-warn{font-size:.65rem;color:#e09040;padding:3px 6px;background:rgba(201,122,26,.08);border-radius:2px}
+
+/* TIER BADGES */
+.tb{display:inline-block;padding:1px 6px;border-radius:2px;font-family:'DM Mono',monospace;font-size:.58rem;font-weight:500}
+.ta{background:rgba(46,125,90,.2);color:#5dba8a}
+.tb-b{background:rgba(201,168,76,.17);color:var(--gold)}
+.tc{background:rgba(201,122,26,.17);color:#e09040}
+.td{background:rgba(192,57,43,.17);color:#e07070}
+.t-app{background:rgba(46,125,90,.2);color:#5dba8a}
+.t-dec{background:rgba(192,57,43,.17);color:#e07070}
+.t-fac{background:rgba(90,61,138,.22);color:#b09ad8}
+
+/* DETAIL GRID */
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+.dc{background:var(--card-bg);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.dc-h{padding:7px 12px;background:rgba(20,105,122,.1);border-bottom:1px solid var(--border);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-light)}
+.dc-b{padding:11px 12px;display:flex;flex-direction:column;gap:7px}
+.crow{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:flex-start;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.04)}
+.crow:last-child{border-bottom:none;padding-bottom:0}
+.clbl{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.05em;padding:2px 5px;border-radius:2px;text-align:center;align-self:flex-start;margin-top:1px;white-space:nowrap}
+.crow .cv{color:var(--cream-dim);line-height:1.45;font-size:.7rem}
+.cl-lin{background:rgba(59,110,165,.27);color:#7aacdb}
+.cl-sym{background:rgba(46,125,90,.27);color:#5dba8a}
+.cl-jh{background:rgba(139,69,19,.27);color:#e0a070}
+.cl-pac{background:rgba(107,63,160,.27);color:#b09ad8}
+.cl-nl{background:rgba(30,90,50,.27);color:#70c890}
+.cl-pan1{background:rgba(184,114,44,.27);color:#dda060}
+.cl-pan2{background:rgba(160,100,30,.27);color:#d09040}
+.cl-pan3{background:rgba(140,80,20,.27);color:#c08030}
+.cl-jkn{background:rgba(46,100,140,.27);color:#70b0e0}
+.cl-axoi{background:rgba(90,61,138,.27);color:#b09ad8}
+.cl-axou{background:rgba(140,80,40,.27);color:#d8a060}
+
+/* PAN AMERICAN SPOTLIGHT */
+.pan-spot{background:linear-gradient(135deg,rgba(184,114,44,.1),rgba(11,29,48,.5));border:1px solid rgba(184,114,44,.4);border-radius:4px;padding:18px;margin-bottom:22px}
+.pan-spot h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#dda060;margin-bottom:8px;letter-spacing:.03em}
+.pan-spot p{font-size:.77rem;color:var(--cream-dim);line-height:1.55;margin-bottom:10px}
+.pan-models{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+.pan-model{background:rgba(11,29,48,.6);border:1px solid rgba(184,114,44,.25);border-radius:3px;padding:11px 12px}
+.pan-model h4{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#dda060;margin-bottom:7px}
+.pan-model ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.pan-model li{font-size:.71rem;color:var(--cream-dim);line-height:1.38;display:flex;align-items:flex-start;gap:5px}
+.pan-model li::before{content:'◆';color:rgba(184,114,44,.6);font-size:.4rem;flex-shrink:0;margin-top:5px}
+
+/* OFFSHORE SPOT */
+.off-spot{background:linear-gradient(135deg,rgba(90,61,138,.12),rgba(11,29,48,.5));border:1px solid rgba(90,61,138,.4);border-radius:4px;padding:18px;margin-bottom:22px}
+.off-spot h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#c0a8f0;margin-bottom:8px}
+.off-spot p{font-size:.77rem;color:var(--cream-dim);line-height:1.55}
+.spot-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.si{display:flex;align-items:flex-start;gap:6px;font-size:.72rem;color:var(--cream-dim);line-height:1.4}
+.si::before{content:'◆';color:#8a68c8;font-size:.4rem;flex-shrink:0;margin-top:5px}
+
+/* AML / NEXT STEPS */
+.aml-box{background:rgba(11,29,48,.8);border:1px solid var(--border);border-radius:4px;padding:15px 17px;margin-bottom:22px}
+.aml-box h3{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--teal-light);margin-bottom:10px}
+.aml-g{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.ai{display:flex;align-items:flex-start;gap:6px;font-size:.71rem;color:var(--cream-dim);line-height:1.4}
+.ai::before{content:'◆';color:var(--teal);font-size:.4rem;flex-shrink:0;margin-top:5px}
+.next-steps{background:linear-gradient(135deg,rgba(11,29,48,.7),rgba(6,17,31,.5));border:1px solid var(--border-bright);border-radius:4px;padding:18px;margin-bottom:22px}
+.next-steps h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--teal-light);margin-bottom:12px}
+.step-list{display:flex;flex-direction:column;gap:7px;list-style:none}
+.si2{display:flex;align-items:flex-start;gap:10px;font-size:.76rem;color:var(--cream-dim);line-height:1.52}
+.sn{width:19px;height:19px;flex-shrink:0;margin-top:1px;background:rgba(20,105,122,.13);border:1px solid var(--border-bright);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.57rem;color:var(--teal-light)}
+.quote-banner{background:linear-gradient(135deg,rgba(201,168,76,.08),rgba(11,29,48,.5));border:1px solid var(--gold-border-b);border-radius:4px;padding:16px 20px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.quote-banner .copy h4{font-family:'Cormorant Garamond',serif;font-size:1.08rem;font-weight:600;color:var(--gold);margin-bottom:3px}
+.quote-banner .copy p{font-family:'DM Mono',monospace;font-size:.57rem;letter-spacing:.07em;color:var(--text-dim);line-height:1.5}
+.quote-banner a{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--navy);padding:10px 18px;font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:700;letter-spacing:.07em;text-decoration:none;text-transform:uppercase;border-radius:3px;transition:all .2s}
+.quote-banner a:hover{background:linear-gradient(135deg,var(--gold-light),var(--gold));box-shadow:0 4px 14px rgba(201,168,76,.18)}
+
+/* OVERVIEW TAB */
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+.ov-card{border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.ov-head{padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.ov-head h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;letter-spacing:.03em}
+.ov-life .ov-head{background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(11,29,48,.5));border-bottom:1px solid rgba(201,168,76,.2)}
+.ov-life .ov-head h3{color:var(--gold)}
+.ov-ann .ov-head{background:linear-gradient(135deg,rgba(90,61,138,.12),rgba(11,29,48,.5));border-bottom:1px solid rgba(90,61,138,.25)}
+.ov-ann .ov-head h3{color:var(--violet-light)}
+.ov-body{padding:14px 16px;background:var(--card-bg)}
+.ov-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.75rem}
+.ov-row:last-child{border-bottom:none}
+.ov-row .ol{color:var(--text-dim);font-family:'DM Mono',monospace;font-size:.58rem}
+.ov-row .ov{font-weight:700}
+.ov-eligible{color:#5dba8a}.ov-cond{color:#e09040}.ov-no{color:#e07070}
+.ov-count{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;line-height:1}
+
+/* ANIMATIONS */
+@keyframes fiu{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+.results-content>*{animation:fiu .3s ease both}
+.results-content>*:nth-child(1){animation-delay:.04s}
+.results-content>*:nth-child(2){animation-delay:.08s}
+.results-content>*:nth-child(3){animation-delay:.12s}
+.results-content>*:nth-child(4){animation-delay:.16s}
+.results-content>*:nth-child(5){animation-delay:.20s}
+.results-content>*:nth-child(6){animation-delay:.24s}
+.results-content>*:nth-child(7){animation-delay:.28s}
+.results-content{display:none}
+.results-content.on{display:block}
+
+/* FOOTER */
+.app-foot{position:relative;z-index:1;background:rgba(6,17,31,.98);border-top:1px solid var(--border);padding:8px 40px;display:flex;align-items:center;justify-content:space-between}
+.app-foot .fl{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.77rem;color:var(--gold-dim)}
+.app-foot .fr{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+
+@media print{#gate,.sidebar,.mast-right,.quote-banner,.app-foot,.print-btn{display:none!important}.layout{grid-template-columns:1fr}body{background:#fff;color:#000}.cc.ineligible{display:none}}
+</style>
+</head>
+<body>
+
+<!-- GATE -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-emblem">
+      <div class="gem"><div class="gem-outer"><div class="gem-inner"><span class="gem-glyph">⬡</span></div></div></div>
+      <div class="gate-title">Joshua Herrington</div>
+      <span class="gate-pill">Foreign National Advisor Platform</span>
+      <div class="gate-tag">Foreign-National Field Underwriting</div>
+    </div>
+    <div class="gate-form">
+      <label class="gate-check">
+        <input type="checkbox" id="advAttest" onchange="document.getElementById('gErr').textContent=''">
+        <span>I confirm I am a licensed insurance or financial advisor accessing this as a professional field reference.</span>
+      </label>
+      <button class="gate-btn" onclick="enterPortal()">Enter →</button>
+      <div class="gate-err" id="gErr"></div>
+      <p class="gate-disc">This tool is <strong>not currently updated</strong> and cannot be verified as accurate. All details must be confirmed with the carrier prior to sale via a simple quick quote.</p>
+    </div>
+    <div class="gate-foot">For licensed advisors only</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="fn-disc">
+    <span><b>Reference only — not currently updated.</b> Accuracy can't be verified here. Confirm every detail with the carrier before sale via a simple quick quote.</span>
+    <a href="/#connect">Get a quick quote — Joshua connects you →</a>
+  </div>
+  <header class="mast">
+    <div class="mast-brand">
+      <div class="mast-gem"><div class="mast-gem-o"><div class="mast-gem-i"><span class="mast-gem-g">⬡</span></div></div></div>
+      <div class="mast-names"><h1>Joshua Herrington</h1><div class="sub">Foreign-National Field Underwriting</div></div>
+    </div>
+    <div class="mast-center">
+      <h2>Foreign National Advisor Platform</h2>
+      <p>Life Insurance · Annuities · Carrier Eligibility · Nexus Guidance</p>
+    </div>
+    <div class="mast-right">
+      <a href="https://form.jotform.com/260557661763061" target="_blank" class="quote-btn">⬡ Request a Quote</a>
+      <div class="mast-badge">Advisor Use Only</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- SIDEBAR: DISCOVERY FORM -->
+    <aside class="sidebar">
+
+      <!-- Product Type -->
+      <div>
+        <div class="sec-title">Product Interest</div>
+        <div class="prod-toggle">
+          <button class="prod-btn active-life" id="pb-life" onclick="setProd('life')">Life Insurance</button>
+          <button class="prod-btn" id="pb-annuity" onclick="setProd('annuity')">Annuity</button>
+          <button class="prod-btn" id="pb-both" onclick="setProd('both')">Both / Overview</button>
+        </div>
+      </div>
+
+      <!-- Client Profile -->
+      <div>
+        <div class="sec-title">Client Profile</div>
+        <div class="fg">
+          <div class="row2">
+            <div class="f"><label>Client Name</label><input type="text" id="cName" placeholder="Proposed Insured"></div>
+            <div class="f"><label>Date of Birth</label><input type="date" id="cDob"></div>
+          </div>
+          <div class="row2">
+            <div class="f"><label>Gender</label><div class="sw"><select id="cGender"><option value="">—</option><option>Male</option><option>Female</option></select></div></div>
+            <div class="f"><label>Age</label><input type="number" id="cAge" placeholder="e.g. 48" min="0" max="100"></div>
+          </div>
+          <div class="f"><label>Country of Citizenship</label><div class="sw"><select id="cCitizen"><option value="">— Select —</option></select></div></div>
+          <div class="f"><label>Country of Residence</label><div class="sw"><select id="cResidence"><option value="">— Select —</option></select></div></div>
+          <div class="row2">
+            <div class="f"><label>Global Net Worth (USD)</label><div class="aw"><span class="apre">$</span><input type="number" id="cNW" placeholder="5,000,000"></div></div>
+            <div class="f"><label>Annual Income (USD)</label><div class="aw"><span class="apre">$</span><input type="number" id="cIncome" placeholder="250,000"></div></div>
+          </div>
+          <div class="f">
+            <label id="amt-label">Coverage Amount (Life) / Premium (Annuity)</label>
+            <div class="aw"><span class="apre">$</span><input type="number" id="cAmount" placeholder="2,000,000"></div>
+          </div>
+          <div class="f"><label>Primary Objective</label><div class="sw"><select id="cGoal">
+            <option value="accumulation">Accumulation — Long-Term Wealth Building</option>
+            <option value="tax_adv">Tax-Advantaged Growth</option>
+            <option value="tax_free">Tax-Free Income</option>
+            <option value="retirement">Retirement Planning</option>
+            <option value="income_replacement">Income Replacement</option>
+            <option value="estate">Estate Planning / Wealth Transfer</option>
+            <option value="business">Business Protection / Key Person</option>
+            <option value="legacy">Legacy / Charitable Planning</option>
+            <option value="immediate_income">Immediate Income / SPIA</option>
+          </select></div></div>
+        </div>
+      </div>
+
+      <!-- U.S. Assets & Connections (the platform-aligned) -->
+      <div>
+        <div class="sec-title">U.S. Assets &amp; Connections</div>
+        <div class="nexus-table">
+          <label class="nx" id="nx-res">
+            <span class="nx-label"><input type="checkbox" class="ncb" value="us_residence" onchange="toggleDetail(this,'det-res')"> U.S. Residence</span>
+            <div class="nx-detail" id="det-res"><input type="text" placeholder="City, State"></div>
+          </label>
+          <label class="nx has-detail" id="nx-re">
+            <span class="nx-label"><input type="checkbox" class="ncb" value="real_estate" onchange="toggleDetail(this,'det-re')"> U.S. Property / Real Estate</span>
+            <div class="nx-detail" id="det-re"><input type="text" placeholder="Est. value $"></div>
+          </label>
+          <label class="nx">
+            <span class="nx-label"><input type="checkbox" class="ncb" value="us_employed"> Employed by a U.S. Business</span>
+          </label>
+          <label class="nx">
+            <span class="nx-label"><input type="checkbox" class="ncb" value="us_business"> Ownership of a U.S. Business</span>
+          </label>
+          <label class="nx">
+            <span class="nx-label"><input type="checkbox" class="ncb" value="us_biz_conducts"> Conducts business regularly w/ U.S. Business</span>
+          </label>
+          <label class="nx has-detail" id="nx-brok">
+            <span class="nx-label"><input type="checkbox" class="ncb" value="us_brokerage" onchange="toggleDetail(this,'det-brok')"> U.S. Brokerage Account</span>
+            <div class="nx-detail" id="det-brok"><input type="text" placeholder="Balance $"></div>
+          </label>
+          <label class="nx has-detail" id="nx-bank">
+            <span class="nx-label"><input type="checkbox" class="ncb" value="us_bank" onchange="toggleDetail(this,'det-bank')"> U.S. Bank Account</span>
+            <div class="nx-detail" id="det-bank"><input type="text" placeholder="Balance $"></div>
+          </label>
+          <div class="thresh-note" id="bank-note" style="display:none">
+            <p>Key Thresholds:<br>
+            ≥$250K / 6+ months → JH &amp; Pacific Life financial presence<br>
+            ≥$25K / 30+ days → Lincoln life nexus<br>
+            ≥$100K / 3+ months → National Life &amp; annuity nexus<br>
+            ≥$10K / 1+ month → Symetra nexus</p>
+          </div>
+          <label class="nx has-detail" id="nx-ann">
+            <span class="nx-label"><input type="checkbox" class="ncb" value="us_annuity" onchange="toggleDetail(this,'det-ann')"> Existing U.S. Annuity</span>
+            <div class="nx-detail" id="det-ann"><input type="text" placeholder="Amount $"></div>
+          </label>
+          <label class="nx">
+            <span class="nx-label"><input type="checkbox" class="ncb" value="pct_assets_25"> More than 25% of total assets are in U.S.</span>
+          </label>
+        </div>
+        <!-- Bank account sub-questions -->
+        <div id="bank-qs" style="display:none;margin-top:6px;">
+          <div class="fg">
+            <div class="f"><label>Bank account balance ≥ $250,000 held ≥ 6 months?</label><div class="sw"><select id="bank250k"><option value="">—</option><option value="yes">Yes</option><option value="no">No</option></select></div></div>
+            <div class="f"><label>Bank account balance ≥ $25,000 held ≥ 30 days?</label><div class="sw"><select id="bank25k"><option value="">—</option><option value="yes">Yes</option><option value="no">No</option></select></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- U.S. Status -->
+      <div>
+        <div class="sec-title">U.S. Status &amp; Visa</div>
+        <div class="nexus-table">
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="us_citizenship"> U.S. Citizenship</span></label>
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="spouse_citizen"> Spouse / Children have U.S. Citizenship</span></label>
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="green_card"> U.S. Green Card</span></label>
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="spouse_green"> Spouse / Children have U.S. Green Card</span></label>
+          <label class="nx has-detail" id="nx-visa">
+            <span class="nx-label"><input type="checkbox" class="ncb" value="us_visa" onchange="toggleDetail(this,'det-visa')"> U.S. Visa</span>
+            <div class="nx-detail" id="det-visa"><input type="text" placeholder="Visa type"></div>
+          </label>
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="eb5"> EB-5 Applicant</span></label>
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="spouse_us"> Spouse / Children live in U.S.</span></label>
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="ssn_tin"> U.S. SSN or Tax ID Number</span></label>
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="us_student"> Full-Time U.S. University Student</span></label>
+        </div>
+      </div>
+
+      <!-- U.S. Physical Presence -->
+      <div>
+        <div class="sec-title">U.S. Physical Presence</div>
+        <div class="nexus-table">
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="present_15d"> Present in U.S. ≥ 15 days in preceding 12 months</span></label>
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="present_6mo"> Present in U.S. ≥ 6 months in preceding 12 months</span></label>
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="regular_travel"> Travels to U.S. regularly (business or pleasure)</span></label>
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="can_travel_sign"> Can travel to U.S. to sign application</span></label>
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="family_us"> Immediate family residing in U.S.</span></label>
+          <label class="nx"><span class="nx-label"><input type="checkbox" class="ncb" value="married_us_citizen"> Married to a U.S. Citizen</span></label>
+        </div>
+      </div>
+
+      <!-- Financial Ratios -->
+      <div>
+        <div class="sec-title">Financial Thresholds</div>
+        <div class="fg">
+          <div class="f"><label>Net Worth ≥ $1,000,000 USD?</label><div class="sw"><select id="nw1m"><option value="">—</option><option value="yes">Yes</option><option value="no">No</option></select></div></div>
+          <div class="f"><label>Annual Income ≥ $250,000 USD?</label><div class="sw"><select id="inc250"><option value="">—</option><option value="yes">Yes</option><option value="no">No</option></select></div></div>
+          <div class="f"><label>Spouse Also Seeking Coverage?</label><div class="sw"><select id="spouseCov"><option value="no">No</option><option value="yes">Yes — needs own coverage</option><option value="yes_nexus">Yes — spouse has own U.S. nexus</option></select></div></div>
+        </div>
+      </div>
+
+      <!-- Occupation Flags -->
+      <div>
+        <div class="sec-title">Occupation / Risk Flags</div>
+        <div class="flag-grid">
+          <label class="fc"><input type="checkbox" class="fcb" value="politician"> Politician/Gov Official</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="military"> Military/Police/Security</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="journalist"> Journalist</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="missionary"> Missionary</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="athlete"> Professional Athlete</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="entertainer"> Entertainer/Celebrity</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="royal"> Royal Family Member</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="diplomat"> Diplomat</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="union"> Trade Union Official</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="aviation"> Private/Commercial Pilot</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="pep"> PEP (Politically Exposed)</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="aid_worker"> Aid/Humanitarian Worker</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="judge"> Judge/Judicial Personnel</label>
+          <label class="fc"><input type="checkbox" class="fcb" value="celebrity"> Public Figure/Celebrity</label>
+        </div>
+      </div>
+
+      <button class="analyze-btn" onclick="analyze()">⬡ &nbsp;Analyze Opportunities</button>
+
+      <div class="sb-cta">
+        <p>Ready to move forward?<br>Submit a formal quote request to JH.</p>
+        <a href="https://form.jotform.com/260557661763061" target="_blank">Request a Quote →</a>
+      </div>
+    </aside>
+
+    <!-- RESULTS -->
+    <main class="results-area" id="resultsArea">
+      <div class="empty-state" id="emptyState">
+        <div style="font-size:2.2rem;margin-bottom:12px">⬡</div>
+        <h2>Complete Discovery to Begin</h2>
+        <p>Select a product type, complete the client profile,<br>and click Analyze to generate carrier eligibility &amp; next steps.</p>
+        <div class="empty-aloha">Mahalo — thank you for placing your client first.</div>
+      </div>
+      <div class="results-content" id="rc"></div>
+    </main>
+  </div>
+
+  <footer class="app-foot">
+    <div class="fl">"Foreign-National Field Underwriting" — Joshua Herrington</div>
+    <div class="fr">For Licensed Advisors Only ·  · Not for Client Distribution</div>
+  </footer>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// GATE
+// ═══════════════════════════════════════════
+function enterPortal() {
+  const ok = document.getElementById('advAttest').checked;
+  const e = document.getElementById('gErr');
+  if (ok) {
+    const g = document.getElementById('gate');
+    g.style.opacity = '0';
+    setTimeout(() => { g.style.display = 'none'; document.getElementById('app').classList.add('on'); }, 480);
+  } else {
+    e.textContent = 'Please confirm you are a licensed advisor to continue.';
+  }
+}
+
+// ═══════════════════════════════════════════
+// COUNTRIES
+// ═══════════════════════════════════════════
+const COUNTRIES = ['Afghanistan','Albania','Algeria','American Samoa','Andorra','Anguilla','Antigua and Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belgium','Belize','Bermuda','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','British Virgin Islands','Brunei','Bulgaria','Burundi','Cambodia','Cameroon','Canada','Canary Islands','Cape Verde','Cayman Islands','Central African Republic','Chad','Chile','China','Colombia','Cook Islands','Costa Rica','Croatia','Cuba','Curacao','Cyprus','Czech Republic','Denmark','Dominica','Dominican Republic','Ecuador','Egypt','El Salvador','Eritrea','Estonia','Ethiopia','Fiji','Finland','France','French Guiana','French Polynesia','Gabon','Germany','Ghana','Greece','Greenland','Grenada','Guadeloupe','Guam','Guatemala','Guyana','Haiti','Honduras','Hong Kong','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Ivory Coast','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kuwait','Laos','Latvia','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Macau','Madagascar','Malaysia','Maldives','Mali','Malta','Marshall Islands','Martinique','Mauritius','Mexico','Monaco','Mongolia','Montenegro','Montserrat','Morocco','Namibia','Nepal','Netherlands','Netherlands Antilles','New Caledonia','New Zealand','Nicaragua','Niger','Nigeria','North Korea','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Puerto Rico','Qatar','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Sint Maarten','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Sweden','Switzerland','Syria','Taiwan','Tanzania','Thailand','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turks and Caicos','Uganda','Ukraine','United Arab Emirates','United Kingdom','Uruguay','Uzbekistan','Vatican City','Venezuela','Vietnam','Western Sahara','Yemen','Zambia','Zimbabwe'];
+['cCitizen','cResidence'].forEach(id => {
+  const s = document.getElementById(id);
+  COUNTRIES.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; s.appendChild(o); });
+});
+
+// ═══════════════════════════════════════════
+// PRODUCT TOGGLE
+// ═══════════════════════════════════════════
+let currentProd = 'life';
+function setProd(p) {
+  currentProd = p;
+  ['life','annuity','both'].forEach(x => {
+    document.getElementById('pb-'+x).className = 'prod-btn' + (x===p ? ' active-'+x : '');
+  });
+  const lbl = document.getElementById('amt-label');
+  lbl.textContent = p === 'annuity' ? 'Premium Amount (Annuity)' : p === 'both' ? 'Coverage / Premium Amount' : 'Coverage Amount (Life)';
+}
+
+// NEXUS DETAIL TOGGLE
+function toggleDetail(cb, detId) {
+  const det = document.getElementById(detId);
+  if (!det) return;
+  const nx = cb.closest('.nx');
+  if (cb.checked) { nx.classList.add('checked','has-detail'); det.style.width='130px'; }
+  else { nx.classList.remove('checked'); det.style.width='0'; }
+  // Bank special
+  if (cb.value === 'us_bank') {
+    document.getElementById('bank-qs').style.display = cb.checked ? 'block' : 'none';
+    document.getElementById('bank-note').style.display = cb.checked ? 'block' : 'none';
+  }
+}
+
+// ═══════════════════════════════════════════
+// DATA: LIFE CARRIERS
+// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+// PAN AMERICAN APPROVED COUNTRY LIST
+// Source: Pan American Private Client — Global Life Insured Residency
+// Notes: Peru** = Lima, Arequipa, Trujillo only
+//        Caribbean*** = excl. Anguilla, Barbados, Cuba, Dominica, Guadeloupe, Haiti
+//        China*** = Shanghai, Beijing, Guangzhou, Shenzhen only
+// ═══════════════════════════════════════════
+const PAN_APPROVED = ['Argentina','Australia','Austria','Bahrain','Belgium','Belize','Bermuda','Bolivia','Brazil','Canada','Canary Islands','Chile','China','Colombia','Costa Rica','Denmark','Dominican Republic','Ecuador','El Salvador','Finland','France','Germany','Greece','Guatemala','Honduras','Hong Kong','Israel','Italy','Japan','Luxembourg','Mexico','Monaco','Netherlands','New Zealand','Nicaragua','Norway','Panama','Paraguay','Peru','Portugal','Qatar','San Marino','Singapore','South Korea','Spain','Sweden','Switzerland','Taiwan','Turks and Caicos','United Kingdom','Uruguay','Venezuela'];
+const PAN_CARIBBEAN = ['Antigua','Aruba','Bahamas','Barbuda','Bermuda','Cayman Islands','Curacao','Dominica','Dominican Republic','Grenada','Guadeloupe','Haiti','Jamaica','Martinique','Montserrat','Netherlands Antilles','Puerto Rico','Saint Kitts','Saint Lucia','Saint Vincent','Sint Maarten','Trinidad','Turks and Caicos','Virgin Islands'];
+const PAN_CARIBBEAN_EXCL = ['Anguilla','Barbados','Cuba','Dominica','Guadeloupe','Haiti'];
+
+function panCountryTier(c) {
+  const cl = c.toLowerCase();
+  // Direct match
+  if (PAN_APPROVED.some(x=>cl.includes(x.toLowerCase()))) {
+    // Special restrictions
+    if (cl.includes('peru')) return {tier:'APPROVED**',css:'t-app',elig:true,note:'Peru: Lima, Arequipa, Trujillo only.'};
+    if (cl.includes('china')) return {tier:'APPROVED***',css:'t-app',elig:true,note:'China: Shanghai, Beijing, Guangzhou, Shenzhen only.'};
+    return {tier:'APPROVED',css:'t-app',elig:true};
+  }
+  // Caribbean check
+  if (PAN_CARIBBEAN.some(x=>cl.includes(x.toLowerCase()))) {
+    if (PAN_CARIBBEAN_EXCL.some(x=>cl.includes(x.toLowerCase()))) return {tier:'EXCLUDED',css:'t-dec',elig:false,note:'Excluded from Caribbean coverage.'};
+    return {tier:'APPROVED***',css:'t-app',elig:true,note:'Caribbean: excl. Anguilla, Barbados, Cuba, Dominica, Guadeloupe, Haiti.'};
+  }
+  return {tier:'NOT LISTED',css:'t-dec',elig:false};
+}
+
+const LIFE = {
+  lincoln: {
+    name:'Lincoln Financial', label:'Lincoln', lbl:'cl-lin',
+    jumbo:60e6, autoBind:40e6, retention:10e6, nwMin:1e6,
+    finPres:'None required',
+    physPres:'None required',
+    spouseElig:'Yes — up to amount placed on nexus spouse (max $10M). Spouse without nexus may be owner.',
+    lpoa:'Yes — LPOA permitted for delivery.',
+    premium:'U.S. dollars via U.S. bank or U.S. affiliate of foreign bank.',
+    address:'Individual owners may use a foreign address.',
+    apsXlate:'Up to $250 per APS translated (underwriter approval for more).',
+    ownership:'Insured, family w/ U.S. connection, U.S. business, U.S. trust, U.S. LLC. No PICs, no foreign entities.',
+    challenges:'Strong cover letter required. U.S. assets in foreign entity not acceptable as sole nexus. Aviation exclusion rider for all private pilots.',
+    exclusions:['politician','military','journalist','missionary','athlete','entertainer','royal','diplomat','union','aviation','pep','judge','celebrity'],
+    nexusRequired:['real_estate','us_employed','us_business','married_us_citizen','family_us','us_bank','regular_travel','us_student','eb5','us_biz_conducts','ssn_tin'],
+    countryTier:(c)=>{
+      const dec=['Afghanistan','Burundi','Central African Republic','Congo','Ivory Coast','Eritrea','Ethiopia','Haiti','Iran','Iraq','Sierra Leone','Mali','Niger','Nigeria','Pakistan','South Sudan','Syria','Tajikistan','Venezuela','Western Sahara'];
+      const app=['American Samoa','Andorra','Anguilla','Antigua','Argentina','Aruba','Australia','Austria','Bahamas','Barbados','Belgium','Bermuda','Brazil','Brunei','Bulgaria','Canada','Canary Islands','Cayman Islands','Chile','China','Colombia','Cook Islands','Costa Rica','Curacao','Cyprus','Czech Republic','Denmark','Dominica','Dominican Republic','Ecuador','Estonia','Falkland Islands','Finland','France','French Guiana','French Polynesia','Germany','Greece','Greenland','Grenada','Guadeloupe','Guatemala','Hong Kong','Hungary','Iceland','India','Indonesia','Ireland','Italy','Jamaica','Japan','Kuwait','Latvia','Liechtenstein','Lithuania','Luxembourg','Macau','Malta','Marshall Islands','Martinique','Mexico','Monaco','Montenegro','Montserrat','Morocco','Netherlands','Netherlands Antilles','New Caledonia','New Zealand','Northern Mariana','Norway','Panama','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','South Africa','Romania','Saint Kitts','Saint Lucia','Saint Vincent','San Marino','Singapore','Slovakia','South Korea','Spain','Sweden','Switzerland','Taiwan','Thailand','Trinidad','Turks and Caicos','United Arab Emirates','United Kingdom','Uruguay','Vatican City','Vietnam','Virgin Islands'];
+      if (dec.some(d=>c.toLowerCase().includes(d.toLowerCase()))) return {tier:'DECLINED',css:'t-dec',elig:false};
+      if (app.some(a=>c.toLowerCase().includes(a.toLowerCase()))) return {tier:'APPROVED',css:'t-app',elig:true};
+      return {tier:'REVIEW REQ',css:'tb-b',elig:'conditional'};
+    }
+  },
+  symetra: {
+    name:'Symetra', label:'Symetra', lbl:'cl-sym',
+    jumbo:35e6, autoBind:20e6, retention:5e6, nwMin:1e6,
+    finPres:'None required',
+    physPres:'None required',
+    spouseElig:'No — spouse without own nexus is not eligible.',
+    lpoa:'Yes — LPOA permitted for delivery.',
+    premium:'All premiums in U.S. dollars from U.S. bank account in policyowner\'s name.',
+    address:'Must maintain U.S. street address (no PO Box) for all correspondence.',
+    apsXlate:'Up to $300 if policy placed in-force.',
+    ownership:'Direct individual (W-8BEN required), or U.S. entity (family member, U.S. corp/LLC/trust with TIN). No foreign entities.',
+    challenges:'Requires ECG and Inspection Report. No foreign correspondence address. Lowest jumbo limit ($35M).',
+    exclusions:['missionary','politician','judge','journalist','military','athlete','entertainer','aviation'],
+    nexusRequired:['real_estate','us_employed','us_business','us_bank','regular_travel','ssn_tin','family_us'],
+    countryTier:(c)=>{
+      const a=['American Samoa','Andorra','Anguilla','Antigua','Argentina','Aruba','Australia','Austria','Bahrain','Barbados','Belgium','Bermuda','Bosnia','British Virgin Islands','Brunei','Bulgaria','Canary Islands','Cayman Islands','Chile','Cook Islands','Costa Rica','Croatia','Curacao','Cyprus','Czech Republic','Denmark','Dominica','Estonia','Finland','France','French Polynesia','Germany','Greece','Greenland','Grenada','Guadeloupe','Hungary','Iceland','Ireland','Italy','Kuwait','Latvia','Liechtenstein','Lithuania','Luxembourg','Malaysia','Malta','Martinique','Mauritius','Monaco','Montenegro','Montserrat','Netherlands','Netherlands Antilles','New Caledonia','New Zealand','Northern Mariana','Norway','Oman','Palau','Panama','Poland','Portugal','Qatar','Romania','Saint Kitts','Saint Lucia','Saint Vincent','San Marino','Serbia','Singapore','Sint Maarten','Slovakia','Slovenia','South Korea','Spain','Sweden','Switzerland','Taiwan','Turks and Caicos','Virgin Islands','United Kingdom','Uruguay','Vatican City'];
+      const fac=['Belize','Bolivia','Ecuador','El Salvador','Guatemala','India','Marshall Islands','Peru','Philippines','South Africa'];
+      const b=['Albania','Algeria','Armenia','Azerbaijan','Bahamas','Bhutan','Brazil','Cape Verde','China','Colombia','Dominican Republic','Micronesia','Fiji','French Guiana','Georgia','Hong Kong','Indonesia','Jamaica','Jordan','Kazakhstan','Macau','Macedonia','Maldives','Mexico','Mongolia','Morocco','Paraguay','Samoa','Saudi Arabia','Seychelles','Solomon Islands','Sri Lanka','Suriname','Thailand','Tonga','Trinidad','Tunisia','United Arab Emirates','Uzbekistan','Vietnam'];
+      if (fac.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'C (Fac)',css:'t-fac',elig:'conditional'};
+      if (a.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'A',css:'ta',elig:true};
+      if (b.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'B',css:'tb-b',elig:true};
+      return {tier:'N/A',css:'t-dec',elig:false};
+    }
+  },
+  johnhancock: {
+    name:'John Hancock', label:'John Hancock', lbl:'cl-jh',
+    jumbo:65e6, autoBind:65e6, retention:'Varies by country', nwMin:5e6,
+    finPres:'Lesser of $200K or 25% of death benefit in U.S. assets held ≥6 months.',
+    physPres:'Minimum 15 days/year in U.S. on a recurring/annual basis.',
+    spouseElig:'Underwriter consideration — joint submission required with thorough cover letter.',
+    lpoa:'No LPOA. E-delivery available if solicitation in U.S. (no IP tracking).',
+    premium:'From pre-existing U.S. account directly connected and titled to client.',
+    address:'Policyowners may receive correspondence at non-U.S. address.',
+    apsXlate:'Up to $500 using approved vendor (arm\'s-length translator required).',
+    ownership:'Owner must have U.S. Tax ID, SSN, or W-8BEN. U.S. entity ownership allowed. No foreign entities.',
+    challenges:'Requires financial AND physical presence beyond nexus. $5M net worth floor. APS must be in English via arm\'s-length translator. Prefers 1-year account history.',
+    exclusions:['politician','military','journalist','missionary','athlete','entertainer','royal','diplomat','union','pep','judge'],
+    nexusRequired:['real_estate','us_employed','us_business','family_us'],
+    countryTier:(c)=>{
+      const a=['Andorra','Anguilla','Aruba','Australia','Austria','Bahrain','Barbados','Belgium','Bermuda','British Virgin Islands','Brunei','Canada','Canary Islands','Cayman Islands','Chile','China','Costa Rica','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland','France','Germany','Gibraltar','Greece','Hong Kong','Hungary','Iceland','Ireland','Italy','Korea','Kuwait','Latvia','Liechtenstein','Lithuania','Luxembourg','Macau','Malta','Martinique','Monaco','Netherlands','New Zealand','Norway','Oman','Palau','Poland','Portugal','Qatar','San Marino','Saudi Arabia','Seychelles','Slovakia','Slovenia','Spain','Sweden','Taiwan','Turks and Caicos','United Arab Emirates','United Kingdom','Uruguay'];
+      const b=['Albania','Antigua','Argentina','Armenia','Bahamas','Bosnia','Botswana','Brazil','Bulgaria','Curacao','Dominica','Dominican Republic','French Polynesia','Grenada','Guadeloupe','Indonesia','Jamaica','Jordan','Kazakhstan','Macedonia','Malaysia','Maldives','Mauritius','Mexico','Montenegro','Morocco','New Caledonia','Northern Mariana','Panama','Peru','Romania','Saint Kitts','Saint Lucia','Saint Vincent','Samoa','Serbia','Suriname','Thailand','Trinidad','Turkey','Vietnam'];
+      const cc=['Algeria','Bangladesh','Belize','Bhutan','Bolivia','Cambodia','Cape Verde','Colombia','Cook Islands','Egypt','Fiji','French Guiana','Gabon','Georgia','Ghana','Guatemala','Guyana','India','Kenya','Micronesia','Mongolia','Montserrat','Namibia','Nepal','Nicaragua','Paraguay','Philippines','Rwanda','Senegal','Solomon Islands','South Africa','Sri Lanka','Tonga','Tunisia','Uzbekistan','Zambia'];
+      if (a.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'A',css:'ta',elig:true};
+      if (cc.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'C',css:'tc',elig:'conditional'};
+      if (b.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'B',css:'tb-b',elig:true};
+      return {tier:'N/A',css:'t-dec',elig:false};
+    }
+  },
+  pacific: {
+    name:'Pacific Life', label:'Pacific Life', lbl:'cl-pac',
+    jumbo:65e6, autoBind:65e6, retention:'Included in auto bind', nwMin:5e6,
+    finPres:'Minimum $250K in U.S. account titled to proposed insured, seasoned ≥6 months.',
+    physPres:'Minimum 15 days/year in U.S. on a recurring/annual basis.',
+    spouseElig:'Underwriter consideration — joint submission, must meet all Global Citizen requirements.',
+    lpoa:'No LPOA. E-delivery allowed (IP tracking and travel history verification apply).',
+    premium:'From U.S. account directly connected and titled to applicant. U.S. currency only.',
+    address:'Policyowners may receive correspondence at non-U.S. address.',
+    apsXlate:'No reimbursement for APS translation.',
+    ownership:'U.S. entity (trust or LLC under U.S. law with U.S. address) or individual. W-8BEN or U.S. TIN required. No foreign entities.',
+    challenges:'Requires financial AND physical presence. IP tracking on e-delivery. No APS translation reimbursement. $5M net worth floor.',
+    exclusions:['aid_worker','aviation','journalist','military','diplomat','pep','politician','missionary','union','athlete','royal','judge'],
+    nexusRequired:['real_estate','us_employed','us_business','family_us'],
+    countryTier:(c)=>{
+      const d=['Afghanistan','Chad','Congo','Ethiopia','Gaza','Haiti','Iran','Iraq','Liberia','Libya','North Korea','Pakistan','Sierra Leone','Somalia','Sudan','Syria','Venezuela','Yemen'];
+      const a=['Australia','Austria','Belgium','Bermuda','Canada','China','Czech Republic','Denmark','Dominican Republic','Finland','France','Germany','Greece','Hong Kong','Iceland','Ireland','Israel','Italy','Japan','Netherlands','New Zealand','Norway','Poland','Portugal','Puerto Rico','Singapore','Spain','Sweden','Switzerland','Taiwan','United Arab Emirates','United Kingdom','Vietnam','Zimbabwe'];
+      const b=['Argentina','Armenia','Aruba','Bahamas','Barbados','Brazil','Bulgaria','Chile','Costa Rica','Croatia','Cuba','Ecuador','Guam','Jamaica','Lithuania','Malaysia','Mexico','Panama','Romania','Russia','Saudi Arabia','Serbia','South Africa','South Korea','Turkey','Turks and Caicos','British Virgin Islands','Virgin Islands'];
+      const cc=['Belize','Bolivia','Bosnia','Cambodia','Cameroon','Cape Verde','Colombia','Egypt','El Salvador','Guatemala','Honduras','India','Indonesia','Jordan','Kenya','Laos','Madagascar','Nepal','Nicaragua','Nigeria','Papua New Guinea','Paraguay','Peru','Philippines','Rwanda','Samoa','Senegal','Sri Lanka','Tanzania','Thailand','Uganda','Ukraine'];
+      if (d.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'D — DECLINED',css:'t-dec',elig:false};
+      if (a.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'A',css:'ta',elig:true};
+      if (cc.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'C',css:'tc',elig:'conditional'};
+      if (b.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'B',css:'tb-b',elig:true};
+      return {tier:'N/A',css:'t-dec',elig:false};
+    }
+  },
+  natlife: {
+    name:'National Life', label:'Natl Life', lbl:'cl-nl',
+    jumbo:'$30M (age 18–70) / $20M (age 71–75)', autoBind:'$30M / $20M', retention:'Varies', nwMin:null,
+    finPres:'None cited (separate from nexus).',
+    physPres:'None cited.',
+    spouseElig:'Contact underwriting.',
+    lpoa:'Policy delivered in U.S. to valid address in state of issue. All policies accepted in U.S.',
+    premium:'All premiums from U.S. bank account in name of owner or insured.',
+    address:'Must maintain valid U.S. mailing address for all policy correspondence.',
+    apsXlate:'Not specified.',
+    ownership:'Personally owned, or owned by U.S. resident, U.S. trust (ILIT), or U.S. business. Owner must have valid U.S. postal address.',
+    challenges:'Requires U.S. address for ALL correspondence. Delivery in U.S. Permanent products only. Min face $500K. OFAC compliance required. PEPs and high-profile not considered.',
+    exclusions:['politician','military','pep','missionary','aviation','athlete','celebrity'],
+    nexusRequired:['real_estate','us_business','married_us_citizen','us_student','us_bank','eb5'],
+    countryTier:(c)=>{
+      const a=['Andorra','Anguilla','Australia','Austria','Belgium','Bermuda','Canada','Cayman Islands','China','Czech Republic','Denmark','Finland','France','Germany','Greece','Hong Kong','Hungary','Iceland','Ireland','Israel','Italy','Japan','Liechtenstein','Luxembourg','Macau','Martinique','Monaco','Netherlands','New Zealand','Norway','Poland','Portugal','Qatar','San Marino','Singapore','Slovakia','Slovenia','Spain','Sweden','Switzerland','Taiwan','United Arab Emirates','United Kingdom'];
+      const b=['Albania','American Samoa','Antigua','Argentina','Armenia','Aruba','Bahamas','Bahrain','Barbados','Bonaire','Brazil','Brunei','Bulgaria','Chile','Costa Rica','Croatia','Cuba','Curacao','Cyprus','Dominica','Ecuador','Estonia','Grenada','Guadeloupe','Jamaica','Kazakhstan','South Korea','Kosovo','Kuwait','Latvia','Lithuania','Macedonia','Malaysia','Maldives','Malta','Mauritius','Mexico','Montenegro','New Caledonia','Oman','Palau','Panama','Romania','Saint Kitts','Saint Lucia','Saint Vincent','Saudi Arabia','Serbia','Seychelles','South Africa','Suriname','Trinidad','Turks and Caicos','Uruguay','British Virgin Islands','U.S. Virgin Islands'];
+      const ofac=['Afghanistan','Iran','North Korea','Syria','Cuba','Sudan','Venezuela','Myanmar','Belarus'];
+      if (ofac.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'OFAC — DECLINED',css:'t-dec',elig:false};
+      if (a.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'A',css:'ta',elig:true};
+      if (b.some(x=>c.toLowerCase().includes(x.toLowerCase()))) return {tier:'B',css:'tb-b',elig:true};
+      return {tier:'C (Individual)',css:'tc',elig:'conditional'};
+    }
+  },
+  pan1: {
+    name:'Pan American – Model 1', label:'PanAm M1', lbl:'cl-pan1',
+    jumbo:20e6, autoBind:10e6, retention:1.5e6, nwMin:null,
+    finPres:'No U.S. financial presence required.',
+    physPres:'No U.S. physical presence required.',
+    spouseElig:'Contact underwriting.',
+    lpoa:'Not specified.',
+    premium:'Initial and subsequent payments in U.S. dollars. Wire transfers accepted from any bank globally (no U.S. sanctions). Credit card accepted (Visa/Mastercard).',
+    address:'Not specified.',
+    apsXlate:'Not specified.',
+    ownership:'U.S. Individual, U.S. Corporation, Foreign Individual, Foreign Corporation, U.S. Trusts, Foreign Trusts, LLCs.',
+    challenges:'No nexus required. Broadest ownership structure. Widest country list for a domestic carrier. $3M+ requires inspection report plus financial documentation.',
+    nexusNone:true,
+    exclusions:['pep'],
+    products:'IUL, UL, Term. Riders: Maturity Extension, Terminal Illness, Accidental Death Benefit, Critical Illness, Term Insurance.',
+    countryTier:(c)=>{
+      return panCountryTier(c);
+    }
+  },
+  pan2: {
+    name:'Pan American – Model 2', label:'PanAm M2', lbl:'cl-pan2',
+    jumbo:20e6, autoBind:'$10M UL / $5M Term', retention:1.5e6, nwMin:null,
+    finPres:'No U.S. financial presence required.',
+    physPres:'Must be in the U.S. on a VISA at time of signing. Available in 5 states: AZ/FL/HI/NV/TX.',
+    spouseElig:'Contact underwriting.',
+    lpoa:'Not specified.',
+    premium:'Initial and subsequent in U.S. dollars. Wire transfers from any global bank (no U.S. sanctions). Credit card (Visa/MC/AMEX).',
+    address:'Proof of residence required (valid within 3 months, translated to English; Spanish accepted).',
+    apsXlate:'Not specified.',
+    ownership:'Foreign Individual, Foreign Corporation, U.S. Trusts, Foreign Trusts, LLCs.',
+    challenges:'Must be on U.S. Visa when signing. Only available in 5 states: AZ, FL, HI, NV, TX. No U.S. nexus required. $3M+ requires inspection report plus financial docs.',
+    nexusNone:true,
+    exclusions:['pep'],
+    products:'IUL, UL, Term (AZ/FL/HI/NV/TX only).',
+    countryTier:(c)=>{
+      return panCountryTier(c);
+    }
+  },
+  pan3: {
+    name:'Pan American – Model 3', label:'PanAm M3', lbl:'cl-pan3',
+    jumbo:20e6, autoBind:'$10M UL / $5M Term', retention:1.5e6, nwMin:null,
+    finPres:'No U.S. financial presence required.',
+    physPres:'Signing anywhere except the U.S. (international/offshore product).',
+    spouseElig:'Contact underwriting.',
+    lpoa:'Not specified.',
+    premium:'Credit Card: Visa/MC (IUL), Visa/MC/AMEX (UL & Term). Wire from any global bank without U.S. sanctions.',
+    address:'Not specified.',
+    apsXlate:'Not specified.',
+    ownership:'Foreign Individual, Foreign Corporation, U.S. and Foreign Trusts and LLCs.',
+    challenges:'Offshore product — client signs outside the U.S. No nexus required. Broadest international product for clients who cannot or will not come to the U.S.',
+    nexusNone:true,
+    exclusions:['pep'],
+    products:'Global Assets IUL, NexGen UL, 20yr/30yr Term.',
+    countryTier:(c)=>{
+      return panCountryTier(c);
+    }
+  }
+};
+
+// ═══════════════════════════════════════════
+// DATA: ANNUITY CARRIERS
+// ═══════════════════════════════════════════
+const ANNUITY = {
+  alin: {
+    name:'Lincoln (Annuity)', label:'Lincoln', lbl:'cl-lin',
+    nexusReq:true, signingReq:'U.S. only',
+    eSign:'Yes — must be in U.S. at time of signing.',
+    nexusTypes:'U.S. property, business, employment, education, U.S. bank account ≥$100K.',
+    delivery:'Delivered in state of situs. POA reviewed case-by-case.',
+    poa:'Yes — with legal review and U.S. notarization.',
+    ownership:'Individual or immediate family only. Trusts not allowed.',
+    products:'All individual: fixed, indexed, variable, immediate (SPIA).',
+    premium:'U.S. bank or U.S. affiliate of foreign bank only. No foreign currency.',
+    foreignMail:'Yes — future correspondence may be mailed to foreign address.',
+    docs:'SSN/TIN required or W-8BEN with FTIN.',
+    postIssue:'800# doesn\'t work outside U.S. AWS via check/EFT to U.S. bank only. One-time withdrawals allow wire.',
+    notes:'All solicitation must occur in the U.S. No marketing materials transmitted abroad.',
+    usCitizenAbroad:true, nonUsWithTies:true, nonUsNoTies:false,
+    productLimit:null,
+  },
+  ajkn: {
+    name:'Jackson (Annuity)', label:'Jackson', lbl:'cl-jkn',
+    nexusReq:true, signingReq:'U.S. only',
+    eSign:'Yes — must be in U.S. at time of signing.',
+    nexusTypes:'Client must work in U.S. OR own a home in U.S. — visiting to sign alone is not sufficient.',
+    delivery:'Electronic delivery or U.S. address.',
+    poa:'Yes — POA can sign application.',
+    ownership:'Individual, trust, or immediate family members.',
+    products:'Fixed, indexed, and variable annuities.',
+    premium:'U.S. bank account required.',
+    foreignMail:'Yes — once account is opened, documents can be mailed to foreign address.',
+    docs:'Standard application. No additional docs cited.',
+    postIssue:'Jackson doesn\'t monitor after-sale communication — broker/dealer compliance responsibility.',
+    notes:'CRITICAL: Client must have substantive purpose for U.S. presence (business or home). Cannot simply visit, sign, and return.',
+    usCitizenAbroad:true, nonUsWithTies:true, nonUsNoTies:false,
+    productLimit:2500000,
+  },
+  anl: {
+    name:'National Life (Annuity)', label:'Natl Life', lbl:'cl-nl',
+    nexusReq:true, signingReq:'U.S. only — all solicitation must occur in U.S.',
+    eSign:'Being confirmed with National Life.',
+    nexusTypes:'U.S. real estate, U.S. business, or ≥$100K in U.S. assets documented ≥3 months.',
+    delivery:'Policy delivered to owner\'s valid U.S. mailing address.',
+    poa:'Being confirmed.',
+    ownership:'Individual 18+, U.S. resident, U.S. trust, or U.S. business. Must have SSN, TIN, or W-8BEN.',
+    products:'Being confirmed — contact JH for product availability.',
+    premium:'U.S. bank account in name of policyowner. Cash equivalents not accepted.',
+    foreignMail:'No — must maintain valid U.S. mailing address.',
+    docs:'SSN, TIN, or W-8BEN. Passport copy may be required. OFAC compliance required.',
+    postIssue:'Being confirmed.',
+    notes:'Cannot be citizen/resident of OFAC-sanctioned country. All cases subject to suitability including liquid net worth.',
+    usCitizenAbroad:true, nonUsWithTies:true, nonUsNoTies:false,
+    productLimit:null,
+  },
+  axoi: {
+    name:'Carrier B International', label:'Carrier B Intl', lbl:'cl-axoi',
+    nexusReq:false, signingReq:'No U.S. presence required',
+    eSign:'No — application emailed, printed, signed, and returned.',
+    nexusTypes:'No U.S. nexus required. Designed for non-U.S. persons residing abroad.',
+    delivery:'Electronic delivery. No delivery location requirements.',
+    poa:'Being confirmed.',
+    ownership:'Individual: cannot be U.S. person; cannot reside in U.S. Corporate: entity cannot be U.S. person or entity.',
+    products:'Guaranteed Fixed Rate Plan, Private Guaranteed Fixed Rate Plan, Guaranteed Index Plan, Private Guaranteed Index Plan.',
+    premium:'Premium in USD.',
+    foreignMail:'Yes — all correspondence abroad.',
+    docs:'Passport (color), 3 months bank statements, source of funds letter (3+ year relationship preferred), address verification (within 3 months).',
+    postIssue:'Being confirmed.',
+    notes:'OFFSHORE PRODUCT. The only carrier for non-U.S. persons with no U.S. ties. U.S. citizens and U.S. residents are NOT eligible.',
+    usCitizenAbroad:false, nonUsWithTies:false, nonUsNoTies:true,
+    productLimit:null,
+    isOffshore:true,
+  },
+  axou: {
+    name:'Carrier B U.S.', label:'Carrier B US', lbl:'cl-axou',
+    nexusReq:true, signingReq:'Being confirmed — requires U.S. residence address.',
+    eSign:'Being confirmed.',
+    nexusTypes:'Must have ALL THREE: SSN or TIN/W-8BEN, U.S. bank account, AND valid U.S. residence address (no PO Box).',
+    delivery:'Policy packet mailed to U.S. residence address on application.',
+    poa:'Yes — POA must be legally established. Requires copy of legal POA + Carrier B\'s own POA form.',
+    ownership:'Being confirmed.',
+    products:'Limited to agent\'s licensed products. Over $1M requires large case form.',
+    premium:'USD. Being confirmed for additional requirements.',
+    foreignMail:'Being confirmed.',
+    docs:'SSN/TIN or W-8BEN, U.S. bank account docs, U.S. residence address proof. $1M+: large case form required.',
+    postIssue:'Customer portal and email.',
+    notes:'All three nexus requirements must be met simultaneously. Customer portal for ongoing service.',
+    usCitizenAbroad:true, nonUsWithTies:true, nonUsNoTies:false,
+    productLimit:1000000,
+  }
+};
+
+// ═══════════════════════════════════════════
+// FORMAT
+// ═══════════════════════════════════════════
+function fmt(n){ if (!n&&n!==0) return 'N/A'; if (typeof n==='string') return n; return '$'+Number(n).toLocaleString(); }
+
+// ═══════════════════════════════════════════
+// LIFE ANALYSIS
+// ═══════════════════════════════════════════
+function analyzeLife(ctx){
+  const keys=['lincoln','symetra','johnhancock','pacific','natlife','pan1','pan2','pan3'];
+  const res={};
+  keys.forEach(k=>{
+    const c=LIFE[k];
+    const issues=[],cautions=[];
+    let status='eligible';
+    // Country tier
+    const ti=c.countryTier(ctx.country);
+    if (!ti.elig) { status='ineligible'; issues.push('Country not approved for this carrier: '+ti.tier); }
+    else if (ti.elig==='conditional') { status='conditional'; cautions.push('Country tier requires facultative/individual underwriter review.'); }
+    // Amount
+    if (ctx.amount>0 && typeof c.jumbo==='number' && ctx.amount>c.jumbo) { status='ineligible'; issues.push('Requested amount '+fmt(ctx.amount)+' exceeds jumbo limit '+fmt(c.jumbo)+'.'); }
+    // Exclusions
+    const hitFlags=ctx.flags.filter(f=>c.exclusions.includes(f));
+    if (hitFlags.length) { status='ineligible'; issues.push('Excluded occupation: '+hitFlags.join(', ')+'.'); }
+    // Net worth
+    if (c.nwMin && ctx.nw>0 && ctx.nw<c.nwMin && status!=='ineligible') { if(status==='eligible')status='conditional'; cautions.push('Net worth ('+fmt(ctx.nw)+') may be below minimum of '+fmt(c.nwMin)+'.'); }
+    // Nexus
+    if (!c.nexusNone && status!=='ineligible') {
+      const hasNexus=ctx.nexus.some(n=>c.nexusRequired.includes(n));
+      if (ctx.nexus.length===0) { if(status==='eligible')status='conditional'; cautions.push('No nexus documented — at least one U.S. connection required.'); }
+      else if (!hasNexus) { if(status==='eligible')status='conditional'; cautions.push('Selected nexus factors may not satisfy this carrier\'s specific requirements.'); }
+    }
+    // JH/Pacific: financial + physical presence
+    if ((k==='johnhancock'||k==='pacific') && status!=='ineligible') {
+      const hasFin=ctx.bank250k==='yes'||ctx.nexus.includes('us_brokerage')||ctx.nexus.includes('pct_assets_25');
+      const hasPhys=ctx.nexus.includes('present_15d')||ctx.nexus.includes('regular_travel')||ctx.nexus.includes('us_employed');
+      if (!hasFin){if(status==='eligible')status='conditional';cautions.push('Financial presence required: ≥$250K seasoned U.S. assets — confirm.');}
+      if (!hasPhys){if(status==='eligible')status='conditional';cautions.push('Physical presence required: minimum 15 days/year in U.S. — confirm.');}
+    }
+    // National Life: US address required
+    if (k==='natlife' && status!=='ineligible') {
+      if (!ctx.nexus.includes('us_residence')&&!ctx.nexus.includes('real_estate')&&!ctx.nexus.includes('us_employed')&&!ctx.nexus.includes('us_business')) {
+        if(status==='eligible')status='conditional'; cautions.push('National Life requires a valid U.S. mailing address and delivery in U.S.');
+      }
+    }
+    // Pan American Model 2: needs to be on US Visa
+    if (k==='pan2' && status!=='ineligible') {
+      if (!ctx.nexus.includes('us_visa')&&!ctx.nexus.includes('present_15d')&&!ctx.nexus.includes('can_travel_sign')) {
+        if(status==='eligible')status='conditional'; cautions.push('Model 2 requires client to be in U.S. on a valid Visa when signing.');
+      }
+    }
+    // Pan American Model 3: offshore — signing NOT in US
+    if (k==='pan3' && ctx.nexus.includes('can_travel_sign')) {
+      // Note only — Model 3 is for those signing abroad
+      cautions.push('Pan Am Model 3 is designed for clients signing OUTSIDE the U.S. If client can travel to sign in U.S., Model 1 or 2 may be preferred.');
+    }
+    res[k]={status,issues,cautions,tier:ti,overBind:typeof c.autoBind==='number'&&ctx.amount>c.autoBind};
+  });
+  return res;
+}
+
+// ═══════════════════════════════════════════
+// ANNUITY ANALYSIS
+// ═══════════════════════════════════════════
+function analyzeAnnuity(ctx){
+  const keys=['alin','ajkn','anl','axoi','axou'];
+  const res={};
+  const ofac=['Iran','Iraq','Syria','North Korea','Venezuela','Sudan','Cuba','Somalia','Yemen','Afghanistan','Libya','Belarus'];
+  const isOfac=ofac.some(s=>ctx.country.toLowerCase().includes(s.toLowerCase()));
+  keys.forEach(k=>{
+    const c=ANNUITY[k];
+    const issues=[],cautions=[];
+    let status='eligible';
+    // OFAC
+    if (isOfac) { status='ineligible'; issues.push('OFAC-sanctioned country — no U.S. carrier can issue.'); }
+    // Client type
+    const isNonUSTies = ctx.nexus.length===0||(!ctx.nexus.some(n=>['real_estate','us_employed','us_business','us_bank','us_brokerage','us_residence','ssn_tin','present_6mo'].includes(n)));
+    if (isNonUSTies && !c.nonUsNoTies && status!=='ineligible') { status='ineligible'; issues.push('Carrier requires U.S. nexus — not available for clients with no U.S. ties.'); }
+    if (!isNonUSTies && c.isOffshore && status!=='ineligible') { cautions.push('Carrier B International is designed for non-U.S. persons with no U.S. ties. Client with U.S. ties may prefer a domestic carrier.'); }
+    // Signing
+    const canSign=ctx.nexus.includes('can_travel_sign');
+    if (!canSign && c.signingReq==='U.S. only' && status!=='ineligible') { status='ineligible'; issues.push('Requires in-U.S. signing — client cannot serve remotely with this carrier.'); }
+    // Nexus
+    if (c.nexusReq && status!=='ineligible') {
+      if (k==='ajkn') {
+        const hasWorkHome=ctx.nexus.includes('us_employed')||ctx.nexus.includes('real_estate')||ctx.nexus.includes('us_business');
+        if(!hasWorkHome){if(status==='eligible')status='conditional';cautions.push('Jackson requires work or home in U.S. — bank account or travel alone is insufficient.');}
+      }
+      if (k==='axou') {
+        const hasSSN=ctx.nexus.includes('ssn_tin');
+        const hasBank=ctx.nexus.includes('us_bank');
+        const hasAddr=ctx.nexus.includes('us_residence');
+        if (!hasSSN||!hasBank||!hasAddr){if(status==='eligible')status='conditional';const m=[];if(!hasSSN)m.push('SSN/TIN or W-8BEN');if(!hasBank)m.push('U.S. bank account');if(!hasAddr)m.push('U.S. residence address');cautions.push('Carrier B U.S. requires ALL THREE: '+m.join(', ')+'.');}
+      }
+      if (k==='anl') {
+        const hasNLNex=ctx.nexus.includes('real_estate')||ctx.nexus.includes('us_business')||ctx.bank250k==='yes'||ctx.bank25k==='yes';
+        if(!hasNLNex){if(status==='eligible')status='conditional';cautions.push('National Life requires U.S. real estate, business, or ≥$100K in U.S. assets (3+ months).');}
+        if(!ctx.nexus.includes('us_residence')){if(status==='eligible')status='conditional';cautions.push('National Life requires valid U.S. mailing address for delivery.');}
+      }
+    }
+    // Product limit
+    if (c.productLimit && ctx.amount>c.productLimit && status!=='ineligible') {
+      if(status==='eligible')status='conditional';
+      cautions.push('Premium '+fmt(ctx.amount)+' exceeds standard limit '+fmt(c.productLimit)+'. Prior approval/large case form required.');
+    }
+    res[k]={status,issues,cautions,tier:{tier:'N/A',css:'ta'}};
+  });
+  return res;
+}
+
+// ═══════════════════════════════════════════
+// NEXT STEPS — LIFE
+// ═══════════════════════════════════════════
+function lifeNextSteps(ctx,lifeRes){
+  const steps=[];
+  const elig=Object.keys(lifeRes).filter(k=>lifeRes[k].status!=='ineligible');
+  const hasPan=elig.some(k=>k.startsWith('pan'));
+  const hasTrad=elig.some(k=>['lincoln','symetra','johnhancock','pacific','natlife'].includes(k));
+  const hasJhPac=elig.some(k=>k==='johnhancock'||k==='pacific');
+
+  if (!ctx.nexus.length&&!hasPan) steps.push('Identify and document the client\'s primary U.S. nexus. If no nexus exists, Pan American (Models 1–3) offer pathways without nexus requirements.');
+  if (hasPan) steps.push('Pan American is available without U.S. nexus. Model 1 accepts wire or credit card globally. Model 2 requires client to be on a U.S. Visa in AZ/FL/HI/NV/TX. Model 3 is signed entirely outside the U.S. — ideal for clients who cannot travel to the U.S.');
+  if (hasTrad) steps.push('Prepare a detailed Cover Letter for traditional carriers: (1) purpose of U.S. life insurance, (2) client background and country context, (3) financial justification for '+fmt(ctx.amount)+', (4) documented U.S. nexus evidence.');
+  if (ctx.nexus.includes('us_bank')) steps.push('Bank nexus documentation: Lincoln requires ≥$25K / 30+ days. Symetra requires ≥$10K / 30+ days. National Life requires ≥$100K / 3+ months. John Hancock and Pacific Life require ≥$250K / 6+ months (financial presence).');
+  if (hasTrad) steps.push('Coordinate Paramed Exam in the U.S. — includes blood panel, urinalysis, and NT-ProBNP (Lincoln, Pacific Life). Schedule during the client\'s next U.S. visit.');
+  if (hasJhPac) steps.push('For John Hancock and Pacific Life: gather travel records documenting ≥15 days/year of U.S. presence (boarding passes, visa stamps, hotel receipts). Also confirm ≥$250K in a seasoned U.S. account.');
+  steps.push('Collect five-year medical history from all treating physicians. Arrange certified arm\'s-length English translation for foreign-language records.');
+  steps.push('Determine policy ownership structure before application: individual, U.S. trust, or U.S. LLC. Prepare W-8BEN if owner lacks U.S. Tax ID or SSN.');
+  steps.push('Establish premium payment logistics: funds must originate from a pre-existing, properly titled U.S. account (traditional carriers). Pan American accepts global wire transfers and credit cards.');
+  steps.push('Conduct an informal pre-screen with the JH team before submitting a formal application. Submit via the Request a Quote form.');
+  if (ctx.flags.length) steps.push('Occupation flag review: confirm the client\'s occupation does not disqualify them under applicable exclusions. Discuss with underwriter before proceeding if borderline.');
+  return steps;
+}
+
+// ═══════════════════════════════════════════
+// NEXT STEPS — ANNUITY
+// ═══════════════════════════════════════════
+function annuityNextSteps(ctx,annRes){
+  const steps=[];
+  const elig=Object.keys(annRes).filter(k=>annRes[k].status!=='ineligible');
+  const hasAxoiIntl=elig.includes('axoi');
+  const hasUs=elig.some(k=>['alin','ajkn','anl','axou'].includes(k));
+  if (hasAxoiIntl&&!hasUs) steps.push('Carrier B International is the primary pathway for clients with no U.S. ties. No nexus, no U.S. travel, no U.S. bank required. Confirm client is not a U.S. person and does not reside in the U.S.');
+  if (hasUs&&ctx.nexus.includes('can_travel_sign')) steps.push('Schedule client\'s U.S. visit to sign application — required for Lincoln, Jackson, and National Life. Coordinate paperwork for the same trip.');
+  if (!ctx.nexus.includes('can_travel_sign')&&!hasAxoiIntl) steps.push('⚠ No eligible carrier allows fully remote signing except Carrier B International. Explore whether client can make a U.S. visit, or consider offshore options.');
+  steps.push('Confirm premium funding source: all U.S.-based carriers require payment from a U.S. bank account in the owner\'s name. Carrier B International requires USD wire — confirm wire instructions early.');
+  steps.push('Prepare source of funds documentation: 3 months bank statements, evidence of income/asset origin, and a financial reference letter from a banking or advisor relationship of 3+ years (especially for Carrier B International).');
+  if (elig.includes('axou')) steps.push('For Carrier B U.S.: confirm client has all three requirements simultaneously — SSN/TIN or W-8BEN, U.S. bank account, and valid U.S. residential address (no PO Box).');
+  if (elig.includes('anl')) steps.push('For National Life: confirm no marketing materials are transmitted outside the U.S. All solicitation must occur in-country. Client must maintain a valid U.S. mailing address.');
+  if (ctx.amount>=1000000) steps.push('Large case alert: premium of '+fmt(ctx.amount)+' triggers additional review at Jackson (≥$2.5M) and Carrier B U.S. (≥$1M). Engage JH before filing.');
+  steps.push('Conduct an informal pre-screen with the JH team before submitting a formal application. Use the Request a Quote form to initiate.');
+  return steps;
+}
+
+// ═══════════════════════════════════════════
+// RENDER HELPERS
+// ═══════════════════════════════════════════
+function makeCarrierCard(c, r, key, extraClass='') {
+  const cls = extraClass || (c.isOffshore ? 'offshore' : c.nexusNone ? 'pan' : r.status);
+  const sLabel = {eligible:'✓ ELIGIBLE',conditional:'~ CONDITIONAL',ineligible:'✗ NOT ELIGIBLE'}[r.status];
+  let notes='';
+  r.issues.forEach(i=>{notes+=`<div class="issue-bad">✗ ${i}</div>`;});
+  r.cautions.forEach(i=>{notes+=`<div class="issue-warn">~ ${i}</div>`;});
+  const tierBadge = r.tier && r.tier.tier !== 'N/A' ? `<span class="tb ${r.tier.css}">${r.tier.tier}</span>` : '';
+  const tierNote = r.tier && r.tier.note ? `<div class="issue-warn" style="margin-top:4px">⚑ ${r.tier.note}</div>` : '';
+  const overBind = r.overBind ? `<div class="cs"><span class="l">Auto-Bind</span><span class="v tag-c">⚡ Exceeds</span></div>` : '';
+  const lim = c.productLimit ? `<div class="cs"><span class="l">Large Case</span><span class="v tag-c">${fmt(c.productLimit)}+: review</span></div>` : '';
+  return `<div class="cc ${cls}">
+    <div class="cc-h"><span>${c.name}</span><span class="cc-s">${sLabel}</span></div>
+    <div class="cc-b">
+      ${tierBadge ? `<div class="cs"><span class="l">Country</span><span class="v">${tierBadge}</span></div>${tierNote}` : ''}
+      ${typeof c.jumbo==='number'?`<div class="cs"><span class="l">Jumbo</span><span class="v">${fmt(c.jumbo)}</span></div>`:`<div class="cs"><span class="l">Jumbo</span><span class="v" style="font-size:.6rem">${c.jumbo}</span></div>`}
+      ${c.nexusNone?`<div class="cs"><span class="l">Nexus Req.</span><span class="v tag-y">None ✓</span></div>`:c.nexusReq!==undefined?`<div class="cs"><span class="l">Nexus</span><span class="v tag-c">Required</span></div>`:''}
+      ${c.signingReq?`<div class="cs"><span class="l">Signing</span><span class="v" style="font-size:.6rem">${c.signingReq.includes('anywhere')?'<span class="tag-y">Abroad OK</span>':c.signingReq.includes('U.S. only')?'<span class="tag-c">U.S. only</span>':'<span class="tag-na">TBD</span>'}</span></div>`:''}
+      ${overBind}${lim}
+      ${notes ? `<div class="cc-issues">${notes}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+function makeDetailCard(title, carrierList, field, labels){
+  const rows = carrierList.map(([c,cls])=>{
+    const val = c[field];
+    if (!val) return '';
+    return `<div class="crow"><span class="clbl ${cls}">${c.label}</span><span class="cv">${val}</span></div>`;
+  }).filter(Boolean).join('');
+  return `<div class="dc"><div class="dc-h">${title}</div><div class="dc-b">${rows||'<p style="font-size:.75rem;color:var(--text-dim)">No eligible carriers.</p>'}</div></div>`;
+}
+
+function pillHtml(label, css){
+  return `<span class="pill" style="${css}">${label}</span>`;
+}
+
+// ═══════════════════════════════════════════
+// MAIN ANALYZE
+// ═══════════════════════════════════════════
+function analyze(){
+  const country = document.getElementById('cResidence').value;
+  const amount = parseFloat(document.getElementById('cAmount').value)||0;
+  const nw = parseFloat(document.getElementById('cNW').value)||0;
+  const income = parseFloat(document.getElementById('cIncome').value)||0;
+  const goal = document.getElementById('cGoal').value;
+  const name = document.getElementById('cName').value.trim()||'Unnamed Client';
+  const nexus = Array.from(document.querySelectorAll('.ncb:checked')).map(cb=>cb.value);
+  const flags = Array.from(document.querySelectorAll('.fcb:checked')).map(cb=>cb.value);
+  const bank250k = document.getElementById('bank250k').value;
+  const bank25k = document.getElementById('bank25k').value;
+  const citizenship = document.getElementById('cCitizen').value;
+  const spouseCov = document.getElementById('spouseCov').value;
+
+  if (!country){alert('Please select country of residence.');return;}
+  if (amount===0){alert('Please enter a coverage/premium amount.');return;}
+
+  const ctx = {country, amount, nw, income, goal, name, nexus, flags, bank250k, bank25k, citizenship, spouseCov};
+  const prod = currentProd;
+
+  const lifeRes = (prod==='life'||prod==='both') ? analyzeLife(ctx) : null;
+  const annRes  = (prod==='annuity'||prod==='both') ? analyzeAnnuity(ctx) : null;
+
+  // PILLS
+  const hasNexus = nexus.length>0;
+  const hasPanPath = lifeRes && ['pan1','pan2','pan3'].some(k=>lifeRes[k].status!=='ineligible');
+  const lifeEligCount = lifeRes ? Object.keys(lifeRes).filter(k=>lifeRes[k].status==='eligible').length : 0;
+  const lifePossCount = lifeRes ? Object.keys(lifeRes).filter(k=>lifeRes[k].status!=='ineligible').length : 0;
+  const annEligCount  = annRes  ? Object.keys(annRes).filter(k=>annRes[k].status==='eligible').length : 0;
+  const annPossCount  = annRes  ? Object.keys(annRes).filter(k=>annRes[k].status!=='ineligible').length : 0;
+
+  const goalLabel = document.getElementById('cGoal').selectedOptions[0].text;
+
+  let pills = '';
+  if (!hasNexus) pills += pillHtml('No U.S. Nexus Documented','background:rgba(201,122,26,.2);color:#e09040;');
+  else pills += pillHtml(nexus.length+' Nexus Factor'+(nexus.length>1?'s':''),'background:rgba(46,125,90,.2);color:#5dba8a;');
+  if (hasPanPath) pills += pillHtml('Pan American Pathway Available','background:rgba(184,114,44,.2);color:#dda060;');
+  if (bank250k==='yes') pills += pillHtml('$250K+ U.S. Assets ✓','background:rgba(20,105,122,.2);color:var(--teal-light);');
+
+  // QUOTE CTA HTML (reusable)
+  const qCTA = `<div class="quote-banner">
+    <div class="copy">
+      <h4>Ready to move this case forward?</h4>
+      <p>Submit a formal quote request to the JH team. We'll consult with carriers,<br>guide documentation, and support you through closing. Mahalo nui loa.</p>
+    </div>
+    <a href="https://form.jotform.com/260557661763061" target="_blank">⬡ Request a Quote →</a>
+  </div>`;
+
+  // LIFE TAB CONTENT
+  let lifeTab = '';
+  if (lifeRes) {
+    const lifeCarrierList = [
+      [LIFE.lincoln,   lifeRes.lincoln,   'lincoln'],
+      [LIFE.symetra,   lifeRes.symetra,   'symetra'],
+      [LIFE.johnhancock,lifeRes.johnhancock,'johnhancock'],
+      [LIFE.pacific,   lifeRes.pacific,   'pacific'],
+      [LIFE.natlife,   lifeRes.natlife,   'natlife'],
+    ];
+    const panCarrierList = [
+      [LIFE.pan1, lifeRes.pan1, 'pan1'],
+      [LIFE.pan2, lifeRes.pan2, 'pan2'],
+      [LIFE.pan3, lifeRes.pan3, 'pan3'],
+    ];
+    const tradCards = lifeCarrierList.map(([c,r])=>makeCarrierCard(c,r,'')).join('');
+    const panCards  = panCarrierList.map(([c,r])=>makeCarrierCard(c,r,'')).join('');
+
+    // Pan spot
+    const panElig = panCarrierList.filter(([,r])=>r.status!=='ineligible');
+    let panSpot = '';
+    if (panElig.length) {
+      panSpot = `<div class="pan-spot">
+        <h3>◆ Pan American Life — No Nexus Required</h3>
+        <p>Pan American offers three distinct models, each requiring <strong>no U.S. nexus</strong>. This is the carrier for clients with no U.S. ties, clients who prefer global wire or credit card payment, and clients who cannot or prefer not to sign in the U.S.</p>
+        <div class="pan-models">
+          <div class="pan-model"><h4>Model 1 — Domestic</h4><ul>
+            <li>No nexus required. Sign in U.S.</li>
+            <li>Wire from any global bank (no sanctions)</li>
+            <li>Visa/Mastercard accepted</li>
+            <li>Foreign Individual, Corp, U.S./Foreign Trusts, LLCs</li>
+            <li>$20M jumbo | $10M auto-bind</li>
+          </ul></div>
+          <div class="pan-model"><h4>Model 2 — Domestic (5 States)</h4><ul>
+            <li>No nexus, but must be on U.S. Visa</li>
+            <li>Available in AZ / FL / HI / NV / TX only</li>
+            <li>Wire + credit card (Visa/MC/AMEX)</li>
+            <li>Proof of residence required (translated)</li>
+            <li>$20M jumbo | $10M UL / $5M Term</li>
+          </ul></div>
+          <div class="pan-model"><h4>Model 3 — International / Offshore</h4><ul>
+            <li>Signed OUTSIDE the U.S. — no U.S. presence needed</li>
+            <li>No nexus required</li>
+            <li>Wire globally + Visa/MC/AMEX</li>
+            <li>Foreign entities and trusts permitted</li>
+            <li>$20M jumbo | $10M UL / $5M Term</li>
+          </ul></div>
+        </div>
+      </div>`;
+    }
+
+    // Detail cards for eligible traditional carriers
+    const eligTrad = lifeCarrierList.filter(([,r])=>r.status!=='ineligible');
+    const eligTradPairs = eligTrad.map(([c,r])=>[c,c.lbl]);
+
+    const lifeSteps = lifeNextSteps(ctx, lifeRes);
+
+    lifeTab = `
+      <div class="sh">Traditional Carriers — Eligibility Overview</div>
+      <div class="cg cg-5">${tradCards}</div>
+
+      <div class="sh">Pan American — No Nexus Pathways</div>
+      <div class="cg cg-3">${panCards}</div>
+      ${panSpot}
+
+      ${qCTA}
+
+      <div class="dg">
+        ${makeDetailCard('Financial Presence Requirement', eligTradPairs, 'finPres', null)}
+        ${makeDetailCard('Physical Presence Requirement', eligTradPairs, 'physPres', null)}
+        ${makeDetailCard('Premium Payment Requirements',  eligTradPairs, 'premium', null)}
+        ${makeDetailCard('Policy Ownership Structures',   eligTradPairs, 'ownership', null)}
+        ${makeDetailCard('LPOA / Policy Delivery',        eligTradPairs, 'lpoa', null)}
+        ${makeDetailCard('Spouse Eligibility',            eligTradPairs, 'spouseElig', null)}
+        ${makeDetailCard('U.S. Address Requirement',      eligTradPairs, 'address', null)}
+        ${makeDetailCard('APS Translation Reimbursement', eligTradPairs, 'apsXlate', null)}
+      </div>
+
+      <div class="sh">Carrier-Specific Challenges</div>
+      <div class="dc" style="margin-bottom:22px"><div class="dc-b">
+        ${[...lifeCarrierList,...panCarrierList].filter(([,r])=>r.status!=='ineligible').map(([c])=>`<div class="crow"><span class="clbl ${c.lbl}">${c.label}</span><span class="cv">${c.challenges||'—'}</span></div>`).join('')}
+      </div></div>
+
+      <div class="aml-box">
+        <h3>AML &amp; Compliance Essentials — Life</h3>
+        <div class="aml-g">
+          <div class="ai">Source of funds fully documented — bank statements, tax returns, or CPA net worth letter.</div>
+          <div class="ai">W-8BEN required for any non-U.S. owner without U.S. Tax ID or SSN.</div>
+          <div class="ai">No foreign entities (trusts, holding companies, PICs) as owner or beneficiary at traditional carriers.</div>
+          <div class="ai">Premium from pre-existing, U.S.-titled account (traditional carriers). Pan American accepts global wire and credit card.</div>
+          <div class="ai">Cover letter must articulate a clear U.S.-based insurance need connected to nexus and country of residence.</div>
+          <div class="ai">PEP and high-profile clients require underwriter pre-approval at all traditional carriers.</div>
+          <div class="ai">Medical records in foreign languages require arm's-length certified English translation.</div>
+          <div class="ai">Pan American ($3M+): inspection report plus financial docs (CPA-sealed questionnaire or bank referral letter or 2 years of tax returns).</div>
+        </div>
+      </div>
+
+      <div class="next-steps">
+        <h3>Recommended Next Steps — Life Insurance</h3>
+        <ul class="step-list">
+          ${lifeSteps.map((s,i)=>`<li class="si2"><span class="sn">${i+1}</span><span>${s}</span></li>`).join('')}
+        </ul>
+      </div>`;
+  }
+
+  // ANNUITY TAB CONTENT
+  let annTab = '';
+  if (annRes) {
+    const annCarrierList = [
+      [ANNUITY.alin,  annRes.alin,  'alin'],
+      [ANNUITY.ajkn,  annRes.ajkn,  'ajkn'],
+      [ANNUITY.anl,   annRes.anl,   'anl'],
+      [ANNUITY.axoi,  annRes.axoi,  'axoi'],
+      [ANNUITY.axou,  annRes.axou,  'axou'],
+    ];
+    const annCards = annCarrierList.map(([c,r])=>makeCarrierCard(c,r,'')).join('');
+    const eligAnn = annCarrierList.filter(([,r])=>r.status!=='ineligible');
+
+    let axoiSpot = '';
+    if (annRes.axoi.status!=='ineligible') {
+      axoiSpot = `<div class="off-spot">
+        <h3>◆ Carrier B International — Offshore Annuity</h3>
+        <p>The <strong>only carrier option for clients with no U.S. ties</strong>. No nexus required, no U.S. travel needed, no U.S. bank required. Application is emailed — client prints, signs, and returns from anywhere. Note: U.S. citizens and U.S. residents are NOT eligible.</p>
+        <div class="spot-grid">
+          <div class="si">Passport (color, clear, portrait + signature page)</div>
+          <div class="si">3 months of bank statements from funding account (balance ≥ premium amount)</div>
+          <div class="si">Source of funds letter from bank or advisor (3+ year relationship preferred)</div>
+          <div class="si">Address verification: utility bill, property tax, or mortgage statement (within 3 months)</div>
+          <div class="si">Corporate: incorporation certificate, shareholder register, authorized signatory proof, audited financials</div>
+          <div class="si">No U.S. visit needed. Application emailed — print, sign, return.</div>
+        </div>
+      </div>`;
+    }
+
+    const eligPairs = eligAnn.map(([c])=>[c,c.lbl]);
+    const annSteps = annuityNextSteps(ctx, annRes);
+
+    annTab = `
+      <div class="sh">Annuity Carrier Eligibility</div>
+      <div class="cg cg-5">${annCards}</div>
+      ${axoiSpot}
+      ${qCTA}
+
+      <div class="dg">
+        ${makeDetailCard('Nexus Requirements',          eligPairs, 'nexusTypes', null)}
+        ${makeDetailCard('Application Signing Rules',    eligPairs, 'signingReq', null)}
+        ${makeDetailCard('eSignature Policy',            eligPairs, 'eSign', null)}
+        ${makeDetailCard('Contract Delivery',            eligPairs, 'delivery', null)}
+        ${makeDetailCard('Power of Attorney (POA)',      eligPairs, 'poa', null)}
+        ${makeDetailCard('Ownership Rules',              eligPairs, 'ownership', null)}
+        ${makeDetailCard('Premium Payment Requirements', eligPairs, 'premium', null)}
+        ${makeDetailCard('Foreign Mail Accepted?',       eligPairs, 'foreignMail', null)}
+        ${makeDetailCard('Documents Required',           eligPairs, 'docs', null)}
+        ${makeDetailCard('Post-Issue / Servicing',       eligPairs, 'postIssue', null)}
+      </div>
+
+      <div class="aml-box">
+        <h3>AML &amp; Compliance Essentials — Annuity</h3>
+        <div class="aml-g">
+          <div class="ai">Source of funds documented for all carriers — bank statements, financial reference letter (3+ year relationship preferred).</div>
+          <div class="ai">W-8BEN required for non-U.S. owners without SSN or TIN. Applicable to Lincoln, National Life, Carrier B U.S., and others.</div>
+          <div class="ai">No OFAC-sanctioned country residents — hard disqualifier across all carriers.</div>
+          <div class="ai">Premium from U.S. bank account (U.S. carriers) or USD wire (Carrier B International). No foreign currency drafts for Lincoln.</div>
+          <div class="ai">All solicitation must occur in the U.S. for domestic carriers — no marketing materials transmitted abroad.</div>
+          <div class="ai">Passport copy required by all carriers — valid, color, full name, portrait, and signature.</div>
+          <div class="ai">Address verification required: utility bill, property tax, or mortgage statement within 3 months.</div>
+          <div class="ai">Corporate ownership (Carrier B Intl): shareholder register, board resolution, audited financials required.</div>
+        </div>
+      </div>
+
+      <div class="next-steps">
+        <h3>Recommended Next Steps — Annuity</h3>
+        <ul class="step-list">
+          ${annSteps.map((s,i)=>`<li class="si2"><span class="sn">${i+1}</span><span>${s}</span></li>`).join('')}
+        </ul>
+      </div>`;
+  }
+
+  // OVERVIEW TAB CONTENT
+  let ovTab = '';
+  if (prod==='both' && lifeRes && annRes) {
+    const lifeElig  = Object.keys(lifeRes).filter(k=>lifeRes[k].status==='eligible').length;
+    const lifeCond  = Object.keys(lifeRes).filter(k=>lifeRes[k].status==='conditional').length;
+    const lifeTotal = Object.keys(lifeRes).filter(k=>lifeRes[k].status!=='ineligible').length;
+    const annElig   = Object.keys(annRes).filter(k=>annRes[k].status==='eligible').length;
+    const annCond   = Object.keys(annRes).filter(k=>annRes[k].status==='conditional').length;
+    const annTotal  = Object.keys(annRes).filter(k=>annRes[k].status!=='ineligible').length;
+
+    const lifeTopCarriers = Object.keys(lifeRes).filter(k=>lifeRes[k].status==='eligible').map(k=>LIFE[k].name).join(', ') || 'None eligible — review conditional options';
+    const annTopCarriers  = Object.keys(annRes).filter(k=>annRes[k].status==='eligible').map(k=>ANNUITY[k].name).join(', ') || 'None eligible — review conditional options';
+
+    ovTab = `
+      ${qCTA}
+      <div class="sh">Opportunity Overview</div>
+      <div class="ov-grid">
+        <div class="ov-card ov-life">
+          <div class="ov-head"><h3>Life Insurance</h3><span class="ov-count ov-eligible">${lifeTotal}</span></div>
+          <div class="ov-body">
+            <div class="ov-row"><span class="ol">Fully Eligible</span><span class="ov ov-eligible">${lifeElig} carriers</span></div>
+            <div class="ov-row"><span class="ol">Conditional / Review</span><span class="ov ov-cond">${lifeCond} carriers</span></div>
+            <div class="ov-row"><span class="ol">Pan Am Pathways</span><span class="ov" style="color:#dda060">${['pan1','pan2','pan3'].filter(k=>lifeRes[k].status!=='ineligible').length} of 3 models</span></div>
+            <div class="ov-row"><span class="ol">Best Options</span><span class="ov" style="font-size:.72rem;color:var(--cream-dim)">${lifeTopCarriers}</span></div>
+          </div>
+        </div>
+        <div class="ov-card ov-ann">
+          <div class="ov-head"><h3>Annuity</h3><span class="ov-count ov-eligible" style="color:var(--violet-light)">${annTotal}</span></div>
+          <div class="ov-body">
+            <div class="ov-row"><span class="ol">Fully Eligible</span><span class="ov ov-eligible">${annElig} carriers</span></div>
+            <div class="ov-row"><span class="ol">Conditional / Review</span><span class="ov ov-cond">${annCond} carriers</span></div>
+            <div class="ov-row"><span class="ol">Offshore Option (Carrier B Intl)</span><span class="ov">${annRes.axoi.status!=='ineligible'?'<span style="color:#b09ad8">Available</span>':'<span style="color:#e07070">Not Available</span>'}</span></div>
+            <div class="ov-row"><span class="ol">Best Options</span><span class="ov" style="font-size:.72rem;color:var(--cream-dim)">${annTopCarriers}</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="next-steps" style="margin-bottom:0">
+        <h3>Combined Strategy Notes</h3>
+        <ul class="step-list">
+          <li class="si2"><span class="sn">1</span><span>Review Life Insurance tab for detailed carrier analysis, Pan American pathways, and underwriting documentation requirements.</span></li>
+          <li class="si2"><span class="sn">2</span><span>Review Annuity tab for accumulation/income options, Carrier B International offshore analysis, and signing logistics.</span></li>
+          <li class="si2"><span class="sn">3</span><span>Consider combining a traditional life policy (income replacement / estate planning) with an annuity (accumulation / retirement income) for a comprehensive cross-border financial plan.</span></li>
+          <li class="si2"><span class="sn">4</span><span>For clients with no U.S. nexus: Pan American (Models 1–3) for life; Carrier B International for annuity. Both accept international wire and require no U.S. travel for Models 3 and Carrier B Intl respectively.</span></li>
+          <li class="si2"><span class="sn">5</span><span>Submit a formal quote request to the JH team. We'll coordinate across carriers, products, and underwriting simultaneously.</span></li>
+        </ul>
+      </div>`;
+  }
+
+  // BUILD TABS
+  const hasBoth = prod==='both';
+  let tabsHtml='', panesHtml='';
+  if (hasBoth) {
+    tabsHtml = `<div class="prod-tabs">
+      <button class="ptab active-both" id="tab-ov" onclick="switchTab('ov')">⬡ Overview</button>
+      <button class="ptab" id="tab-life" onclick="switchTab('life')">Life Insurance</button>
+      <button class="ptab" id="tab-ann" onclick="switchTab('ann')">Annuity</button>
+    </div>`;
+    panesHtml = `<div class="tab-pane active" id="pane-ov">${ovTab}</div>
+    <div class="tab-pane" id="pane-life">${lifeTab}</div>
+    <div class="tab-pane" id="pane-ann">${annTab}</div>`;
+  } else if (prod==='life') {
+    panesHtml = `<div>${lifeTab}</div>`;
+  } else {
+    panesHtml = `<div>${annTab}</div>`;
+  }
+
+  // BUILD FULL RESULTS
+  const prodLabel = {life:'Life Insurance',annuity:'Annuity',both:'Life + Annuity'}[prod];
+  const rc = document.getElementById('rc');
+  document.getElementById('emptyState').style.display='none';
+  rc.innerHTML = `
+    <div class="rhead">
+      <div>
+        <h2>${name}</h2>
+        <div class="meta">${country} &nbsp;·&nbsp; ${fmt(amount)} &nbsp;·&nbsp; ${goalLabel}</div>
+        <div class="pills">${pills}${pillHtml(prodLabel,'background:rgba(20,105,122,.15);color:var(--teal-light);')}</div>
+      </div>
+      <div class="head-acts">
+        <a href="https://form.jotform.com/260557661763061" target="_blank" class="r-qbtn">⬡ Submit Quote</a>
+        <button class="print-btn" onclick="window.print()">⎙ Print</button>
+      </div>
+    </div>
+    ${tabsHtml}
+    ${panesHtml}
+  `;
+  rc.classList.add('on');
+  document.getElementById('resultsArea').scrollTop=0;
+}
+
+function switchTab(t){
+  ['ov','life','ann'].forEach(x=>{
+    const p=document.getElementById('pane-'+x);
+    const tb=document.getElementById('tab-'+x);
+    if(!p||!tb) return;
+    p.classList.remove('active');
+    const cls = x==='ov'?'active-both':x==='life'?'active-life':'active-ann';
+    tb.className = 'ptab' + (x===t?' '+cls:'');
+  });
+  const ap=document.getElementById('pane-'+t);
+  if(ap) ap.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -6,6 +6,7 @@ pill: Interactive · field resources
 accent: y
 order: 3
 featured: true
+href: /tools/foreign-national-underwriting/
 ---
 
 An advisor-facing underwriting router for foreign-national cases — built to make a hard,
