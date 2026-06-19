@@ -199,16 +199,33 @@ const ARROW =
       });
     }
 
+    // smooth + firm scroll — tunable easing/depth, no native rubber-band bounce
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function firmScrollTo(targetY, duration) {
+      targetY = Math.max(0, targetY);
+      if (prefersReduced.matches) { window.scrollTo({ top: targetY, behavior: 'auto' }); return; }
+      const startY = window.scrollY;
+      const dist = targetY - startY;
+      if (Math.abs(dist) < 4) return;
+      const t0 = performance.now();
+      const ease = (t) => 1 - Math.pow(1 - t, 3); // easeOutCubic — glides in, settles firm
+      (function step(now) {
+        const p = Math.min(1, (now - t0) / duration);
+        window.scrollTo({ top: startY + dist * ease(p), behavior: 'auto' });
+        if (p < 1) requestAnimationFrame(step);
+      })(performance.now());
+    }
+
     function open(key) {
       active = key;
       setState();
-      // on phones, bring the chosen card's paths up into view (it expands in place
-      // of the button, but the rest of the hero can leave it low on screen)
+      // on phones, ease the chosen card's paths into view — firm landing, shallow depth
       const slot = document.querySelector(`.slot[data-slot="${key}"]`);
       if (slot && window.matchMedia('(max-width: 640px)').matches) {
-        requestAnimationFrame(() =>
-          setTimeout(() => slot.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80),
-        );
+        requestAnimationFrame(() => setTimeout(() => {
+          const top = slot.getBoundingClientRect().top + window.scrollY - 74;
+          firmScrollTo(top, 430);
+        }, 80));
       }
     }
     function close(focusKey) {
