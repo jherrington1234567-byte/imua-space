@@ -98,110 +98,141 @@ const ARROW =
 
       <div class="picker">
         {lenses.map((a) => (
-          <button
-            class={`aud acc-${a.acc}`}
-            type="button"
-            data-aud={a.key}
-            aria-pressed="false"
-            aria-controls="lens-panel"
-          >
-            <span class="a-left">
-              <span class="a-name">{a.name}</span>
-              <span class="a-sub">{a.sub}</span>
-              <span class="a-blurb">{a.blurb}</span>
-            </span>
-            <span class="a-go">See your path <Fragment set:html={ARROW} /></span>
-          </button>
+          <div class={`slot acc-${a.acc}`} data-slot={a.key}>
+            <button
+              class={`aud acc-${a.acc}`}
+              type="button"
+              data-aud={a.key}
+              aria-pressed="false"
+              aria-expanded="false"
+              aria-controls={`panel-${a.key}`}
+            >
+              <span class="a-left">
+                <span class="a-name">{a.name}</span>
+                <span class="a-sub">{a.sub}</span>
+                <span class="a-blurb">{a.blurb}</span>
+              </span>
+              <span class="a-go">See your path <Fragment set:html={ARROW} /></span>
+            </button>
+
+            <div class={`panel acc-${a.acc}`} id={`panel-${a.key}`} role="region" aria-label={`${a.name} — your path`}>
+              <div class="wrap-inner"><div class="pad">
+                <div class="p-head">
+                  <span class="p-eyebrow">{a.eyebrow}</span>
+                  <button class="p-close" type="button" data-close={a.key} aria-label="Close path">
+                    <Fragment set:html={ARROW} /> back
+                  </button>
+                </div>
+                <div class="p-value" set:html={a.value}></div>
+                <div class="routes">
+                  {a.routes.map((r) => (
+                    <a class="route" href={r.href}>
+                      <span class="r-label">{r.label} <Fragment set:html={ARROW} /></span>
+                      <span class="r-desc">{r.desc}</span>
+                    </a>
+                  ))}
+                </div>
+              </div></div>
+            </div>
+          </div>
         ))}
       </div>
 
       {banner && (
         <div class="banner-wrap">
-          <button
-            class={`aud aud-wide acc-${banner.acc}`}
-            type="button"
-            data-aud={banner.key}
-            aria-pressed="false"
-            aria-controls="lens-panel"
-          >
-            <span class="a-left">
-              <span class="a-name">{banner.name}</span>
-              <span class="a-sub">{banner.sub}</span>
-              <span class="a-blurb">{banner.blurb}</span>
-            </span>
-            <span class="a-go">Enter the hive <Fragment set:html={ARROW} /></span>
-          </button>
+          <div class={`slot slot-wide acc-${banner.acc}`} data-slot={banner.key}>
+            <button
+              class={`aud aud-wide acc-${banner.acc}`}
+              type="button"
+              data-aud={banner.key}
+              aria-pressed="false"
+              aria-expanded="false"
+              aria-controls={`panel-${banner.key}`}
+            >
+              <span class="a-left">
+                <span class="a-name">{banner.name}</span>
+                <span class="a-sub">{banner.sub}</span>
+                <span class="a-blurb">{banner.blurb}</span>
+              </span>
+              <span class="a-go">Enter the hive <Fragment set:html={ARROW} /></span>
+            </button>
+
+            <div class={`panel acc-${banner.acc}`} id={`panel-${banner.key}`} role="region" aria-label={`${banner.name} — your path`}>
+              <div class="wrap-inner"><div class="pad">
+                <div class="p-head">
+                  <span class="p-eyebrow">{banner.eyebrow}</span>
+                  <button class="p-close" type="button" data-close={banner.key} aria-label="Close path">
+                    <Fragment set:html={ARROW} /> back
+                  </button>
+                </div>
+                <div class="p-value" set:html={banner.value}></div>
+                <div class="routes">
+                  {banner.routes.map((r) => (
+                    <a class="route" href={r.href}>
+                      <span class="r-label">{r.label} <Fragment set:html={ARROW} /></span>
+                      <span class="r-desc">{r.desc}</span>
+                    </a>
+                  ))}
+                </div>
+              </div></div>
+            </div>
+          </div>
         </div>
       )}
-
-      <div class="panel" id="lens-panel" aria-live="polite">
-        <div class="wrap-inner"><div class="pad" id="lens-panel-body"></div></div>
-      </div>
     </div>
   </div>
 
   <div class="toast" id="lens-toast" role="status" aria-live="polite"></div>
 
-  <script is:inline define:vars={{ AUDIENCES, ARROW }}>
-    const panel = document.getElementById('lens-panel');
-    const panelBody = document.getElementById('lens-panel-body');
-    const triggers = Array.from(document.querySelectorAll('.aud'));
+  <script is:inline>
+    const lensEl = document.querySelector('.lens');
+    const slots = Array.from(document.querySelectorAll('.slot'));
     let active = null;
 
-    function render(a) {
-      panelBody.innerHTML = `
-        <div class="p-eyebrow">${a.eyebrow}</div>
-        <div class="p-value">${a.value}</div>
-        <div class="routes">
-          ${a.routes
-            .map(
-              (r) =>
-                `<a class="route" href="${r.href}"><span class="r-label">${r.label} ${ARROW}</span><span class="r-desc">${r.desc}</span></a>`,
-            )
-            .join('')}
-        </div>`;
+    function setState() {
+      slots.forEach((s) => {
+        const on = s.dataset.slot === active;
+        s.classList.toggle('open', on);
+        const btn = s.querySelector('.aud');
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+      });
     }
 
-    function sync() {
-      triggers.forEach((b) =>
-        b.setAttribute('aria-pressed', b.dataset.aud === active ? 'true' : 'false'),
-      );
-    }
-
-    function close() {
-      panel.classList.remove('open', 'acc-rose', 'acc-blue', 'acc-terra', 'acc-ink');
-      panelBody.innerHTML = '';
-    }
-
-    function select(key) {
-      const a = AUDIENCES.find((x) => x.key === key);
-      if (!a) return;
-      // re-tapping the active lens closes it
-      if (active === key) {
-        active = null;
-        close();
-        sync();
-        return;
+    function open(key) { active = key; setState(); }
+    function close(focusKey) {
+      active = null;
+      setState();
+      if (focusKey) {
+        const b = document.querySelector(`.slot[data-slot="${focusKey}"] .aud`);
+        if (b) b.focus();
       }
-      active = key;
-      sync();
-      render(a);
-      panel.className = 'panel open acc-' + a.acc;
     }
 
-    triggers.forEach((b) => b.addEventListener('click', () => select(b.dataset.aud)));
-
-    // Click 2 — route taps: anchor scrolls; toast confirms.
+    // toast confirms a route tap before the anchor scroll lands
     let tt;
     const toastEl = document.getElementById('lens-toast');
-    panel.addEventListener('click', (e) => {
-      const r = e.target.closest('.route');
-      if (!r) return;
-      const label = r.querySelector('.r-label').textContent.trim();
+    function toast(label) {
       toastEl.textContent = '→ ' + label;
       toastEl.classList.add('show');
       clearTimeout(tt);
       tt = setTimeout(() => toastEl.classList.remove('show'), 1700);
+    }
+
+    lensEl.addEventListener('click', (e) => {
+      const closeBtn = e.target.closest('.p-close');
+      if (closeBtn) { close(closeBtn.dataset.close); return; }
+
+      const trigger = e.target.closest('.aud');
+      if (trigger) { open(trigger.dataset.aud); return; }
+
+      const r = e.target.closest('.route');
+      if (r) toast(r.querySelector('.r-label').textContent.trim());
+    });
+
+    // Esc collapses the open path
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && active) close(active);
     });
   </script>
 </header>
@@ -252,6 +283,10 @@ const ARROW =
   .banner-wrap { margin-top: 12px; }
   .aud-wide { background: var(--cream); }
 
+  /* slot = a lens and the path that takes its place when chosen */
+  .slot { position: relative; display: grid; }
+  .slot.open > .aud { display: none; }
+
   /* role accents */
   .aud.acc-rose { border-left-color: var(--pink-s); }
   .aud.acc-blue { border-left-color: var(--blue-s); }
@@ -263,16 +298,27 @@ const ARROW =
   .aud.acc-ink[aria-pressed='true'] { border-color: var(--brown); }
   .aud[aria-pressed='true'] { box-shadow: 0 16px 38px -16px rgba(43, 32, 22, .5); }
 
-  /* tailored panel */
+  /* tailored panel — sits in the slot, replacing the chosen lens */
   .panel {
-    margin-top: 16px; border-radius: 16px; overflow: hidden;
-    border: 1px solid var(--line); background: #fff;
+    border-radius: var(--radius); overflow: hidden;
+    border: 1px solid var(--line); border-left-width: 5px; background: #fff;
     display: grid; grid-template-rows: 0fr; opacity: 0;
-    transition: grid-template-rows .34s ease, opacity .3s ease;
+    transition: grid-template-rows .34s ease, opacity .3s ease, box-shadow .3s ease, transform .3s ease;
   }
-  .panel.open { grid-template-rows: 1fr; opacity: 1; }
+  .slot.open > .panel {
+    grid-template-rows: 1fr; opacity: 1;
+    box-shadow: 0 20px 44px -18px rgba(43, 32, 22, .5);
+  }
   .panel .wrap-inner { overflow: hidden; min-height: 0; }
   .panel .pad { padding: 22px; }
+  .panel :global(.p-head) { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+  .panel :global(.p-close) {
+    flex: 0 0 auto; background: none; border: 0; cursor: pointer; font: inherit;
+    font-size: 12.5px; font-weight: 600; color: var(--muted);
+    display: inline-flex; align-items: center; gap: 6px; padding: 2px 2px;
+  }
+  .panel :global(.p-close):hover { color: var(--ink); }
+  .panel :global(.p-close svg) { width: 13px; height: 13px; transform: scaleX(-1); }
   .panel :global(.p-eyebrow) { font-weight: 700; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
   .panel :global(.p-value) {
     font-family: var(--serif); font-weight: 500; font-size: clamp(18px, 2.6vw, 24px);
@@ -296,6 +342,10 @@ const ARROW =
   .panel :global(.r-desc) { font-size: 12.5px; color: var(--muted); }
 
   /* per-audience accent applied to the open panel */
+  .panel.acc-rose { border-left-color: var(--pink-s); }
+  .panel.acc-blue { border-left-color: var(--blue-s); }
+  .panel.acc-terra { border-left-color: var(--ember); }
+  .panel.acc-ink { border-left-color: var(--brown); }
   .panel.acc-rose :global(.p-eyebrow), .panel.acc-rose :global(.p-value b), .panel.acc-rose :global(.r-label svg) { color: var(--pink-s); }
   .panel.acc-rose :global(.route:hover) { border-color: var(--pink-s); }
   .panel.acc-blue :global(.p-eyebrow), .panel.acc-blue :global(.p-value b), .panel.acc-blue :global(.r-label svg) { color: var(--blue-s); }
