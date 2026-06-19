@@ -57,6 +57,13 @@ const {
           ))}
         </div>
         <small>© 2026 {site.name} · {site.domain} · {site.tagline}</small>
+        <p class="disclaimer">
+          For financial professional use only. Educational and informational — not financial, insurance,
+          tax, or legal advice, and not an offer or solicitation. No promise or guarantee of any result.
+          Any product "guarantees" are the obligations of the issuing carrier, subject to its claims-paying
+          ability; tools use synthetic demo data and must be confirmed with the carrier before any sale.
+          <a href="/disclaimer">Full disclaimer →</a>
+        </p>
       </div>
     </footer>
 
@@ -86,6 +93,12 @@ const {
       }
       .values span { color: var(--ember); }
       footer small { display: block; margin-top: 12px; font-size: 12px; }
+      .disclaimer {
+        max-width: 760px; margin: 16px auto 0; font-size: 11px; line-height: 1.6;
+        color: #a99a82;
+      }
+      .disclaimer a { color: #d9a06a; text-decoration: none; white-space: nowrap; }
+      .disclaimer a:hover { text-decoration: underline; }
 
       @media (max-width: 640px) {
         .navlinks { display: none; }

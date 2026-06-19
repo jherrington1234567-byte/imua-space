@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Disclaimer — Joshua Herrington" description="Important disclosures. For financial professional use only. Educational and informational; not advice, an offer, or a guarantee of results.">
+  <article class="disc">
+    <div class="wrap">
+      <a class="back" href="/">← imua.space</a>
+      <span class="kicker">Important disclosures</span>
+      <h1>Disclaimer</h1>
+      <p class="lead">For financial professional and licensed advisor use only. Please read this before relying on anything you find here.</p>
+
+      <h2>Educational and informational only</h2>
+      <p>The content, tools, demonstrations, case examples, and writing on this site are provided for general educational and informational purposes only. Nothing here is — and nothing here should be relied on as — financial, insurance, investment, tax, accounting, or legal advice. It is not an offer, solicitation, or recommendation to buy, sell, or hold any insurance product, annuity, security, or strategy.</p>
+
+      <h2>No promise. No guarantee.</h2>
+      <p>No promise, warranty, or guarantee of any result, outcome, return, approval, or performance is made or implied anywhere on this site. Any reference to "guarantees" describes features of certain insurance and annuity products — <strong>those guarantees are the contractual obligations of the issuing insurance carrier and are subject solely to that carrier's claims-paying ability and the terms, conditions, limitations, and exclusions of the specific policy or contract.</strong> They are not guarantees by Joshua Herrington, and no individual is personally guaranteeing any payment. Illustrations, hypotheticals, and historical examples do not predict or guarantee future results.</p>
+
+      <h2>Demonstration tools use synthetic data</h2>
+      <p>The interactive tools, dashboards, models, and case studies shown here run on synthetic, sanitized, demonstration data. They do not reflect real clients, real companies, real accounts, or any carrier's proprietary pricing or underwriting. Figures are illustrative. Carrier eligibility, underwriting, rates, product availability, and rules change frequently and <strong>must be confirmed directly with the carrier before any recommendation or sale.</strong></p>
+
+      <h2>No relationship created</h2>
+      <p>Using this site, contacting through it, or accessing these tools does not create an advisory, brokerage, agency, fiduciary, or client relationship of any kind. Insurance and securities products are offered and sold only by appropriately licensed and appointed individuals, in jurisdictions where licensed, and subject to applicable suitability, best-interest, and compliance requirements.</p>
+
+      <h2>Your responsibility</h2>
+      <p>Advisors are responsible for their own due diligence, licensing, appointments, and compliance, and for confirming all details independently. Consumers should consult their own licensed advisor and their own tax and legal professionals before making any financial decision.</p>
+
+      <p class="fine">This site reflects the personal views and work of Joshua Herrington and not those of any employer, broker-dealer, carrier, or affiliated organization. © 2026 Joshua Herrington · imua.space</p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .disc { background: var(--cream); padding: 52px 0 80px; }
+  .disc .wrap { max-width: 760px; }
+  .back { font-size: 13px; color: var(--muted); text-decoration: none; }
+  .disc .kicker { display: block; margin-top: 26px; color: var(--ember); text-transform: uppercase; }
+  .disc h1 { font-size: 40px; margin-top: 10px; }
+  .disc .lead { font-family: var(--serif); font-size: 19px; color: var(--muted); margin-top: 14px; }
+  .disc h2 { font-size: 19px; margin-top: 34px; }
+  .disc p { margin-top: 12px; font-size: 15.5px; line-height: 1.7; color: var(--ink); }
+  .disc .fine { margin-top: 34px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px; }
+</style>
