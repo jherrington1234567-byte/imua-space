@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:#f8f3f1;}
+  ::selection{background:#f3c9d8;color:#3a1422;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes ring{from{opacity:0;transform:scale(.92);}to{opacity:1;transform:scale(1);}}
+  .jx-main::-webkit-scrollbar{width:10px;}
+  .jx-main::-webkit-scrollbar-thumb{background:#e3cdd5;border-radius:6px;border:3px solid #f8f3f1;}
+</style>
+</helmet>
+
+<div style="display:flex; min-height:100vh; background:#f8f3f1; font-family:'DM Sans',-apple-system,sans-serif; color:#2b1922;">
+
+  <aside style="position:fixed; top:0; left:0; width:268px; height:100vh; background:#241019; display:flex; flex-direction:column; padding:30px 20px; overflow:auto; z-index:10;">
+    <div style="display:flex; align-items:center; gap:13px; padding:0 8px 26px;">
+      <div style="width:42px; height:42px; border-radius:11px; background:linear-gradient(150deg,#c75f86,#8f3e5b); display:flex; align-items:center; justify-content:center; font-family:'Spectral',serif; font-weight:600; font-size:19px; color:#fff; box-shadow:0 4px 14px rgba(199,95,134,.35);">J</div>
+      <div>
+        <div style="font-family:'Spectral',serif; font-size:17px; font-weight:500; color:#fbeef3; line-height:1.1;">Joshua</div>
+        <div style="font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:1.4px; text-transform:uppercase; color:#9b7280; margin-top:3px;">Sales Leadership OS</div>
+      </div>
+    </div>
+
+    <nav style="display:flex; flex-direction:column; gap:3px; margin-top:6px;">
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
+        <a style="{{ item.rowStyle }}" style-hover="background:rgba(199,95,134,.10)" onClick="{{ item.onClick }}">
+          <span style="{{ item.barStyle }}"></span>
+          <span style="{{ item.idxStyle }}">{{ item.idx }}</span>
+          <span style="display:flex; flex-direction:column;">
+            <span style="{{ item.labelStyle }}">{{ item.label }}</span>
+            <span style="{{ item.subStyle }}">{{ item.sub }}</span>
+          </span>
+        </a>
+      </sc-for>
+    </nav>
+
+    <div style="margin-top:auto; padding:22px 10px 6px; border-top:1px solid rgba(255,255,255,.07);">
+      <div style="font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:1.4px; text-transform:uppercase; color:#7c5a66; margin-bottom:12px;">Operating Values</div>
+      <div style="display:flex; flex-direction:column; gap:9px;">
+        <div style="display:flex; gap:9px; align-items:baseline; font-size:12.5px; color:#c9aeb8;"><span style="color:#c75f86; font-size:9px;">&#9670;</span>Integrity first</div>
+        <div style="display:flex; gap:9px; align-items:baseline; font-size:12.5px; color:#c9aeb8;"><span style="color:#c75f86; font-size:9px;">&#9670;</span>Service before self</div>
+        <div style="display:flex; gap:9px; align-items:baseline; font-size:12.5px; color:#c9aeb8;"><span style="color:#c75f86; font-size:9px;">&#9670;</span>Excellence in all I do</div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="jx-main" style="margin-left:268px; flex:1; min-height:100vh;">
+
+    <!-- OVERVIEW -->
+    <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+    <section data-screen-label="Overview" data-speaker-notes="Capability-first opener. The work leads; Joshua is the through-line." style="padding:80px 72px 96px; max-width:1080px; animation:fadeUp .5s ease both;">
+      <p style="font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#b07c8f; margin:0 0 22px;">A sales leadership operating system</p>
+      <h1 style="font-family:'Spectral',serif; font-weight:400; font-size:56px; line-height:1.06; letter-spacing:-0.02em; color:#2b1922; margin:0 0 22px; max-width:880px; text-wrap:pretty;">The work, and the operator behind it.</h1>
+      <p style="font-size:19px; line-height:1.6; color:#6f5760; margin:0 0 14px; max-width:720px; text-wrap:pretty;">Joshua designs the systems, coaches the frameworks, sources the opportunities, and builds the distribution to scale them &mdash; institutional-grade planning aimed at the rising middle: expats and immigrants, mass-affluent business owners, and the American middle class.</p>
+      <p style="font-size:15px; line-height:1.6; color:#a98995; margin:0 0 46px; max-width:680px;">Every artifact in this demo &mdash; the platform configurator, the case teardowns, the carrier architecture, this very interface &mdash; was built, written, and executed by Joshua.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:54px;">
+        <sc-for list="{{ capabilities }}" as="c" hint-placeholder-count="4">
+          <a onClick="{{ c.onClick }}" style="background:#fff; border:1px solid #efe1e6; border-radius:16px; padding:26px 26px 24px; box-shadow:0 1px 2px rgba(74,30,48,.04); cursor:pointer; text-decoration:none; display:block; transition:border-color .2s, transform .2s, box-shadow .2s;" style-hover="border-color:#e2a9bd; transform:translateY(-2px); box-shadow:0 10px 26px rgba(74,30,48,.08)">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+              <span style="font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1.4px; text-transform:uppercase; color:#c75f86;">{{ c.kicker }}</span>
+              <span style="font-family:'DM Mono',monospace; font-size:11px; color:#cdb3bd;">{{ c.idx }}</span>
+            </div>
+            <div style="font-family:'Spectral',serif; font-size:22px; font-weight:500; color:#2b1922; margin-bottom:8px;">{{ c.title }}</div>
+            <div style="font-size:14px; line-height:1.55; color:#7c6470;">{{ c.body }}</div>
+          </a>
+        </sc-for>
+      </div>
+
+      <div style="font-family:'DM Mono',monospace; font-size:10.5px; letter-spacing:1.6px; text-transform:uppercase; color:#a98995; margin-bottom:16px;">The five disciplines</div>
+      <div style="display:flex; flex-direction:column; border-top:1px solid #ead9df;">
+        <sc-for list="{{ pillarPreview }}" as="p" hint-placeholder-count="5">
+          <a onClick="{{ p.onClick }}" style="display:flex; align-items:center; gap:24px; padding:18px 8px; border-bottom:1px solid #ead9df; cursor:pointer; text-decoration:none; transition:background .2s, padding .2s;" style-hover="background:#fbeff3; padding-left:16px">
+            <span style="font-family:'DM Mono',monospace; font-size:13px; color:#c75f86; width:30px;">{{ p.idx }}</span>
+            <span style="font-family:'Spectral',serif; font-size:21px; font-weight:500; color:#2b1922; width:230px;">{{ p.label }}</span>
+            <span style="font-size:14px; color:#8d6f7a; flex:1;">{{ p.desc }}</span>
+            <span style="color:#c8a9b5; font-size:18px;">&rarr;</span>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- POSITIONING -->
+    <sc-if value="{{ isPositioning }}">
+    <section data-screen-label="Positioning" data-speaker-notes="How the offer is framed so advisors choose it. The structural problem and the wedge." style="padding:64px 72px 96px; max-width:1080px; animation:fadeUp .5s ease both;">
+      <p style="font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#b07c8f; margin:0 0 18px;">01 &mdash; Positioning</p>
+      <h2 style="font-family:'Spectral',serif; font-weight:400; font-size:44px; line-height:1.1; letter-spacing:-0.015em; color:#2b1922; margin:0 0 18px; max-width:780px; text-wrap:pretty;">Frame the choice so the platform is the only answer.</h2>
+      <p style="font-size:18px; line-height:1.65; color:#6f5760; margin:0 0 14px; max-width:700px; text-wrap:pretty;">Every existing path forces the rising middle to sacrifice something fundamental. The positioning isn&rsquo;t a feature list &mdash; it&rsquo;s naming that impossible choice, then collapsing it.</p>
+
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:28px 0 44px;">
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:#a98995;">Demonstrates</span>
+        <span style="font-size:12px; font-weight:500; color:#a84968; background:#f8e7ee; border:1px solid #f0d2de; padding:5px 11px; border-radius:999px;">Coaches frameworks</span>
+        <span style="font-size:12px; font-weight:500; color:#a84968; background:#f8e7ee; border:1px solid #f0d2de; padding:5px 11px; border-radius:999px;">Builds systems</span>
+      </div>
+
+      <div style="font-family:'Spectral',serif; font-size:25px; font-weight:500; color:#2b1922; margin-bottom:6px;">The impossible choice</div>
+      <p style="font-size:15px; color:#8d6f7a; margin:0 0 22px; max-width:640px;">Four audiences on the rise. Each is handed real momentum &mdash; then forced to surrender the one thing that would compound it.</p>
+      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:18px;">
+        <sc-for list="{{ models }}" as="m" hint-placeholder-count="4">
+          <div style="background:#fff; border:1px solid #efe1e6; border-radius:14px; padding:22px 24px;">
+            <div style="font-family:'Spectral',serif; font-size:18px; font-weight:600; color:#2b1922; margin-bottom:14px;">{{ m.name }}</div>
+            <div style="display:flex; gap:18px;">
+              <div style="flex:1;">
+                <div style="font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:1px; text-transform:uppercase; color:#5e9c7e; margin-bottom:4px;">Gain</div>
+                <div style="font-size:13.5px; color:#3f5a4c; font-weight:500;">{{ m.gain }}</div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:1px; text-transform:uppercase; color:#c75f86; margin-bottom:4px;">Sacrifice</div>
+                <div style="font-size:13.5px; color:#a84968; font-weight:500;">{{ m.sacrifice }}</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="background:linear-gradient(140deg,#3a1c29,#241019); border-radius:14px; padding:26px 28px; color:#f6dde6; margin-bottom:56px;">
+        <span style="font-family:'Spectral',serif; font-size:20px; font-weight:400; line-height:1.4;">No one builds for the rising middle with <em style="color:#f0a8c1; font-style:normal; font-weight:500;">Access + Sophistication + Protection</em> at once &mdash; for wealth still being built, not only wealth that already exists. The platform is positioned precisely in that gap.</span>
+      </div>
+
+      <div style="font-family:'Spectral',serif; font-size:25px; font-weight:500; color:#2b1922; margin-bottom:6px;">Five disciplines, one relationship</div>
+      <p style="font-size:15px; color:#8d6f7a; margin:0 0 22px; max-width:640px;">A platform, not a product shop &mdash; coordinated across the full picture of the client&rsquo;s life.</p>
+      <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:56px;">
+        <sc-for list="{{ disciplines }}" as="d" hint-placeholder-count="5">
+          <div style="background:#fff; border:1px solid #efe1e6; border-radius:13px; padding:20px 16px;">
+            <div style="font-family:'Spectral',serif; font-size:17px; font-weight:600; color:#c75f86; margin-bottom:10px;">{{ d.name }}</div>
+            <div style="font-size:12.5px; line-height:1.5; color:#7c6470;">{{ d.body }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="font-family:'Spectral',serif; font-size:25px; font-weight:500; color:#2b1922; margin-bottom:6px;">Positioning flexes to the advisor</div>
+      <p style="font-size:15px; color:#8d6f7a; margin:0 0 22px; max-width:640px;">The Lead / Partner / Delegate model meets each advisor at their level of autonomy &mdash; the same platform, three different postures.</p>
+      <div style="display:flex; gap:10px; margin-bottom:18px;">
+        <sc-for list="{{ engageOpts }}" as="e" hint-placeholder-count="3">
+          <button onClick="{{ e.onClick }}" style="{{ e.style }}">
+            <span style="font-family:'Spectral',serif; font-size:20px; font-weight:600;">{{ e.label }}</span>
+            <span style="font-size:12px; margin-top:2px; opacity:.85;">{{ e.sub }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="background:#fff; border:1px solid #efe1e6; border-radius:14px; padding:28px 30px;">
+        <div style="font-family:'Spectral',serif; font-size:24px; font-weight:500; color:#2b1922; margin-bottom:18px;">{{ engageData.title }}</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:18px;">
+          <div>
+            <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1.2px; text-transform:uppercase; color:#c75f86; margin-bottom:7px;">The advisor</div>
+            <div style="font-size:15px; line-height:1.55; color:#4f3c44;">{{ engageData.advisor }}</div>
+          </div>
+          <div>
+            <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1.2px; text-transform:uppercase; color:#c75f86; margin-bottom:7px;">The Firm</div>
+            <div style="font-size:15px; line-height:1.55; color:#4f3c44;">{{ engageData.firm }}</div>
+          </div>
+        </div>
+        <div style="border-top:1px solid #f0e3e8; padding-top:14px; font-size:14px; font-style:italic; color:#9a7c87;">{{ engageData.note }}</div>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- MARKET -->
+    <sc-if value="{{ isMarket }}">
+    <section data-screen-label="Market Review" data-speaker-notes="The gap, sized. Global clients, local advisors." style="padding:64px 72px 96px; max-width:1080px; animation:fadeUp .5s ease both;">
+      <p style="font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#b07c8f; margin:0 0 18px;">02 &mdash; Market Review</p>
+      <h2 style="font-family:'Spectral',serif; font-weight:400; font-size:44px; line-height:1.1; letter-spacing:-0.015em; color:#2b1922; margin:0 0 18px; max-width:780px; text-wrap:pretty;">The middle is the market &mdash; and the next era&rsquo;s HNW.</h2>
+      <p style="font-size:18px; line-height:1.65; color:#6f5760; margin:0 0 14px; max-width:700px; text-wrap:pretty;">The next generation of high- and ultra-high-net-worth is being built right now in the middle &mdash; expats and immigrants, mass-affluent business owners, and the American middle class. They&rsquo;re underserved by an industry that only mobilizes for wealth that already exists.</p>
+
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:28px 0 44px;">
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:#a98995;">Demonstrates</span>
+        <span style="font-size:12px; font-weight:500; color:#a84968; background:#f8e7ee; border:1px solid #f0d2de; padding:5px 11px; border-radius:999px;">Finds opportunities</span>
+        <span style="font-size:12px; font-weight:500; color:#a84968; background:#f8e7ee; border:1px solid #f0d2de; padding:5px 11px; border-radius:999px;">Coaches frameworks</span>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:48px;">
+        <sc-for list="{{ marketStats }}" as="s" hint-placeholder-count="3">
+          <div style="background:linear-gradient(155deg,#fff,#fdf4f7); border:1px solid #f0d8e1; border-radius:16px; padding:28px 26px;">
+            <div style="font-family:'Spectral',serif; font-size:42px; font-weight:600; color:#c75f86; line-height:1; margin-bottom:12px;">{{ s.value }}<sup style="font-size:14px; font-weight:500; color:#cba9b6; vertical-align:super; margin-left:3px;">{{ s.ref }}</sup></div>
+            <div style="font-size:14px; line-height:1.5; color:#6f5760;">{{ s.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:start;">
+        <div>
+          <div style="font-family:'Spectral',serif; font-size:25px; font-weight:500; color:#2b1922; margin-bottom:10px;">The structural gap</div>
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <sc-for list="{{ marketGaps }}" as="g" hint-placeholder-count="4">
+              <div style="display:flex; gap:14px; align-items:flex-start;">
+                <span style="font-family:'DM Mono',monospace; font-size:11px; color:#c75f86; margin-top:3px;">{{ g.idx }}</span>
+                <span style="font-size:15px; line-height:1.55; color:#4f3c44;">{{ g.text }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'Spectral',serif; font-size:25px; font-weight:500; color:#2b1922; margin-bottom:10px;">Where the wedge lands</div>
+          <p style="font-size:14px; color:#8d6f7a; margin:0 0 16px;">Three audiences where institutional capability unlocks what was previously out of reach.</p>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <sc-for list="{{ segments }}" as="seg" hint-placeholder-count="4">
+              <div style="background:#fff; border:1px solid #efe1e6; border-radius:12px; padding:16px 18px;">
+                <div style="font-size:14.5px; font-weight:600; color:#2b1922; margin-bottom:3px;">{{ seg.name }}</div>
+                <div style="font-size:13px; line-height:1.5; color:#7c6470;">{{ seg.body }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:38px; padding-top:18px; border-top:1px solid #ead9df; display:flex; flex-direction:column; gap:7px;">
+        <sc-for list="{{ marketNotes }}" as="fn" hint-placeholder-count="3">
+          <div style="font-size:11.5px; line-height:1.5; color:#a98995; display:flex; gap:9px;">
+            <span style="font-family:'DM Mono',monospace; color:#c75f86; font-size:10px; flex:none;">{{ fn.ref }}</span>
+            <span>{{ fn.text }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- RESEARCH -->
+    <sc-if value="{{ isResearch }}">
+    <section data-screen-label="Research" data-speaker-notes="The analytical craft. Policy review method, root-cause framework, structuring." style="padding:64px 72px 96px; max-width:1080px; animation:fadeUp .5s ease both;">
+      <p style="font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#b07c8f; margin:0 0 18px;">03 &mdash; Research</p>
+      <h2 style="font-family:'Spectral',serif; font-weight:400; font-size:44px; line-height:1.1; letter-spacing:-0.015em; color:#2b1922; margin:0 0 18px; max-width:780px; text-wrap:pretty;">The diagnosis is the differentiator.</h2>
+      <p style="font-size:18px; line-height:1.65; color:#6f5760; margin:0 0 14px; max-width:700px; text-wrap:pretty;">Anyone can run an illustration. The craft is in the analysis underneath it &mdash; reading a structure, finding the inefficiency, and modeling the alternative.</p>
+
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:28px 0 44px;">
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:#a98995;">Demonstrates</span>
+        <span style="font-size:12px; font-weight:500; color:#a84968; background:#f8e7ee; border:1px solid #f0d2de; padding:5px 11px; border-radius:999px;">Coaches frameworks</span>
+        <span style="font-size:12px; font-weight:500; color:#a84968; background:#f8e7ee; border:1px solid #f0d2de; padding:5px 11px; border-radius:999px;">Finds opportunities</span>
+      </div>
+
+      <div style="font-family:'Spectral',serif; font-size:25px; font-weight:500; color:#2b1922; margin-bottom:6px;">Root-cause framework</div>
+      <p style="font-size:15px; color:#8d6f7a; margin:0 0 20px; max-width:640px;">The same multi-year premium schedule, financed two ways. The disbursement pattern &mdash; not the policy &mdash; is where the cost was hiding.</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:54px;">
+        <div style="background:#fff; border:1px solid #d8ecdf; border-radius:14px; padding:24px;">
+          <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1.2px; text-transform:uppercase; color:#5e9c7e; margin-bottom:6px;">Staged annual advances</div>
+          <div style="font-size:14px; color:#3f5a4c; margin-bottom:18px; line-height:1.5;">Interest accrues only on amounts actually advanced into the policy each year.</div>
+          <div style="display:flex; gap:6px; align-items:flex-end; height:70px;">
+            <sc-for list="{{ stagedBars }}" as="b" hint-placeholder-count="7">
+              <div style="flex:1; background:linear-gradient(#7cc49d,#5e9c7e); border-radius:3px 3px 0 0; height:{{ b.h }};"></div>
+            </sc-for>
+          </div>
+          <div style="font-size:11px; color:#7c9a87; margin-top:8px; font-family:'DM Mono',monospace;">Principal grows as each year funds</div>
+        </div>
+        <div style="background:#fff; border:1px solid #f0d2de; border-radius:14px; padding:24px;">
+          <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1.2px; text-transform:uppercase; color:#c75f86; margin-bottom:6px;">What actually happened</div>
+          <div style="font-size:14px; color:#a84968; margin-bottom:18px; line-height:1.5;">~4 years of premium advanced at origination &mdash; interest on the full balance through a rising-rate cycle.</div>
+          <div style="display:flex; gap:6px; align-items:flex-end; height:70px;">
+            <sc-for list="{{ upfrontBars }}" as="b" hint-placeholder-count="7">
+              <div style="flex:1; background:linear-gradient(#e08aa8,#c75f86); border-radius:3px 3px 0 0; height:{{ b.h }};"></div>
+            </sc-for>
+          </div>
+          <div style="font-size:11px; color:#bb8a9a; margin-top:8px; font-family:'DM Mono',monospace;">Full balance exposed from year one</div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+        <sc-for list="{{ researchCards }}" as="r" hint-placeholder-count="3">
+          <div style="background:#fff; border:1px solid #efe1e6; border-radius:14px; padding:24px;">
+            <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1.2px; text-transform:uppercase; color:#c75f86; margin-bottom:10px;">{{ r.kicker }}</div>
+            <div style="font-family:'Spectral',serif; font-size:19px; font-weight:500; color:#2b1922; margin-bottom:10px; line-height:1.25;">{{ r.title }}</div>
+            <div style="font-size:13.5px; line-height:1.55; color:#7c6470;">{{ r.body }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- ACTIVITY -->
+    <sc-if value="{{ isActivity }}">
+    <section data-screen-label="Activity" data-speaker-notes="Centerpiece. Live premium-finance restructure: Allianz to Wintrust, MYGA collateral craft move." style="padding:64px 72px 96px; max-width:1080px; animation:fadeUp .5s ease both;">
+      <p style="font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#b07c8f; margin:0 0 18px;">04 &mdash; Activity</p>
+      <h2 style="font-family:'Spectral',serif; font-weight:400; font-size:44px; line-height:1.1; letter-spacing:-0.015em; color:#2b1922; margin:0 0 18px; max-width:820px; text-wrap:pretty;">A second opinion becomes a lender replacement.</h2>
+      <p style="font-size:18px; line-height:1.65; color:#6f5760; margin:0 0 14px; max-width:720px; text-wrap:pretty;">A live premium-finance restructure &mdash; from the finding through the collateral craft move &mdash; sourced, negotiated, and executed by Joshua. In execution as of April 2026.</p>
+
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:28px 0 36px;">
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:#a98995;">Demonstrates</span>
+        <span style="font-size:12px; font-weight:500; color:#a84968; background:#f8e7ee; border:1px solid #f0d2de; padding:5px 11px; border-radius:999px;">Finds opportunities</span>
+        <span style="font-size:12px; font-weight:500; color:#a84968; background:#f8e7ee; border:1px solid #f0d2de; padding:5px 11px; border-radius:999px;">Builds systems</span>
+      </div>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:26px;">
+        <div style="background:#fff; border:1px solid #efe1e6; border-radius:10px; padding:11px 16px;"><span style="font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:1px; text-transform:uppercase; color:#a98995;">Issuing carrier</span><div style="font-size:14px; font-weight:600; color:#2b1922; margin-top:2px;">Allianz</div></div>
+        <div style="background:#fff; border:1px solid #efe1e6; border-radius:10px; padding:11px 16px;"><span style="font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:1px; text-transform:uppercase; color:#a98995;">Originating lender</span><div style="font-size:14px; font-weight:600; color:#2b1922; margin-top:2px;">Synovus</div></div>
+        <div style="background:linear-gradient(150deg,#c75f86,#9a4360); border-radius:10px; padding:11px 16px;"><span style="font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:1px; text-transform:uppercase; color:#f3cdd9;">Replacement lender</span><div style="font-size:14px; font-weight:600; color:#fff; margin-top:2px;">Wintrust</div></div>
+        <div style="background:#fff; border:1px solid #efe1e6; border-radius:10px; padding:11px 16px;"><span style="font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:1px; text-transform:uppercase; color:#a98995;">Case architect</span><div style="font-size:14px; font-weight:600; color:#2b1922; margin-top:2px;">Joshua</div></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:300px 1fr; gap:28px; align-items:start;">
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <sc-for list="{{ steps }}" as="st" hint-placeholder-count="6">
+            <button onClick="{{ st.onClick }}" style="{{ st.rowStyle }}">
+              <span style="{{ st.dotStyle }}">{{ st.n }}</span>
+              <span style="display:flex; flex-direction:column; align-items:flex-start; text-align:left;">
+                <span style="{{ st.tagStyle }}">{{ st.tag }}</span>
+                <span style="{{ st.titleStyle }}">{{ st.short }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="background:#fff; border:1px solid #efe1e6; border-radius:18px; padding:34px 36px; box-shadow:0 4px 20px rgba(74,30,48,.05); min-height:380px; display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+            <span style="font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1.4px; text-transform:uppercase; color:#c75f86;">{{ activeStep.tag }}</span>
+            <span style="font-family:'DM Mono',monospace; font-size:12px; color:#cdb3bd;">{{ stepLabel }}</span>
+          </div>
+          <div style="font-family:'Spectral',serif; font-size:30px; font-weight:500; line-height:1.15; color:#2b1922; margin-bottom:16px; letter-spacing:-0.01em;">{{ activeStep.title }}</div>
+          <div style="font-size:16px; line-height:1.65; color:#5f4a53; margin-bottom:28px; max-width:560px;">{{ activeStep.body }}</div>
+
+          <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:auto; padding-top:24px; border-top:1px solid #f0e3e8;">
+            <sc-for list="{{ activeStep.metrics }}" as="mt" hint-placeholder-count="3">
+              <div style="min-width:120px;">
+                <div style="font-family:'Spectral',serif; font-size:24px; font-weight:600; color:#c75f86; line-height:1;">{{ mt.v }}</div>
+                <div style="font-size:12px; color:#8d6f7a; margin-top:5px;">{{ mt.l }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex; gap:10px; margin-top:28px;">
+            <button onClick="{{ onPrev }}" style="{{ prevStyle }}">&larr; Back</button>
+            <button onClick="{{ onNext }}" style="{{ nextStyle }}">{{ nextLabel }} &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- DISTRIBUTION -->
+    <sc-if value="{{ isDistribution }}">
+    <section data-screen-label="Distribution" data-speaker-notes="Built to scale. Reach diagram across five layers, plus the six-tier contracting model." style="padding:64px 72px 96px; max-width:1080px; animation:fadeUp .5s ease both;">
+      <p style="font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#b07c8f; margin:0 0 18px;">05 &mdash; Distribution Model</p>
+      <h2 style="font-family:'Spectral',serif; font-weight:400; font-size:44px; line-height:1.1; letter-spacing:-0.015em; color:#2b1922; margin:0 0 18px; max-width:780px; text-wrap:pretty;">One advisor, plugged into the whole platform.</h2>
+      <p style="font-size:18px; line-height:1.65; color:#6f5760; margin:0 0 14px; max-width:700px; text-wrap:pretty;">Distribution isn&rsquo;t headcount &mdash; it&rsquo;s reach. Every advisor connects to carriers, structures, professionals, and markets through a single relationship. Select a layer to see what it opens.</p>
+
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:28px 0 40px;">
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:#a98995;">Demonstrates</span>
+        <span style="font-size:12px; font-weight:500; color:#a84968; background:#f8e7ee; border:1px solid #f0d2de; padding:5px 11px; border-radius:999px;">Scales it</span>
+        <span style="font-size:12px; font-weight:500; color:#a84968; background:#f8e7ee; border:1px solid #f0d2de; padding:5px 11px; border-radius:999px;">Builds systems</span>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:36px; align-items:center; margin-bottom:58px;">
+        <div style="position:relative; height:340px; display:flex; align-items:center; justify-content:center;">
+          <div style="position:absolute; width:300px; height:300px; border-radius:50%; border:1px solid #ecd4dd;"></div>
+          <div style="position:absolute; width:210px; height:210px; border-radius:50%; border:1px solid #f0dbe2;"></div>
+          <div style="position:absolute; width:120px; height:120px; border-radius:50%; background:linear-gradient(150deg,#3a1c29,#241019); display:flex; flex-direction:column; align-items:center; justify-content:center; color:#f6dde6; z-index:2; box-shadow:0 8px 28px rgba(58,28,41,.3);">
+            <span style="font-family:'Spectral',serif; font-size:17px; font-weight:600;">Advisor</span>
+            <span style="font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:1px; text-transform:uppercase; color:#c89aa8; margin-top:3px;">+ Platform</span>
+          </div>
+          <sc-for list="{{ layerNodes }}" as="n" hint-placeholder-count="5">
+            <div style="{{ n.nodeStyle }}">{{ n.stat }}</div>
+          </sc-for>
+        </div>
+
+        <div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;">
+            <sc-for list="{{ layerOpts }}" as="l" hint-placeholder-count="5">
+              <button onClick="{{ l.onClick }}" style="{{ l.chipStyle }}">{{ l.label }}</button>
+            </sc-for>
+          </div>
+          <div style="background:#fff; border:1px solid #efe1e6; border-radius:16px; padding:26px 28px;">
+            <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:16px;">
+              <span style="font-family:'Spectral',serif; font-size:22px; font-weight:500; color:#2b1922;">{{ layerData.headline }}</span>
+              <span style="font-family:'Spectral',serif; font-size:26px; font-weight:600; color:#c75f86;">{{ layerData.stat }}</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:11px;">
+              <sc-for list="{{ layerData.items }}" as="it" hint-placeholder-count="4">
+                <div style="display:flex; gap:11px; align-items:flex-start; font-size:14.5px; line-height:1.5; color:#4f3c44;">
+                  <span style="color:#c75f86; font-size:9px; margin-top:6px;">&#9670;</span>{{ it }}
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-family:'Spectral',serif; font-size:25px; font-weight:500; color:#2b1922; margin-bottom:6px;">The contracting engine</div>
+      <p style="font-size:15px; color:#8d6f7a; margin:0 0 22px; max-width:640px;">A six-tier model that scales compensation to the level of platform support &mdash; the same configurator advisors use to design their partnership.</p>
+      <div style="background:#fff; border:1px solid #efe1e6; border-radius:16px; overflow:hidden;">
+        <div style="display:grid; grid-template-columns:1.2fr .8fr 1fr 2fr; padding:14px 24px; background:#fbeff3; border-bottom:1px solid #f0dbe2;">
+          <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1px; text-transform:uppercase; color:#a84968;">Level</span>
+          <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1px; text-transform:uppercase; color:#a84968;">Credits</span>
+          <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1px; text-transform:uppercase; color:#a84968;">Support</span>
+          <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1px; text-transform:uppercase; color:#a84968;">Posture</span>
+        </div>
+        <sc-for list="{{ tiers }}" as="t" hint-placeholder-count="6">
+          <div style="display:grid; grid-template-columns:1.2fr .8fr 1fr 2fr; padding:15px 24px; border-bottom:1px solid #f4ecef; align-items:center;">
+            <span style="font-family:'Spectral',serif; font-size:17px; font-weight:600; color:#2b1922;">{{ t.name }}</span>
+            <span style="font-family:'DM Mono',monospace; font-size:13px; color:#8d6f7a;">{{ t.credits }}</span>
+            <span style="font-size:13.5px; color:#c75f86; font-weight:500;">{{ t.support }}</span>
+            <span style="font-size:13.5px; color:#7c6470;">{{ t.desc }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+    </sc-if>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:860}}">
+class Component extends DCLogic {
+  state = { section: "overview", step: 0, engage: "we", layer: "carriers" };
+
+  nav = [
+    { id: "overview", idx: "00", label: "Overview", sub: "The operator & the work" },
+    { id: "positioning", idx: "01", label: "Positioning", sub: "How the offer is framed" },
+    { id: "market", idx: "02", label: "Market Review", sub: "The gap, sized" },
+    { id: "research", idx: "03", label: "Research", sub: "The analytical craft" },
+    { id: "activity", idx: "04", label: "Activity", sub: "Sourcing to execution" },
+    { id: "distribution", idx: "05", label: "Distribution", sub: "Built to scale" }
+  ];
+
+  capData = [
+    { idx: "A", kicker: "Builds systems", title: "Designs the machine", body: "The platform configurator, the case teardowns, and this interface itself — architected and built end to end.", to: "distribution" },
+    { idx: "B", kicker: "Coaches frameworks", title: "Teaches the method", body: "Five-pillar planning, the Policy Review method, the Lead / Partner / Delegate model — taught and operationalized, not just named.", to: "positioning" },
+    { idx: "C", kicker: "Finds opportunities", title: "Sources the work", body: "A second-opinion policy review widened into a lender replacement and a collateral restructure that preserved the client's strategy.", to: "activity" },
+    { idx: "D", kicker: "Scales it", title: "Builds the distribution", body: "Carrier architecture, six-tier contracting, and an agency-in-a-box engineered to carry strategy through at scale.", to: "distribution" }
+  ];
+
+  pillarData = [
+    { idx: "01", id: "positioning", label: "Positioning", desc: "Frame the choice so the platform is the only answer" },
+    { idx: "02", id: "market", label: "Market Review", desc: "The rising middle — tomorrow's HNW, sized today" },
+    { idx: "03", id: "research", label: "Research", desc: "Read the structure, find the inefficiency, model the fix" },
+    { idx: "04", id: "activity", label: "Activity", desc: "A live restructure from finding to execution" },
+    { idx: "05", id: "distribution", label: "Distribution", desc: "One advisor, plugged into the whole platform" }
+  ];
+
+  models = [
+    { name: "Expats & Immigrants", gain: "Global life & ambition", sacrifice: "Access — brokers decline cross-border" },
+    { name: "Business Owners", gain: "A thriving company", sacrifice: "Liquidity locked in the business" },
+    { name: "The Middle Class", gain: "Steady income & savings", sacrifice: "Planning gated behind minimums" },
+    { name: "The Next Generation", gain: "$84T inheritance incoming", sacrifice: "No structure to receive it" }
+  ];
+
+  disciplines = [
+    { name: "Law", body: "Trust structures & cross-border legal compliance" },
+    { name: "Tax", body: "FBAR, Form 3520, IRC §7702 / §101(a) coordination" },
+    { name: "Insurance", body: "Global carriers, non-resident & expat underwriting" },
+    { name: "Investment", body: "Marketable securities, alternatives, tax-deferred wrappers" },
+    { name: "Banking", body: "Cross-border liquidity, credit & multi-currency" }
+  ];
+
+  engMap = {
+    you: { title: "You Lead, We Support", advisor: "You own the relationship, the case design, and the execution.", firm: "Provides contracts, training, and back-office support on demand.", note: "Maximum autonomy, maximum compensation." },
+    we: { title: "True Partnership", advisor: "You bring the relationships and the trust the client already gives you.", firm: "Brings the infrastructure, joint case design, and a specialist bench.", note: "Joint strategy, shared expertise — the best of both worlds." },
+    us: { title: "We Handle It All", advisor: "You introduce the client and open the door.", firm: "Runs case design, processing, and servicing end to end.", note: "You focus on relationships; the platform runs the operation." }
+  };
+
+  marketStats = [
+    { value: "46M", ref: "1", label: "Foreign-born residents in the U.S. — building wealth and businesses across borders" },
+    { value: "33M", ref: "2", label: "U.S. small businesses — owners whose net worth is locked inside the company" },
+    { value: "$84T", ref: "3", label: "The Great Wealth Transfer underway through 2045 — most of it moving through the middle" }
+  ];
+
+  marketNotes = [
+    { ref: "1", text: "Foreign-born U.S. population, U.S. Census Bureau, American Community Survey (2023)." },
+    { ref: "2", text: "U.S. small businesses, U.S. Small Business Administration, Office of Advocacy (2023)." },
+    { ref: "3", text: "Projected U.S. generational wealth transfer through 2045, Cerulli Associates (2022)." }
+  ];
+
+  marketGaps = [
+    { idx: "01", text: "Institutional-grade planning is gated behind minimums the rising middle hasn't crossed — yet." },
+    { idx: "02", text: "Immigrant and expat families need cross-border structuring that domestic brokers won't touch." },
+    { idx: "03", text: "A business owner's wealth is trapped in an illiquid company, invisible to assets-under-management models." },
+    { idx: "04", text: "The middle class is treated as unprofitable to serve — so no one builds the system to serve it well." }
+  ];
+
+  segments = [
+    { name: "Expats & Immigrants", body: "Cross-border families building first-generation wealth — the platform's global capability, aimed where it's needed most." },
+    { name: "Mass-Affluent Business Owners", body: "Net worth concentrated in the company. They need structure, protection, and an exit — not a product pitch." },
+    { name: "The American Middle Class", body: "Underserved by design, and inheriting $84T — the foundation of the next era's affluent." }
+  ];
+
+  researchCards = [
+    { kicker: "Policy Review", title: "Sound contract, inefficient loan", body: "An indexed UL with a 34% fixed-account floor and chronic-illness rider — sound at the policy level. The financing underneath it was the problem." },
+    { kicker: "PPLI / PPVA", title: "Modular private placement", body: "A $10M structure modeled at net 9 / 7 / 5%, using a 1% NAAR life design to reach an annuity-like outcome with superior tax treatment." },
+    { kicker: "Cross-border underwriting", title: "The reinsurance jumbo limit", body: "Applying to multiple carriers sharing a reinsurer overlaps the insured's slot — coordination, not volume, secures large coverage." }
+  ];
+
+  caseSteps = [
+    { n: "01", tag: "The Finding", short: "A second opinion", title: "A second opinion becomes an opportunity.", body: "A new advisor brings a HNW founder-operator's premium-financed Allianz IUL in for a second opinion. The Ideas Team confirms the contract is sound. When the loan history arrives, the refinance opportunity surfaces.", metrics: [{ v: "2021", l: "Policy in force since" }, { v: "$6.25M", l: "Initial specified amount" }, { v: "Sound", l: "Policy Review verdict" }] },
+    { n: "02", tag: "The Diagnosis", short: "Policy vs. loan", title: "Policy sound. Loan structurally inefficient.", body: "Roughly four years of premium were advanced at origination rather than staged annually. Interest accrued on the full balance from year one — amplifying cost as short-term rates rode a full cycle.", metrics: [{ v: "2.85→7.72%", l: "Rate cycle, to peak" }, { v: "5.95%", l: "Rate now" }, { v: "~$1.21M", l: "Advance at origination" }] },
+    { n: "03", tag: "The Decision", short: "Thesis over balance sheet", title: "The answer follows the thesis, not the balance sheet.", body: "The client has the liquidity to extinguish — but chooses to deploy capital in the operating business, where it outperforms the cost of a properly structured facility. The thesis is intact; only the execution is in question. Refinance, don't extinguish.", metrics: [{ v: "5 of 5", l: "Planning pillars touched" }, { v: "Allocation", l: "The real question" }] },
+    { n: "04", tag: "The Outreach", short: "Sourced cold", title: "A direct platform relationship, sourced cold.", body: "Joshua cold-outreached Wintrust's East Region VP directly. A joint onboarding call on March 12, 2026 brought Wintrust (Storms, Garcia), the advisor, and Joshua together — a direct platform relationship, with no referral channel.", metrics: [{ v: "Mar 12", l: "Wintrust onboarding call" }, { v: "Wintrust", l: "Replacement lender" }, { v: "Direct", l: "No referral channel" }] },
+    { n: "05", tag: "The Craft Move", short: "MYGA collateral", title: "A non-standard collateral structure.", body: "A three-year MYGA collateral assignment is under evaluation as a non-standard collateral option — not yet accepted by Wintrust. The fallback: pledged securities via Wintrust Wealth Management or an outside brokerage.", metrics: [{ v: "3-yr MYGA", l: "Collateral under review" }, { v: "Pledged sec.", l: "Fallback option" }] },
+    { n: "06", tag: "Execution", short: "In execution", title: "In execution as of April 2026.", body: "The collateral restructure and lender replacement are in execution. Zero prepayment penalty on the replacement facility. The client's capital allocation strategy is preserved intact.", metrics: [{ v: "$1.77M", l: "Current loan balance" }, { v: "$0", l: "Prepayment penalty" }, { v: "Apr 2026", l: "In execution" }] }
+  ];
+
+  layerList = [
+    { id: "carriers", label: "Carrier Reach", headline: "50+ carrier relationships", stat: "50+", items: ["Domestic life, annuity & disability carriers", "Offshore & non-resident carriers", "national aggregator access", "Underwriting carve-outs via direct relationships"] },
+    { id: "structures", label: "Structures", headline: "Advanced planning capability", stat: "5 pillars", items: ["Premium finance structuring", "PPLI / PPVA design — IRC §7702 / §101(a)", "Trust alignment: ILITs, GRATs, dynasty", "Cross-border & non-resident structures"] },
+    { id: "network", label: "Professional Network", headline: "OhanaNet partner bench", stat: "OhanaNet", items: ["CPAs, attorneys & RIAs", "Idea Center case-design team", "MDRT Top of the Table mentors", "Cross-border specialists"] },
+    { id: "contracting", label: "Contracting", headline: "Six-tier engagement model", stat: "6 tiers", items: ["Pathfinder → Adventurer credit tiers", "Lead / Partner / Delegate engagement gradient", "Compensation scaled to support level", "Agency-in-a-box for new owners"] },
+    { id: "markets", label: "Markets", headline: "Built for the rising middle", stat: "Next era", items: ["Expats & immigrants building first-gen wealth", "Mass-affluent business owners", "The American middle class", "Tomorrow's HNW & UHNW, served today"] }
+  ];
+
+  tiers = [
+    { name: "Independent", credits: "0–10", support: "Minimal", desc: "You handle nearly everything — highest compensation" },
+    { name: "Affiliated", credits: "11–30", support: "Light", desc: "Light-touch support from the platform" },
+    { name: "Supported", credits: "31–50", support: "Moderate", desc: "Moderate platform involvement" },
+    { name: "Integrated", credits: "51–70", support: "Substantial", desc: "A collaborative partnership" },
+    { name: "Managed", credits: "71–89", support: "High", desc: "The platform supports most operations" },
+    { name: "Full Platform", credits: "90–100", support: "Full", desc: "The platform runs nearly everything" }
+  ];
+
+  go(id) { this.setState({ section: id, step: 0 }); }
+
+  renderVals() {
+    const s = this.state.section;
+    const navBase = { display: "flex", alignItems: "center", gap: "13px", padding: "12px 14px", borderRadius: "10px", cursor: "pointer", textDecoration: "none", position: "relative", transition: "background .2s" };
+    const navItems = this.nav.map((n) => {
+      const active = n.id === s;
+      return {
+        idx: n.idx, label: n.label, sub: n.sub,
+        onClick: () => this.go(n.id),
+        rowStyle: { ...navBase, background: active ? "rgba(199,95,134,.16)" : "transparent" },
+        barStyle: { position: "absolute", left: "0", top: "9px", bottom: "9px", width: "3px", borderRadius: "0 3px 3px 0", background: active ? "#c75f86" : "transparent" },
+        idxStyle: { fontFamily: "'DM Mono',monospace", fontSize: "11px", letterSpacing: "1px", color: active ? "#eaa6bc" : "#7c5a66", width: "20px", flex: "none" },
+        labelStyle: { fontFamily: "'DM Sans',sans-serif", fontSize: "14px", fontWeight: active ? "600" : "500", color: active ? "#fbeef3" : "#c9aeb8", lineHeight: "1.2" },
+        subStyle: { fontFamily: "'DM Sans',sans-serif", fontSize: "11px", color: active ? "#b98a99" : "#7c5a66", marginTop: "2px" }
+      };
+    });
+
+    const capabilities = this.capData.map((c) => ({ ...c, onClick: () => this.go(c.to) }));
+    const pillarPreview = this.pillarData.map((p) => ({ ...p, onClick: () => this.go(p.id) }));
+
+    // engagement
+    const eng = this.state.engage;
+    const engageData = this.engMap[eng];
+    const labelMap = { you: "Lead", we: "Partner", us: "Delegate" };
+    const subMap = { you: "You lead", we: "Built together", us: "We run it" };
+    const engageOpts = ["you", "we", "us"].map((k) => {
+      const active = k === eng;
+      return {
+        label: labelMap[k],
+        sub: subMap[k],
+        onClick: () => this.setState({ engage: k }),
+        style: {
+          flex: "1", display: "flex", flexDirection: "column", alignItems: "flex-start",
+          padding: "16px 20px", borderRadius: "13px", cursor: "pointer", textAlign: "left",
+          border: active ? "1px solid #c75f86" : "1px solid #efe1e6",
+          background: active ? "linear-gradient(150deg,#c75f86,#9a4360)" : "#fff",
+          color: active ? "#fff" : "#2b1922",
+          boxShadow: active ? "0 8px 22px rgba(199,95,134,.25)" : "none",
+          transition: "all .2s"
+        }
+      };
+    });
+
+    // case stepper
+    const idx = this.state.step;
+    const steps = this.caseSteps.map((c, i) => {
+      const active = i === idx;
+      const done = i < idx;
+      return {
+        n: c.n, tag: c.tag, short: c.short,
+        onClick: () => this.setState({ step: i }),
+        rowStyle: { display: "flex", alignItems: "center", gap: "14px", padding: "12px 14px", borderRadius: "12px", cursor: "pointer", border: "none", background: active ? "#fff" : "transparent", boxShadow: active ? "0 4px 16px rgba(74,30,48,.07)" : "none", width: "100%", transition: "background .2s, box-shadow .2s" },
+        dotStyle: { width: "30px", height: "30px", flex: "none", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Mono',monospace", fontSize: "12px", fontWeight: "500", background: active ? "linear-gradient(150deg,#c75f86,#9a4360)" : (done ? "#eccdd7" : "#efe5e9"), color: active ? "#fff" : (done ? "#a84968" : "#b39aa3") },
+        tagStyle: { fontFamily: "'DM Mono',monospace", fontSize: "9.5px", letterSpacing: "1px", textTransform: "uppercase", color: active ? "#c75f86" : "#b39aa3" },
+        titleStyle: { fontSize: "14px", fontWeight: active ? "600" : "500", color: active ? "#2b1922" : "#8d6f7a", marginTop: "2px" }
+      };
+    });
+    const activeStep = this.caseSteps[idx];
+    const last = this.caseSteps.length - 1;
+    const btn = (primary, disabled) => ({
+      padding: "11px 20px", borderRadius: "10px", fontFamily: "'DM Sans',sans-serif", fontSize: "14px", fontWeight: "500",
+      cursor: disabled ? "default" : "pointer", border: primary ? "none" : "1px solid #e3cdd5",
+      background: primary ? "linear-gradient(150deg,#c75f86,#9a4360)" : "#fff",
+      color: primary ? "#fff" : "#8d6f7a", opacity: disabled ? .4 : 1, transition: "all .2s"
+    });
+
+    // distribution layers
+    const cur = this.state.layer;
+    const layerData = this.layerList.find((l) => l.id === cur);
+    const layerOpts = this.layerList.map((l) => {
+      const active = l.id === cur;
+      return {
+        label: l.label,
+        onClick: () => this.setState({ layer: l.id }),
+        chipStyle: { padding: "9px 16px", borderRadius: "999px", fontSize: "13px", fontWeight: "500", cursor: "pointer", transition: "all .2s", border: active ? "1px solid #c75f86" : "1px solid #e8d4dc", background: active ? "#c75f86" : "#fff", color: active ? "#fff" : "#8d6f7a" }
+      };
+    });
+    // radial nodes positioned around the hub
+    const positions = [
+      { top: "4%", left: "50%" }, { top: "32%", left: "92%" },
+      { top: "84%", left: "76%" }, { top: "84%", left: "24%" }, { top: "32%", left: "8%" }
+    ];
+    const layerNodes = this.layerList.map((l, i) => {
+      const active = l.id === cur;
+      return {
+        stat: l.stat,
+        nodeStyle: {
+          position: "absolute", top: positions[i].top, left: positions[i].left, transform: "translate(-50%,-50%)",
+          minWidth: "64px", height: "64px", padding: "0 12px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+          fontFamily: "'Spectral',serif", fontSize: "14px", fontWeight: "600", textAlign: "center", lineHeight: "1.05",
+          background: active ? "linear-gradient(150deg,#c75f86,#9a4360)" : "#fff",
+          color: active ? "#fff" : "#a84968",
+          border: active ? "none" : "1px solid #ecd4dd",
+          boxShadow: active ? "0 8px 22px rgba(199,95,134,.3)" : "0 2px 8px rgba(74,30,48,.06)",
+          zIndex: "3", transition: "all .25s"
+        }
+      };
+    });
+
+    const bars = (heights) => heights.map((h) => ({ h: h + "%" }));
+
+    return {
+      navItems, capabilities, pillarPreview,
+      isOverview: s === "overview", isPositioning: s === "positioning", isMarket: s === "market",
+      isResearch: s === "research", isActivity: s === "activity", isDistribution: s === "distribution",
+      models: this.models, disciplines: this.disciplines,
+      engageOpts, engageData,
+      marketStats: this.marketStats, marketNotes: this.marketNotes, marketGaps: this.marketGaps, segments: this.segments,
+      researchCards: this.researchCards,
+      stagedBars: bars([18, 30, 44, 58, 70, 82, 92]),
+      upfrontBars: bars([88, 90, 92, 94, 80, 64, 48]),
+      steps, activeStep, stepLabel: "0" + (idx + 1) + " / 0" + this.caseSteps.length,
+      onPrev: () => this.setState({ step: Math.max(0, idx - 1) }),
+      onNext: () => this.setState({ step: idx === last ? 0 : idx + 1 }),
+      prevStyle: btn(false, idx === 0), nextStyle: btn(true, false),
+      nextLabel: idx === last ? "Restart" : "Next",
+      layerOpts, layerData, layerNodes, tiers: this.tiers
+    };
+  }
+}
+</script>
+</body>
+</html>
