@@ -2,11 +2,11 @@
 title: PPVA Planner
 tag: Live demo
 blurb: The ultimate build. A private-placement planning engine that teaches the product, models any scenario, maps revenue to every party, runs the operational flow, frames the Benefit-Advantage-Feature story, and monitors compliance — far past a tabular illustration.
-pill: Next.js · Prisma · demo data
+pill: Next.js · Prisma · live demo
 accent: p
 order: 1
 featured: true
-# href: set to the standalone "PPVA — demo" Netlify URL once the sanitized demo ships.
+href: https://ppvademo.netlify.app/
 ---
 
 The most powerful tool in the lab. Every calculation, fee model, revenue map, and flow was

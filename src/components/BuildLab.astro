@@ -12,8 +12,12 @@ const cards = (await getCollection('buildlab', ({ data }) => data.featured))
     <div class="grid3">
       {cards.map(({ data }) => {
         const Tag = data.href ? 'a' : 'div';
+        const external = data.href?.startsWith('http');
+        const linkAttrs = data.href
+          ? { rel: 'noopener', ...(external ? { target: '_blank' } : {}) }
+          : {};
         return (
-          <Tag class={`card k-${data.accent}`} href={data.href} {...(data.href ? { rel: 'noopener' } : {})}>
+          <Tag class={`card k-${data.accent}`} href={data.href} {...linkAttrs}>
             <span class="tag">{data.tag}</span>
             <h3>{data.title}</h3>
             <p>{data.blurb}</p>
