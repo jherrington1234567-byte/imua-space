@@ -1,8 +1,8 @@
 ---
-title: Foreign-National Underwriting
+title: Borderline
 tag: Tool
-blurb: The clever one. Maps a foreign national's cross-border footprint to the right underwriting paths and pulls the field resources an advisor needs — the routing logic is the trick.
-pill: Interactive · field resources
+blurb: The cross-border cases most advisors call "uninsurable" — placed. Maps a client's citizenship, residency, and U.S. ties to the carriers that will actually write them, with the field resources to close.
+pill: Foreign-national underwriting
 accent: y
 order: 3
 featured: true
