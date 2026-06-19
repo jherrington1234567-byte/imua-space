@@ -199,7 +199,18 @@ const ARROW =
       });
     }
 
-    function open(key) { active = key; setState(); }
+    function open(key) {
+      active = key;
+      setState();
+      // on phones, bring the chosen card's paths up into view (it expands in place
+      // of the button, but the rest of the hero can leave it low on screen)
+      const slot = document.querySelector(`.slot[data-slot="${key}"]`);
+      if (slot && window.matchMedia('(max-width: 640px)').matches) {
+        requestAnimationFrame(() =>
+          setTimeout(() => slot.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80),
+        );
+      }
+    }
     function close(focusKey) {
       active = null;
       setState();
@@ -284,7 +295,7 @@ const ARROW =
   .aud-wide { background: var(--cream); }
 
   /* slot = a lens and the path that takes its place when chosen */
-  .slot { position: relative; display: grid; }
+  .slot { position: relative; display: grid; scroll-margin-top: 14px; }
   .slot.open > .aud { display: none; }
 
   /* role accents */
@@ -363,6 +374,14 @@ const ARROW =
     opacity: 0; pointer-events: none; transition: opacity .25s ease, transform .25s ease; z-index: 60;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* phones: tighten the open path so the routes sit high, right where the card was */
+  @media (max-width: 640px) {
+    .panel .pad { padding: 16px; }
+    .panel :global(.p-value) { font-size: 16px; line-height: 1.28; margin-top: 8px; }
+    .panel :global(.routes) { margin-top: 14px; gap: 9px; }
+    .panel :global(.route) { padding: 12px 13px; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .aud, .panel, .panel :global(.route), .toast { transition: none; }
