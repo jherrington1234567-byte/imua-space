@@ -6,9 +6,16 @@ import site from '../data/site.json';
     <span class="kicker">Off the clock</span>
     <h2>The rest of it</h2>
     <div class="prow">
-      {site.personal.map((c) => (
-        <div class="c"><h3>{c.title}</h3><p>{c.blurb}</p></div>
-      ))}
+      {site.personal.map((c) => {
+        const Tag = c.href ? 'a' : 'div';
+        const attrs = c.href ? { href: c.href, target: '_blank', rel: 'noopener' } : {};
+        return (
+          <Tag class={`c${c.href ? ' link' : ''}`} {...attrs}>
+            <h3>{c.title}{c.href && <span class="ext"> ↗</span>}</h3>
+            <p>{c.blurb}</p>
+          </Tag>
+        );
+      })}
     </div>
   </div>
 </section>
@@ -23,6 +30,9 @@ import site from '../data/site.json';
   }
   .prow .c h3 { font-size: 16px; margin-bottom: 4px; }
   .prow .c p { font-size: 13px; color: var(--muted); }
+  a.c.link { text-decoration: none; color: inherit; display: block; transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease; }
+  a.c.link:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(44, 31, 14, .10); border-color: var(--blue-s); }
+  .ext { color: var(--blue-s); font-size: 12px; }
 
   @media (max-width: 820px) { .prow { grid-template-columns: 1fr 1fr; } }
 </style>
