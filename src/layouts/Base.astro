@@ -56,6 +56,12 @@ const {
             <>{i > 0 && ' · '}<span>{v}</span></>
           ))}
         </div>
+        <nav class="footer-links">
+          <a href="/about/#press">Press &amp; Media</a>
+          <a href={site.podcast.links[0].href} target="_blank" rel="noopener">NAIFA Podcast</a>
+          <a href={site.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
+          <a href={site.substackUrl} target="_blank" rel="noopener">Substack</a>
+        </nav>
         <small>© 2026 {site.name} · {site.domain} · {site.tagline}</small>
         <p class="disclaimer">
           For financial professional use only. Educational and informational — not financial, insurance,
@@ -104,7 +110,13 @@ const {
         margin-top: 14px;
       }
       .values span { color: var(--ember); }
-      footer small { display: block; margin-top: 12px; font-size: 12px; }
+      .footer-links {
+        margin-top: 18px; display: flex; flex-wrap: wrap; justify-content: center;
+        gap: 8px 18px; font-size: 13px;
+      }
+      .footer-links a { color: #d9a06a; text-decoration: none; }
+      .footer-links a:hover { color: #fff; text-decoration: underline; }
+      footer small { display: block; margin-top: 16px; font-size: 12px; }
       .disclaimer {
         max-width: 760px; margin: 16px auto 0; font-size: 11px; line-height: 1.6;
         color: #a99a82;

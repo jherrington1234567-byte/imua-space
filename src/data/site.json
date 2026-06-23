@@ -7,6 +7,26 @@
   "emailSupport": "JoshuaSupportSquad@imua.space",
   "bookUrl": "/book/",
   "ppvaDemoUrl": "https://ppva-demo.netlify.app",
+  "linkedinUrl": "https://www.linkedin.com/in/joshua-herrington/",
+
+  "podcast": {
+    "show": "NAIFA's Advisor Today",
+    "title": "Leveraging Military Fortitude in Financial Services",
+    "meta": "Nov 27, 2024 · 52 min · with Chris Gandy & Suzanne Carawan",
+    "links": [
+      { "label": "Spotify", "href": "https://open.spotify.com/episode/58DiFe979matNGq5Tr1pGs", "primary": true },
+      { "label": "Apple Podcasts", "href": "https://podcasts.apple.com/us/podcast/leveraging-military-fortitude-in-financial-services/id1638141930?i=1000678377570", "primary": true },
+      { "label": "NAIFA", "href": "https://at.naifa.org/leveraging-military-fortitude-in-financial-services-with-joshua-herrington-vickers" },
+      { "label": "Amazon Music", "href": "https://music.amazon.com/podcasts/c70427e5-9cb5-4344-b369-50eef20caaf9/naifa's-advisor-today-podcast-series" },
+      { "label": "iHeart", "href": "https://www.iheart.com/podcast/263-naifas-advisor-today-podca-100501313/" },
+      { "label": "Deezer", "href": "https://www.deezer.com/us/show/4486117" }
+    ]
+  },
+
+  "press": [
+    { "label": "NAIFA — Advisor Today write-up", "href": "https://members.naifa.org/blog/author/emily-cabbage" },
+    { "label": "LinkedIn — Joshua Herrington", "href": "https://www.linkedin.com/in/joshua-herrington/" }
+  ],
 
   "nav": [
     { "label": "Work", "href": "#work" },

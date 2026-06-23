@@ -48,6 +48,27 @@ import site from '../data/site.json';
         <a class="cta ghost" href={site.substackUrl} target="_blank" rel="noopener">Follow Becoming →</a>
       </div>
 
+      <h2 id="press">Press &amp; Media</h2>
+      <p>If you want the story in my own voice, start with the podcast. The rest is where my work shows up in the field.</p>
+
+      <div class="podcast">
+        <span class="show">{site.podcast.show}</span>
+        <h3>“{site.podcast.title}”</h3>
+        <p class="pmeta">{site.podcast.meta}</p>
+        <div class="listen">
+          <span class="listen-label">Listen on</span>
+          {site.podcast.links.map((l) => (
+            <a class={l.primary ? 'plat primary' : 'plat'} href={l.href} target="_blank" rel="noopener">{l.label}</a>
+          ))}
+        </div>
+      </div>
+
+      <ul class="press-list">
+        {site.press.map((p) => (
+          <li><a href={p.href} target="_blank" rel="noopener">{p.label} →</a></li>
+        ))}
+      </ul>
+
       <h2>What it's for</h2>
       <p>I have a blended family and a narrow window to be present for it — a little girl who's started calling me dad, two dogs, and a lot of road. I figured out what matters in time to still spend it where it matters.</p>
       <p>The debt stops here — for my kids, and for me.</p>
@@ -99,4 +120,31 @@ import site from '../data/site.json';
   .cta.ghost:hover { border-color: var(--ember); color: var(--ember); filter: none; }
 
   .values { color: var(--muted); font-size: 15px; margin-top: 22px; }
+
+  .podcast {
+    margin-top: 22px; border: 1px solid var(--line); border-left: 3px solid var(--ember);
+    border-radius: 12px; padding: 22px 24px; background: #fff;
+  }
+  .podcast .show {
+    display: block; text-transform: uppercase; letter-spacing: 2px; font-size: 12px;
+    color: var(--ember); font-weight: 600;
+  }
+  .podcast h3 {
+    font-family: var(--serif); font-size: clamp(19px, 2.8vw, 23px); line-height: 1.25;
+    margin-top: 8px; color: var(--ink);
+  }
+  .podcast .pmeta { margin-top: 8px; font-size: 14px; color: var(--muted); }
+  .listen { margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .listen-label { font-size: 13px; color: var(--muted); margin-right: 2px; }
+  .plat {
+    display: inline-block; padding: 7px 13px; border-radius: 8px; text-decoration: none;
+    font-size: 13.5px; font-weight: 600; border: 1px solid var(--line); color: var(--ink);
+  }
+  .plat:hover { border-color: var(--ember); color: var(--ember); }
+  .plat.primary { background: var(--ember); color: #fff; border-color: var(--ember); }
+  .plat.primary:hover { filter: brightness(1.06); color: #fff; }
+
+  .press-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 8px; }
+  .press-list a { font-size: 15px; color: var(--pink-s, var(--ember)); text-decoration: none; font-weight: 600; }
+  .press-list a:hover { text-decoration: underline; }
 </style>
