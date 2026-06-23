@@ -61,11 +61,18 @@
       margin-bottom: 24px;
     }
 
+    .landing-logo {
+      width: clamp(220px, 48vw, 380px);
+      height: auto;
+      display: block;
+      margin: 0 auto 20px;
+    }
+
     .landing-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(28px, 5vw, 44px);
+      font-size: clamp(20px, 3.4vw, 30px);
       font-weight: 300;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.32em;
       color: var(--gold-lt);
       text-transform: uppercase;
       margin-bottom: 12px;
@@ -176,6 +183,7 @@
 <body>
   <div class="landing">
     <div class="landing-eyebrow">A Multi-Volume Series</div>
+    <img class="landing-logo" src="/brand/imua-logo.png" alt="IMUA" width="380" height="157" />
     <h1 class="landing-title">The Values Project</h1>
     <div class="landing-author">Joshua Herrington</div>
     <div class="landing-rule"></div>

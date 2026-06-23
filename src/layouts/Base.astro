@@ -33,12 +33,8 @@ const {
     <nav>
       <div class="wrap">
         <a class="brand" href="#top" aria-label="Joshua Herrington — home">
-          <!-- JH "hive + forward" mark -->
-          <svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true">
-            <path d="M20 4 L32.1 11 L32.1 25 L20 32 L7.9 25 L7.9 11 Z" fill="none" stroke="#f5efe3" stroke-width="2" />
-            <text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="600" fill="#f5efe3">JH</text>
-            <line x1="32.1" y1="18" x2="38" y2="18" stroke="#c0632c" stroke-width="2.4" stroke-linecap="round" />
-          </svg>
+          <!-- JH "Sisyphus pushing the arrow" mark -->
+          <img class="brand-mark" src="/brand/jh-logo.png" alt="JH" width="44" height="26" />
           <span>{site.name}</span>
         </a>
         <div class="navlinks">
@@ -51,6 +47,10 @@ const {
 
     <footer>
       <div class="wrap">
+        <a class="footer-logo" href="/book/" aria-label="IMUA — The Values Project">
+          <img src="/brand/imua-logo.png" alt="IMUA" width="220" height="91" />
+        </a>
+        <div class="project-name">The Values Project</div>
         <div class="values">
           {site.values.map((v, i) => (
             <>{i > 0 && ' · '}<span>{v}</span></>
@@ -77,10 +77,11 @@ const {
         display: flex; align-items: center; justify-content: space-between; height: 62px;
       }
       .brand {
-        display: flex; align-items: center; gap: 10px;
+        display: flex; align-items: center; gap: 11px;
         font-family: var(--serif); font-size: 18px; color: var(--cream);
         text-decoration: none;
       }
+      .brand-mark { height: 26px; width: auto; display: block; }
       .navlinks { display: flex; gap: 22px; font-size: 14px; color: #cfc2ad; }
       .navlinks a { text-decoration: none; }
       .navlinks a:hover { color: #fff; }
@@ -88,8 +89,19 @@ const {
       footer {
         background: var(--brown); color: #cdbfa9; padding: 40px 0; text-align: center;
       }
+      .footer-logo { display: inline-block; }
+      .footer-logo img {
+        width: 220px; max-width: 70vw; height: auto; display: block;
+        opacity: .96; transition: opacity .2s;
+      }
+      .footer-logo:hover img { opacity: 1; }
+      .project-name {
+        font-family: var(--serif); font-size: 13px; letter-spacing: 3px;
+        text-transform: uppercase; color: var(--ember); margin-top: 10px;
+      }
       .values {
         font-family: var(--serif); font-size: 18px; color: var(--cream); letter-spacing: 1px;
+        margin-top: 14px;
       }
       .values span { color: var(--ember); }
       footer small { display: block; margin-top: 12px; font-size: 12px; }
