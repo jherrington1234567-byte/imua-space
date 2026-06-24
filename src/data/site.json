@@ -28,6 +28,20 @@
     { "label": "LinkedIn — Joshua Herrington", "href": "https://www.linkedin.com/in/joshua-herrington/" }
   ],
 
+  "testimonial": {
+    "pull": "Joshua is the epitome of the word humble — a reliable, helpful, and humble servant leader.",
+    "body": [
+      "I looked up the definition of humble, and in my experience working with Joshua, he is the epitome of the word. Joshua has always been available, always been knowledgeable, and guided me with assisting clients better.",
+      "He has often shared how proud he is of his family, his friends, and his coworkers. He often speaks to how he wants to help the people in his life prevail in their own lives. I have often been surprised at many of Joshua's personal and professional accomplishments, as he humbly does not share them unless asked. He chooses to focus on how he can assist others.",
+      "Many of you may know that Joshua is a veteran and served in the U.S. Air Force. The armed forces teach the concept of servant leadership — a philosophy where a leader's primary goal is to serve and empower others, rather than accumulate personal power.",
+      "With my own background in the U.S. Army, as a public-safety member and in financial services, I have been careful who I recommend. In my entire career this is only the 3rd recommendation I have written — and each I requested to provide. Joshua did not ask me; I asked him if I could. I believe Joshua has proven himself to be a reliable, helpful, and humble servant leader."
+    ],
+    "name": "Scott Bovee",
+    "context": "U.S. Army veteran · public safety & financial services",
+    "sourceLabel": "via LinkedIn recommendation",
+    "sourceUrl": "https://www.linkedin.com/in/joshua-herrington/"
+  },
+
   "nav": [
     { "label": "Work", "href": "#work" },
     { "label": "Writing", "href": "#writing" },

@@ -69,6 +69,17 @@ import site from '../data/site.json';
         ))}
       </ul>
 
+      <h2>In someone else's words</h2>
+      <figure class="rec">
+        <blockquote class="rec-pull">{site.testimonial.pull}</blockquote>
+        {site.testimonial.body.map((para) => <p class="rec-body">{para}</p>)}
+        <figcaption class="rec-by">
+          <span class="rec-name">{site.testimonial.name}</span>
+          <span class="rec-context">{site.testimonial.context}</span>
+          <a class="rec-src" href={site.testimonial.sourceUrl} target="_blank" rel="noopener">{site.testimonial.sourceLabel} →</a>
+        </figcaption>
+      </figure>
+
       <h2>What it's for</h2>
       <p>I have a blended family and a narrow window to be present for it — a little girl who's started calling me dad, two dogs, and a lot of road. I figured out what matters in time to still spend it where it matters.</p>
       <p>The debt stops here — for my kids, and for me.</p>
@@ -147,4 +158,22 @@ import site from '../data/site.json';
   .press-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 8px; }
   .press-list a { font-size: 15px; color: var(--pink-s, var(--ember)); text-decoration: none; font-weight: 600; }
   .press-list a:hover { text-decoration: underline; }
+
+  .rec {
+    margin: 22px 0 0; padding: 26px 28px; background: #fff;
+    border: 1px solid var(--line); border-radius: 12px;
+  }
+  .rec-pull {
+    font-family: var(--serif); font-size: clamp(19px, 3vw, 24px); line-height: 1.3;
+    color: var(--brown); margin: 0;
+  }
+  .rec-body { margin-top: 14px; font-size: 15.5px; line-height: 1.7; color: var(--ink); }
+  .rec-by {
+    margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .rec-name { font-weight: 700; font-size: 15px; color: var(--ink); }
+  .rec-context { font-size: 13px; color: var(--muted); }
+  .rec-src { font-size: 13px; color: var(--ember); text-decoration: none; margin-top: 4px; }
+  .rec-src:hover { text-decoration: underline; }
 </style>
