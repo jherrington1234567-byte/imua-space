@@ -47,12 +47,12 @@
   },
 
   "nav": [
-    { "label": "Work", "href": "#work" },
-    { "label": "Writing", "href": "#writing" },
+    { "label": "Work", "href": "/#work" },
+    { "label": "Writing", "href": "/#writing" },
     { "label": "About", "href": "/about/" },
-    { "label": "Photography", "href": "#photography" },
-    { "label": "MDRT", "href": "#gallery" },
-    { "label": "Connect", "href": "#connect" }
+    { "label": "Photography", "href": "/#photography" },
+    { "label": "MDRT", "href": "/#gallery" },
+    { "label": "Connect", "href": "/#connect" }
   ],
 
   "hero": {
