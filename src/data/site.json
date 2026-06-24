@@ -38,8 +38,12 @@
     ],
     "name": "Scott Bovee",
     "context": "U.S. Army veteran · public safety & financial services",
-    "sourceLabel": "via LinkedIn recommendation",
-    "sourceUrl": "https://www.linkedin.com/in/joshua-herrington/"
+    "sourceLabel": "Written for Joshua on LinkedIn",
+    "sourceUrl": "https://www.linkedin.com/in/joshua-herrington/",
+    "proof": [
+      { "label": "Screenshot 1", "href": "/images/press/scott-bovee-recommendation-1.png" },
+      { "label": "Screenshot 2", "href": "/images/press/scott-bovee-recommendation-2.png" }
+    ]
   },
 
   "nav": [

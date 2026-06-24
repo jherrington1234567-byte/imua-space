@@ -76,8 +76,16 @@ import site from '../data/site.json';
         <figcaption class="rec-by">
           <span class="rec-name">{site.testimonial.name}</span>
           <span class="rec-context">{site.testimonial.context}</span>
-          <a class="rec-src" href={site.testimonial.sourceUrl} target="_blank" rel="noopener">{site.testimonial.sourceLabel} →</a>
+          <span class="rec-src">{site.testimonial.sourceLabel}</span>
         </figcaption>
+        <div class="rec-proof">
+          <span class="rec-proof-label">See the original:</span>
+          {site.testimonial.proof.map((s, i) => (
+            <a href={s.href} target="_blank" rel="noopener" aria-label={`Recommendation screenshot ${i + 1}`}>
+              <img src={s.href} alt={`Scott Bovee's recommendation — screenshot ${i + 1}`} loading="lazy" />
+            </a>
+          ))}
+        </div>
       </figure>
 
       <h2>What it's for</h2>
@@ -174,6 +182,14 @@ import site from '../data/site.json';
   }
   .rec-name { font-weight: 700; font-size: 15px; color: var(--ink); }
   .rec-context { font-size: 13px; color: var(--muted); }
-  .rec-src { font-size: 13px; color: var(--ember); text-decoration: none; margin-top: 4px; }
-  .rec-src:hover { text-decoration: underline; }
+  .rec-src { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  .rec-proof { margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .rec-proof-label { font-size: 13px; color: var(--muted); }
+  .rec-proof a { display: inline-block; line-height: 0; }
+  .rec-proof img {
+    height: 132px; width: auto; border-radius: 8px; border: 1px solid var(--line);
+    transition: transform .15s, border-color .15s;
+  }
+  .rec-proof a:hover img { transform: translateY(-2px); border-color: var(--ember); }
 </style>
