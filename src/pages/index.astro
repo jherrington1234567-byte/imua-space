@@ -4,7 +4,8 @@ import Hero from '../components/Hero.astro';
 import MissionScroll from '../components/MissionScroll.astro';
 import MissionBand from '../components/MissionBand.astro';
 import Thesis from '../components/Thesis.astro';
-import BuildLab from '../components/BuildLab.astro';
+// Build Lab (tools) section temporarily hidden — see note by its usage below.
+// import BuildLab from '../components/BuildLab.astro';
 import MdrtGallery from '../components/MdrtGallery.astro';
 import Writing from '../components/Writing.astro';
 import Becoming from '../components/Becoming.astro';
@@ -18,7 +19,13 @@ import Connect from '../components/Connect.astro';
   <MissionScroll />
   <MissionBand />
   <Thesis />
-  <BuildLab />
+  {/*
+    Build Lab (the "tools" section, id="work") is intentionally hidden for now.
+    Kept in the codebase so it can be restored later: uncomment the import above
+    and this line. The component (BuildLab.astro) and its cards in
+    src/content/buildlab/ are untouched.
+  */}
+  {/* <BuildLab /> */}
   <Writing />
   <Becoming />
   <Credentials />
