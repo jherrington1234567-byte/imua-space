@@ -1,403 +1,122 @@
 ---
 /* ============================================================
-   IMUA.SPACE — HERO : THE AUDIENCE LENS
-   Click 1: pick a lens (Adventurer / Partner / Talent Scout)
-            -> hero reframes with value + tailored routes
-   Click 2: tap a route -> smooth-scroll to that section.
-
-   EDIT HERE — the four lenses (single editable config array):
-     key   : stable id used for state
-     name  : the lens row title
-     sub   : identity sub-line
-     blurb : one-line description shown in the row
-     acc   : role accent — 'rose' | 'blue' | 'terra' | 'ink'
-     wide  : true => rendered as the full-width banner
-     eyebrow : panel label
-     value : the reframe (wrap one phrase in <b>..</b> to accent)
-     routes  : doors {label, desc, href} into real section ids
-   Real section ids: #mission #work #writing #about #record
-                     #photography #offclock #gallery #connect
+   IMUA.SPACE — HERO
+   Left: who I am + the promise, with the primary routes out
+         (Substack, the book, About, LinkedIn).
+   Right: the book "cover" — The Values Project — links to the book.
+   Link targets live in src/data/site.json.
    ============================================================ */
-const AUDIENCES = [
-  {
-    key: 'adventurer', name: 'Adventurer', sub: 'Refuge from the storm', acc: 'rose',
-    blurb: 'An educated, values-driven individual finding success and seeking harbor.',
-    eyebrow: 'For adventurers',
-    value: "Read the book. Discover me. Decide if I'm <b>worthy of discovering you.</b>",
-    routes: [
-      { label: 'Photography', desc: 'The life behind the work', href: '#photography' },
-      { label: 'The book', desc: 'IMUA — the values project', href: '/book/' },
-    ],
-  },
-  {
-    key: 'partner', name: 'Partner', sub: 'an advisor with shared values', acc: 'blue',
-    blurb: 'You love the people who count on you the way I do — same standard, same fire.',
-    eyebrow: 'For partners',
-    value: 'Spend time here, see how I work and what I value, and you may find yourself <b>coveting the partnership.</b>',
-    routes: [
-      { label: 'The book', desc: 'IMUA — the values project', href: '/book/' },
-      { label: 'Photography', desc: 'The personal stuff', href: '#photography' },
-      { label: 'MDRT — find yourself', desc: 'Find your photo from the floor', href: '#gallery' },
-    ],
-  },
-  {
-    key: 'scout', name: 'Talent Scout', sub: 'capital · leadership', acc: 'terra',
-    blurb: 'You want someone who makes advisors better at serving the people who count on them.',
-    eyebrow: 'For talent scouts',
-    value: "That's the build — <b>a sales-leadership OS, pipeline, and process,</b> shipped and running. Bring the capital or the keys; I bring the system.",
-    routes: [
-      { label: 'The book', desc: 'IMUA — the values project', href: '/book/' },
-      { label: 'MDRT — find yourself', desc: 'Find your photo from the floor', href: '#gallery' },
-      { label: 'Photography', desc: 'The personal stuff', href: '#photography' },
-    ],
-  },
-  {
-    key: 'everything', name: 'The Hive', sub: "wired the way I'm wired",
-    acc: 'ink', wide: true,
-    blurb: "The restless, pattern-hungry, can't-put-it-down minds — wired the way I'm wired.",
-    eyebrow: 'For the hive',
-    value: "You see me because you see things the way I do. Same restless, pattern-hungry brain that can't leave a good problem alone. <b>Here's the whole hive</b> — every tool, every chapter, every frame.",
-    routes: [
-      { label: 'The work', desc: 'Guarantees, not guesses', href: '#mission' },
-      { label: 'The record', desc: 'Credentials & speaking', href: '#record' },
-      { label: 'The becoming', desc: 'The story & throughline', href: '#about' },
-      { label: 'The book', desc: 'IMUA — the values project', href: '/book/' },
-      { label: 'Photography', desc: 'Dogs, flight, family, color', href: '#photography' },
-      { label: 'MDRT — find yourself', desc: 'Find your photo from the floor', href: '#gallery' },
-      { label: 'Off the clock', desc: 'The rest of it', href: '#offclock' },
-      { label: 'Connect', desc: 'News from the Desk', href: '#connect' },
-    ],
-  },
-];
-
-const lenses = AUDIENCES.filter((a) => !a.wide);
-const banner = AUDIENCES.find((a) => a.wide);
-
-const ARROW =
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+import site from '../data/site.json';
 ---
 <header class="hero" id="top">
-  <div class="wrap">
-    <p class="kicker eyebrow">imua · to move forward</p>
-    <h1>Come in <span class="em">from the storm.</span></h1>
-    <p class="promise">Guarantees, not guesses. A check, not a maybe. I do what I say and say what I'll do — <b>maybe more, never less.</b></p>
-    <p class="lede">A harbor for the educated and the driven in a world of maybes — a book, a stack of working tools, and a life behind both. Tell me how you wandered in.</p>
+  <div class="wrap inner">
+    <div class="copy">
+      <p class="kicker eyebrow">imua · to move forward</p>
+      <h1>Come in <span class="em">from the storm.</span></h1>
+      <p class="promise">Guarantees, not guesses. A check, not a maybe. I do what I say and say what I'll do — <b>maybe more, never less.</b></p>
+      <p class="lede">A harbor for the educated and the driven in a world of maybes — a book written as it happens, a body of work built by hand, and a life behind both.</p>
 
-    <div class="chips">
-      <span class="chip p">Court of the Table 2026</span>
-      <span class="chip b">NAIFA National AI Task Force</span>
-      <span class="chip p">U.S. Air Force</span>
-    </div>
-
-    <div class="lens">
-      <div class="lens-q">Who wandered in?</div>
-      <div class="lens-sub"><b>Pick a lens</b> to see your path &nbsp;·&nbsp; then tap a route to go in</div>
-
-      <div class="picker">
-        {lenses.map((a) => (
-          <div class={`slot acc-${a.acc}`} data-slot={a.key}>
-            <button
-              class={`aud acc-${a.acc}`}
-              type="button"
-              data-aud={a.key}
-              aria-pressed="false"
-              aria-expanded="false"
-              aria-controls={`panel-${a.key}`}
-            >
-              <span class="a-left">
-                <span class="a-name">{a.name}</span>
-                <span class="a-sub">{a.sub}</span>
-                <span class="a-blurb">{a.blurb}</span>
-              </span>
-              <span class="a-go">See your path <Fragment set:html={ARROW} /></span>
-            </button>
-
-            <div class={`panel acc-${a.acc}`} id={`panel-${a.key}`} role="region" aria-label={`${a.name} — your path`}>
-              <div class="wrap-inner"><div class="pad">
-                <div class="p-head">
-                  <span class="p-eyebrow">{a.eyebrow}</span>
-                  <button class="p-close" type="button" data-close={a.key} aria-label="Close path">
-                    <Fragment set:html={ARROW} /> back
-                  </button>
-                </div>
-                <div class="p-value" set:html={a.value}></div>
-                <div class="routes">
-                  {a.routes.map((r) => (
-                    <a class="route" href={r.href}>
-                      <span class="r-label">{r.label} <Fragment set:html={ARROW} /></span>
-                      <span class="r-desc">{r.desc}</span>
-                    </a>
-                  ))}
-                </div>
-              </div></div>
-            </div>
-          </div>
-        ))}
+      <div class="chips">
+        <span class="chip p">Court of the Table 2026</span>
+        <span class="chip b">NAIFA National AI Task Force</span>
+        <span class="chip p">U.S. Air Force</span>
       </div>
 
-      {banner && (
-        <div class="banner-wrap">
-          <div class={`slot slot-wide acc-${banner.acc}`} data-slot={banner.key}>
-            <button
-              class={`aud aud-wide acc-${banner.acc}`}
-              type="button"
-              data-aud={banner.key}
-              aria-pressed="false"
-              aria-expanded="false"
-              aria-controls={`panel-${banner.key}`}
-            >
-              <span class="a-left">
-                <span class="a-name">{banner.name}</span>
-                <span class="a-sub">{banner.sub}</span>
-                <span class="a-blurb">{banner.blurb}</span>
-              </span>
-              <span class="a-go">Enter the hive <Fragment set:html={ARROW} /></span>
-            </button>
-
-            <div class={`panel acc-${banner.acc}`} id={`panel-${banner.key}`} role="region" aria-label={`${banner.name} — your path`}>
-              <div class="wrap-inner"><div class="pad">
-                <div class="p-head">
-                  <span class="p-eyebrow">{banner.eyebrow}</span>
-                  <button class="p-close" type="button" data-close={banner.key} aria-label="Close path">
-                    <Fragment set:html={ARROW} /> back
-                  </button>
-                </div>
-                <div class="p-value" set:html={banner.value}></div>
-                <div class="routes">
-                  {banner.routes.map((r) => (
-                    <a class="route" href={r.href}>
-                      <span class="r-label">{r.label} <Fragment set:html={ARROW} /></span>
-                      <span class="r-desc">{r.desc}</span>
-                    </a>
-                  ))}
-                </div>
-              </div></div>
-            </div>
-          </div>
-        </div>
-      )}
+      <div class="ctas">
+        <a class="cta" href={site.substackUrl} target="_blank" rel="noopener">Read on Substack →</a>
+        <a class="cta ghost" href="/#work">See the work →</a>
+        <a class="cta ghost" href="/about/">About →</a>
+        <a class="cta ghost" href={site.linkedinUrl} target="_blank" rel="noopener">LinkedIn →</a>
+      </div>
     </div>
+
+    <a class="cover" href={site.bookUrl} aria-label="The Values Project — read the book">
+      <div class="cover-inner">
+        <span class="cover-eyebrow">A multi-volume series</span>
+        <img class="cover-logo" src="/brand/imua-logo.png" alt="IMUA" width="380" height="157" />
+        <span class="cover-title">The Values Project</span>
+        <span class="cover-author">Joshua Herrington</span>
+        <span class="cover-rule"></span>
+        <span class="cover-cta">Open the book →</span>
+      </div>
+    </a>
   </div>
-
-  <div class="toast" id="lens-toast" role="status" aria-live="polite"></div>
-
-  <script is:inline>
-    const lensEl = document.querySelector('.lens');
-    const slots = Array.from(document.querySelectorAll('.slot'));
-    let active = null;
-
-    function setState() {
-      slots.forEach((s) => {
-        const on = s.dataset.slot === active;
-        s.classList.toggle('open', on);
-        const btn = s.querySelector('.aud');
-        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-        btn.setAttribute('aria-expanded', on ? 'true' : 'false');
-      });
-    }
-
-    // smooth + firm scroll — tunable easing/depth, no native rubber-band bounce
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    function firmScrollTo(targetY, duration) {
-      targetY = Math.max(0, targetY);
-      if (prefersReduced.matches) { window.scrollTo({ top: targetY, behavior: 'auto' }); return; }
-      const startY = window.scrollY;
-      const dist = targetY - startY;
-      if (Math.abs(dist) < 4) return;
-      const t0 = performance.now();
-      const ease = (t) => 1 - Math.pow(1 - t, 3); // easeOutCubic — glides in, settles firm
-      (function step(now) {
-        const p = Math.min(1, (now - t0) / duration);
-        window.scrollTo({ top: startY + dist * ease(p), behavior: 'auto' });
-        if (p < 1) requestAnimationFrame(step);
-      })(performance.now());
-    }
-
-    function open(key) {
-      active = key;
-      setState();
-      // on phones, ease the chosen card's paths into view — firm landing, shallow depth
-      const slot = document.querySelector(`.slot[data-slot="${key}"]`);
-      if (slot && window.matchMedia('(max-width: 640px)').matches) {
-        requestAnimationFrame(() => setTimeout(() => {
-          const top = slot.getBoundingClientRect().top + window.scrollY - 74;
-          firmScrollTo(top, 430);
-        }, 80));
-      }
-    }
-    function close(focusKey) {
-      active = null;
-      setState();
-      if (focusKey) {
-        const b = document.querySelector(`.slot[data-slot="${focusKey}"] .aud`);
-        if (b) b.focus();
-      }
-    }
-
-    // toast confirms a route tap before the anchor scroll lands
-    let tt;
-    const toastEl = document.getElementById('lens-toast');
-    function toast(label) {
-      toastEl.textContent = '→ ' + label;
-      toastEl.classList.add('show');
-      clearTimeout(tt);
-      tt = setTimeout(() => toastEl.classList.remove('show'), 1700);
-    }
-
-    lensEl.addEventListener('click', (e) => {
-      const closeBtn = e.target.closest('.p-close');
-      if (closeBtn) { close(closeBtn.dataset.close); return; }
-
-      const trigger = e.target.closest('.aud');
-      if (trigger) { open(trigger.dataset.aud); return; }
-
-      const r = e.target.closest('.route');
-      if (r) toast(r.querySelector('.r-label').textContent.trim());
-    });
-
-    // Esc collapses the open path
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && active) close(active);
-    });
-  </script>
 </header>
 
 <style>
-  .hero { background: var(--cream); padding-top: clamp(40px, 6vh, 64px); padding-bottom: clamp(44px, 6vh, 64px); }
+  .hero { background: var(--cream); padding-top: clamp(40px, 6vh, 72px); padding-bottom: clamp(44px, 6vh, 72px); }
+  .inner {
+    display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(28px, 5vw, 64px);
+    align-items: center;
+  }
+
   .hero .eyebrow { color: var(--ember); font-weight: 600; }
-  .hero h1 { font-size: clamp(34px, 8vw, 60px); line-height: 1.02; letter-spacing: -.015em; margin-top: 14px; max-width: 15ch; }
+  .hero h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.02; letter-spacing: -.015em; margin-top: 14px; max-width: 15ch; }
   .hero h1 .em { color: var(--ember); }
 
   .promise {
     font-family: var(--serif); font-weight: 500; font-size: clamp(17px, 2.4vw, 22px);
-    line-height: 1.35; margin-top: 18px; max-width: 40ch; color: var(--ink);
+    line-height: 1.35; margin-top: 18px; max-width: 42ch; color: var(--ink);
   }
   .promise b { color: var(--ember); font-weight: 700; }
-  .lede { margin-top: 14px; max-width: 42ch; font-size: clamp(15px, 2vw, 18px); color: var(--muted); }
+  .lede { margin-top: 14px; max-width: 44ch; font-size: clamp(15px, 2vw, 18px); color: var(--muted); }
 
   .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
 
-  /* lens picker */
-  .lens { margin-top: 38px; }
-  .lens-q { font-family: var(--serif); font-weight: 600; color: var(--brown); font-size: clamp(20px, 3vw, 26px); }
-  .lens-sub { font-size: 13.5px; color: var(--muted); margin-top: 6px; }
-  .lens-sub b { color: var(--ink); font-weight: 600; }
-
-  .picker { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 18px; }
-
-  .aud {
-    text-align: left; background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 16px 18px; cursor: pointer; font: inherit; color: var(--ink);
-    border-left-width: 5px; width: 100%;
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .ctas .cta.ghost {
+    background: transparent; color: var(--brown); border: 1px solid var(--line);
   }
-  .aud:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -18px rgba(43, 32, 22, .45); }
-  .aud:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-  .a-left { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-  .a-name { font-family: var(--serif); font-weight: 600; font-size: 19px; color: var(--brown); }
-  .a-sub { font-size: 13px; color: var(--muted); }
-  .a-blurb { font-size: 13px; color: var(--muted); max-width: 54ch; line-height: 1.4; margin-top: 2px; }
-  .a-go {
-    flex: 0 0 auto; white-space: nowrap; font-size: 12.5px; font-weight: 600;
-    display: inline-flex; align-items: center; gap: 6px; color: var(--muted);
-  }
-  .a-go :global(svg) { width: 13px; height: 13px; }
-  .aud[aria-pressed='true'] .a-go { color: var(--ink); }
+  .ctas .cta.ghost:hover { background: #fff; border-color: var(--brown2); }
 
-  .banner-wrap { margin-top: 12px; }
-  .aud-wide { background: var(--cream); }
-
-  /* slot = a lens and the path that takes its place when chosen */
-  .slot { position: relative; display: grid; scroll-margin-top: 14px; }
-  .slot.open > .aud { display: none; }
-
-  /* role accents */
-  .aud.acc-rose { border-left-color: var(--pink-s); }
-  .aud.acc-blue { border-left-color: var(--blue-s); }
-  .aud.acc-terra { border-left-color: var(--ember); }
-  .aud.acc-ink { border-left-color: var(--brown); }
-  .aud.acc-rose[aria-pressed='true'] { border-color: var(--pink-s); }
-  .aud.acc-blue[aria-pressed='true'] { border-color: var(--blue-s); }
-  .aud.acc-terra[aria-pressed='true'] { border-color: var(--ember); }
-  .aud.acc-ink[aria-pressed='true'] { border-color: var(--brown); }
-  .aud[aria-pressed='true'] { box-shadow: 0 16px 38px -16px rgba(43, 32, 22, .5); }
-
-  /* tailored panel — sits in the slot, replacing the chosen lens */
-  .panel {
-    border-radius: var(--radius); overflow: hidden;
-    border: 1px solid var(--line); border-left-width: 5px; background: #fff;
-    display: grid; grid-template-rows: 0fr; opacity: 0;
-    transition: grid-template-rows .34s ease, opacity .3s ease, box-shadow .3s ease, transform .3s ease;
+  /* the book "cover" */
+  .cover {
+    display: block; text-decoration: none; justify-self: center;
+    width: min(340px, 78vw); aspect-ratio: 5 / 7;
+    border-radius: 6px; overflow: hidden;
+    background: linear-gradient(160deg, #24190b 0%, #2c1f0e 55%, #3a2c17 100%);
+    border: 1px solid #4a3a22;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.05) inset,
+      -14px 0 22px -18px rgba(0,0,0,.6) inset, /* spine shadow */
+      0 26px 60px -22px rgba(43, 32, 22, .7);
+    transition: transform .25s ease, box-shadow .25s ease;
   }
-  .slot.open > .panel {
-    grid-template-rows: 1fr; opacity: 1;
-    box-shadow: 0 20px 44px -18px rgba(43, 32, 22, .5);
+  .cover:hover {
+    transform: translateY(-4px) rotate(-.4deg);
+    box-shadow: 0 34px 72px -24px rgba(43, 32, 22, .78);
   }
-  .panel .wrap-inner { overflow: hidden; min-height: 0; }
-  .panel .pad { padding: 22px; }
-  .panel :global(.p-head) { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
-  .panel :global(.p-close) {
-    flex: 0 0 auto; background: none; border: 0; cursor: pointer; font: inherit;
-    font-size: 12.5px; font-weight: 600; color: var(--muted);
-    display: inline-flex; align-items: center; gap: 6px; padding: 2px 2px;
+  .cover:focus-visible { outline: 2px solid var(--ember); outline-offset: 4px; }
+  .cover-inner {
+    height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 40px 26px; gap: 4px;
+    border: 1px solid rgba(192,99,44,.28); border-radius: 4px; margin: 12px;
   }
-  .panel :global(.p-close):hover { color: var(--ink); }
-  .panel :global(.p-close svg) { width: 13px; height: 13px; transform: scaleX(-1); }
-  .panel :global(.p-eyebrow) { font-weight: 700; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
-  .panel :global(.p-value) {
-    font-family: var(--serif); font-weight: 500; font-size: clamp(18px, 2.6vw, 24px);
-    line-height: 1.3; margin-top: 10px; max-width: 48ch; color: var(--brown);
+  .cover-eyebrow {
+    font-size: 10px; letter-spacing: .34em; text-transform: uppercase;
+    color: rgba(237,228,216,.5); margin-bottom: 10px;
   }
-  .panel :global(.p-value b) { font-weight: 700; }
+  .cover-logo { width: clamp(150px, 46%, 220px); height: auto; opacity: .96; }
+  .cover-title {
+    font-family: var(--serif); font-size: clamp(15px, 2.4vw, 19px); font-weight: 500;
+    letter-spacing: .26em; text-transform: uppercase; color: #c4a16e; margin-top: 18px;
+  }
+  .cover-author {
+    font-family: var(--serif); font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(237,228,216,.5); margin-top: 8px;
+  }
+  .cover-rule {
+    width: 90px; height: 1px; margin: 20px 0 16px;
+    background: linear-gradient(to right, transparent, var(--ember), transparent);
+  }
+  .cover-cta { font-size: 12.5px; letter-spacing: .08em; color: #d9a06a; }
 
-  .panel :global(.routes) {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 11px; margin-top: 20px;
-  }
-  .panel :global(.route) {
-    display: flex; flex-direction: column; gap: 3px; text-decoration: none; cursor: pointer;
-    border: 1px solid var(--line); border-radius: 12px; padding: 14px 15px; color: var(--ink);
-    background: var(--cream); transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
-  }
-  .panel :global(.route:hover) { transform: translateY(-2px); box-shadow: 0 12px 26px -16px rgba(43, 32, 22, .45); }
-  .panel :global(.route:focus-visible) { outline: 2px solid var(--ink); outline-offset: 2px; }
-  .panel :global(.r-label) { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 6px; color: var(--ink); }
-  .panel :global(.r-label svg) { width: 14px; height: 14px; }
-  .panel :global(.r-desc) { font-size: 12.5px; color: var(--muted); }
-
-  /* per-audience accent applied to the open panel */
-  .panel.acc-rose { border-left-color: var(--pink-s); }
-  .panel.acc-blue { border-left-color: var(--blue-s); }
-  .panel.acc-terra { border-left-color: var(--ember); }
-  .panel.acc-ink { border-left-color: var(--brown); }
-  .panel.acc-rose :global(.p-eyebrow), .panel.acc-rose :global(.p-value b), .panel.acc-rose :global(.r-label svg) { color: var(--pink-s); }
-  .panel.acc-rose :global(.route:hover) { border-color: var(--pink-s); }
-  .panel.acc-blue :global(.p-eyebrow), .panel.acc-blue :global(.p-value b), .panel.acc-blue :global(.r-label svg) { color: var(--blue-s); }
-  .panel.acc-blue :global(.route:hover) { border-color: var(--blue-s); }
-  .panel.acc-terra :global(.p-eyebrow), .panel.acc-terra :global(.p-value b), .panel.acc-terra :global(.r-label svg) { color: var(--ember); }
-  .panel.acc-terra :global(.route:hover) { border-color: var(--ember); }
-  .panel.acc-ink :global(.p-eyebrow), .panel.acc-ink :global(.p-value b), .panel.acc-ink :global(.r-label svg) { color: var(--brown); }
-  .panel.acc-ink :global(.route:hover) { border-color: var(--brown); }
-
-  /* toast */
-  .toast {
-    position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(18px);
-    background: var(--brown); color: var(--cream); border: 1px solid var(--ember);
-    padding: 12px 18px; border-radius: 10px; font-size: 14px; font-weight: 500;
-    opacity: 0; pointer-events: none; transition: opacity .25s ease, transform .25s ease; z-index: 60;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  /* phones: tighten the open path so the routes sit high, right where the card was */
-  @media (max-width: 640px) {
-    .panel .pad { padding: 16px; }
-    .panel :global(.p-value) { font-size: 16px; line-height: 1.28; margin-top: 8px; }
-    .panel :global(.routes) { margin-top: 14px; gap: 9px; }
-    .panel :global(.route) { padding: 12px 13px; }
+  @media (max-width: 780px) {
+    .inner { grid-template-columns: 1fr; }
+    .cover { order: -1; margin-bottom: 6px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .aud, .panel, .panel :global(.route), .toast { transition: none; }
+    .cover { transition: none; }
   }
 </style>

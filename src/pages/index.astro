@@ -4,7 +4,9 @@ import Hero from '../components/Hero.astro';
 import MissionScroll from '../components/MissionScroll.astro';
 import MissionBand from '../components/MissionBand.astro';
 import Thesis from '../components/Thesis.astro';
-// Build Lab (tools) section temporarily hidden — see note by its usage below.
+import Work from '../components/Work.astro';
+// Build Lab (live tools showcase) stays hidden — replaced by the descriptive
+// Work section below. Component + src/content/buildlab/ are kept for later.
 // import BuildLab from '../components/BuildLab.astro';
 import MdrtGallery from '../components/MdrtGallery.astro';
 import Writing from '../components/Writing.astro';
@@ -20,12 +22,12 @@ import Connect from '../components/Connect.astro';
   <MissionBand />
   <Thesis />
   {/*
-    Build Lab (the "tools" section, id="work") is intentionally hidden for now.
-    Kept in the codebase so it can be restored later: uncomment the import above
-    and this line. The component (BuildLab.astro) and its cards in
-    src/content/buildlab/ are untouched.
+    The live Build Lab (interactive tool demos) stays hidden out of respect for
+    a former employer's request. Work.astro replaces it: a descriptive account
+    of what's been built + the skillset, with no live tool links. To restore the
+    live demos later, uncomment the BuildLab import above and swap it back in.
   */}
-  {/* <BuildLab /> */}
+  <Work />
   <Writing />
   <Becoming />
   <Credentials />
